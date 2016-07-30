@@ -1,0 +1,30 @@
+{
+  "name": "gulp-cli-generator",
+  "version": "1.0.0",
+  "description": "0.1.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://M-jerez@github.com/M-jerez/gulp-cli-generator.git"
+  },
+  "keywords": [
+    "gulp",
+    "generator",
+    "cli",
+    "scallfolding"
+  ],
+  "author": "Ma-Jerez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/M-jerez/gulp-cli-generator/issues"
+  },
+  "homepage": "https://github.com/M-jerez/gulp-cli-generator#readme",
+
+  "devDependencies": {
+    "chai": "^1.10.0",
+    "mocha": "^2.1.0"
+  },
+  "scripts": {
+    "test": "node_modules/mocha/bin/mocha test/*.js --reporter spec"
+  }
+}
