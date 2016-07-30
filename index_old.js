@@ -30,9 +30,9 @@ function checkExist(dest_dir) {
     }
     return exist;
 }
-var replaceAll = function (target, search, replacement) {
+function replaceAll(target, search, replacement) {
     return target.replace(new RegExp(search, 'g'), replacement);
-};
+}
 var copyTask = (function () {
     function copyTask() {
         this.name = "generator";

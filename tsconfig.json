@@ -9,13 +9,12 @@
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
 		"sourceMap": true,
-		"moduleResolution":"node"
+		"moduleResolution":"node",
+		"outDir":"dist/"
 	},
 	"exclude": [
-		"node_modules/**",
-		"doc/**",
-		"dist/**",
-		"wordpress/**"
+		"node_modules",
+		"dist"
 	],
-	"compileOnSave": false
+	"compileOnSave": true
 }
