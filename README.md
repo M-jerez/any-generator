@@ -1,22 +1,48 @@
-# [Gulp](https://github.com/wearefractal/gulp) CLI Generator
+# &laquo; Any-Gen &raquo;
 [![Travis](https://img.shields.io/travis/M-jerez/any-generator.svg?style=flat-square)]()
 [![npm](https://img.shields.io/npm/v/npm.svg?maxAge=2592000?style=flat-square)]()
 [![David](https://img.shields.io/david/M-jerez/any-generator.svg?maxAge=2592000?style=flat-square)]()
 [![Github All Releases](https://img.shields.io/github/downloads/M-jerez/any-generator/total.svg?maxAge=2592000?style=flat-square)]()
 [![npm](https://img.shields.io/npm/l/express.svg?maxAge=2592000?style=flat-square)]()
 
-> A gulp task to automatically generate scaffolding for your own project. 
+> Automatic scaffold generator for any project.
 
 ## Install
 
 Install with [npm](https://npmjs.org/package/gulp-concat-css).
 
 ```
-npm install --save-dev gulp-concat-css
+npm install --save-dev  anygen
 ```
 
 ## Examples
 
+Using with gulp: [![Gulp](https://img.shields.io/badge/use--with-Gulp-orange.svg)]() 
+```js
+var gulp = require('gulp');
+var concatCss = require('gulp-concat-css');
+
+gulp.task('default', function () {
+  return gulp.src('assets/**/*.css')
+    .pipe(concatCss("styles/bundle.css"))
+    .pipe(gulp.dest('out/'));
+});
+```
+
+Using with Grunt: [![Grunt](https://img.shields.io/badge/use--with-Grunt-yellow.svg)]()  
+```js
+var gulp = require('gulp');
+var concatCss = require('gulp-concat-css');
+
+gulp.task('default', function () {
+  return gulp.src('assets/**/*.css')
+    .pipe(concatCss("styles/bundle.css"))
+    .pipe(gulp.dest('out/'));
+});
+```
+
+
+Using with npm:
 ```js
 var gulp = require('gulp');
 var concatCss = require('gulp-concat-css');
