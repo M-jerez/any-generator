@@ -4,16 +4,12 @@
 
 
 import {join, basename} from 'path';
-import {COPY,PATH,GENERATORS} from './index';
-import * as fs from "fs";
 import * as fsx from 'fs-extra';
+import * as path from "path";
 import {Generator} from "./Generator";
+import {replaceAll,isComplaintName, getSubDirectories} from "./utils";
+import {Stats} from "fs";
 
-
-
-interface GeneratorStore{
-	[key: string]: Generator;
-}
 
 /**
  * Generates scaffolding for any project.
@@ -43,26 +39,15 @@ export class Compiler{
 
 
 
-
-	constructor(){
-
-	}
-
-
 	/**
-	 * Search for all the generator in the 'rootPath' and ad them to the genreratorsRegistry
-	 * @param path
+	 * Search for all the generator in the 'rootPath' and add them to the genreratorsRegistry
+	 * @param rootPath
 	 */
 	addGenerators(rootPath:string){
-
+		let nRootPath =  path.normalize(rootPath);
+		Compiler.findGenerators(nRootPath);
 	}
 
-	/**
-	 * Add a new generator Rooth path from an npm compatible package.
-	 */
-	addGeneratorFromPackage(){
-
-	}
 
 
 	/**
@@ -77,65 +62,83 @@ export class Compiler{
 	 * @param destPath
 	 */
 	build(generatorName:string,moduleName:string,destPath:string){
-		var generator = GENERATORS[genName];
 
-		if(generator){
-			var pattern =  generator.pattern;
-			var src_dir = join(generator.src_dir,generator.pattern);
-			var dest_dir = join(generator.dest_dir,newName);
+		if (!isComplaintName(moduleName,Compiler.nameConstrain)){
+			throw new Error("Invalid argument 'moduleName'. Only characters, numbers and underscore allowed.")
+		}
 
-			if(checkExist(dest_dir)){
-				gutil.log(gutil.colors.red("Dest directory "+dest_dir+" is not empty."));
-				done();
-				return;
-			}
-			fsx.ensureDirSync(dest_dir);
+		var generator = this.genStore[moduleName];
+
+		if(typeof generator != 'undefined'){
+			var pattern =  Compiler.replaceName;
+			var src_dir = join(generator.path,pattern);
+			var dest_dir = join(destPath,moduleName);
+
+
+
 			fsx.walk(src_dir)
 				.on('data', function (item) {
-					if(!item.stats.isDirectory()){
+					let stats: Stats= <Stats>item.stats;
+					if(stats.isDirectory()){
+						fsx.ensureDirSync(dest_dir);
+					}else if(stats.isFile()){
 						var basen = basename(item.path);
-						var newFile = 	join(generator.dest_dir,newName,basen.replace(pattern,newName));
-						var content = fs.readFileSync(item.path, "utf-8");
-						var newContent = replaceAll(content,pattern,newName);
-						fs.writeFileSync(newFile,newContent,"utf-8");
+						var newFile = 	join(destPath,moduleName,basen.replace(pattern,moduleName));
+						var content = fsx.readFileSync(item.path, "utf-8");
+						var newContent = replaceAll(content,pattern,moduleName);
+						fsx.writeFileSync(newFile,newContent,"utf-8");
 					}
 				})
 				.on('end', function () {
-					gutil.log(gutil.colors.cyan("Component "+newName+" cretaed in: "),dest_dir);
-					done();
+
 				})
 		}else{
-			gutil.log(gutil.colors.red(`Cant find the generator '${genName}'`));
-			done();
+			throw Error (`Generator ${generatorName} nor Found.`)
 		}
 	}
 
 
 	/**
-	 * Check whether the given name contains only alphanumeric and underscore characters.
-	 * If the string is not compliant an Error is Thrown.
-	 * @param moduleName
-	 */
-	isComplaintName(moduleName:string){
-		if (moduleName.search(AnyGenerator.nameConstrain) == -1){
-			throw new Error("Invalid argument 'moduleName', only characters ,  numbers and underscore allowed.")
-		}else{
-			return true;
-		}
-	}
+	 * Search for all the generators in a given 'rootPath'.
+	 * A generator is any subdirectory of rootPaht containing another subdirectory named "__name__".
+	 * The search is not recursive the generator needs to be a direct subdirectory of rootPath.
+	 *
+	 * rootPath
+	 * +──  generator1
+	 * |   └──  __name__
+	 * |       +── __name__Controller.js
+	 * |       +── __name__Controller.js
+	 * |       └── __name__Template.html
+	 * └──  generator2
+	 *     └──  __name__
+	 *         +── __name__Controller.js
+	 *         +── __name__Controller.js
+	 *         └── __name__Template.html
+	 *
+	 * @param rootPath
+	 * @param callback
+	 * @returns {Generator[]}
+     */
+	static findGenerators(rootPath:string):Generator[]{
+		let found:Generator[]=[];
+		if(!fsx.statSync(rootPath).isDirectory())
+			throw Error(`${rootPath} is not a Directory.`);
+		let subdirs = getSubDirectories(rootPath);
+		if(subdirs.length == 0)
+			throw Error(`No Generator found in ${rootPath}`);
 
 
-	/**
-	 * Checks if the 'generatorPath' is an existing directory.
-	 * @param generatorPath
-	 * @returns {boolean}
-	 */
-	checkGeneratorExists(generatorPath){
-		try {
-			var stats = fs.lstatSync(generatorPath);
-			return stats.isDirectory();
-		}catch (error) {
-			return false;
-		}
+		subdirs.forEach((generatorPath:string)=>{
+			let name = path.basename(generatorPath);
+			console.log(name);
+		});
+		return found;
 	}
+
+}
+
+
+
+interface GeneratorStore{
+	[key: string]: Generator;
 }

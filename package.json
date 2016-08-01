@@ -2,7 +2,7 @@
   "name": "gulp-cli-generator",
   "version": "1.0.0",
   "description": "0.1.0",
-  "main": "index.js",
+  "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://M-jerez@github.com/M-jerez/gulp-cli-generator.git"
@@ -22,12 +22,16 @@
   "devDependencies": {
     "chai": "^1.10.0",
     "mocha": "^2.1.0",
+    "rimraf": "^2.5.4",
     "typescript": "^1.8.10",
     "typings": "^1.3.2"
   },
   "scripts": {
     "test": "node_modules/mocha/bin/mocha test/*.js --reporter spec",
-    "build": "tsc"
+	  "precompile": "npm run clean",
+	  "clean": "rimraf dist/*",
+	  "compile": "npm run compile:ts",
+	  "compile:ts": "tsc"
   },
   "dependencies": {
     "fs-extra": "^0.30.0"

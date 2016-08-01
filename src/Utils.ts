@@ -2,7 +2,8 @@
  * Created by Ma jerez on 30/07/2016.
  */
 
-import * as fs from "fs";
+import * as fsx from "fs-extra";
+import * as path from "path";
 
 
 /**
@@ -15,3 +16,45 @@ import * as fs from "fs";
 export function replaceAll(target:string, search:string, replacement:string):string {
 	return target.replace(new RegExp(search, 'g'), replacement);
 }
+
+
+/**
+ * Check whether the given name contains only alphanumeric and underscore characters.
+ * If the string is not compliant an Error is Thrown.
+ * @param moduleName
+ * @param nameConstrain
+ * @returns {boolean}
+ */
+export function isComplaintName(moduleName:string,nameConstrain:RegExp){
+	return !(moduleName.search(nameConstrain) == -1);
+}
+
+
+/**
+ * Checks if the 'generatorPath' is an existing directory.
+ * @param generatorPath
+ * @returns {boolean}
+ */
+export function checkGeneratorExists(generatorPath){
+	try {
+		var stats = fsx.statSync(generatorPath);
+		return stats.isDirectory();
+	}catch (error) {
+		return false;
+	}
+}
+
+
+/**
+ * Returns an array with the subdirectories of 'srcPath' (Non Recursive).
+ * @param srcPath
+ * @returns string[]
+ */
+export function getSubDirectories(srcPath):string[]{
+	return fsx.readdirSync(srcPath).filter(function(file) {
+		return fsx.statSync(path.join(srcPath, file)).isDirectory();
+	});
+}
+
+
+

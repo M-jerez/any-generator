@@ -8,13 +8,14 @@
 		"noLib": false,
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
-		"sourceMap": true,
+		"sourceMap": false,
 		"moduleResolution":"node",
 		"outDir":"dist/"
 	},
 	"exclude": [
 		"node_modules",
-		"dist"
+		"dist",
+		"test"
 	],
 	"compileOnSave": true
 }
