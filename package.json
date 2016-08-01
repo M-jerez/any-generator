@@ -27,7 +27,7 @@
     "typings": "^1.3.2"
   },
   "scripts": {
-    "test": "node_modules/mocha/bin/mocha test/*.js --reporter spec",
+    "test": "node node_modules/mocha/bin/mocha dist/*.spec.js --reporter spec",
 	  "precompile": "npm run clean",
 	  "clean": "rimraf dist/*",
 	  "compile": "npm run compile:ts",

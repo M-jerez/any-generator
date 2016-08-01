@@ -8,7 +8,7 @@
 		"noLib": false,
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
-		"sourceMap": false,
+		"sourceMap": true,
 		"moduleResolution":"node",
 		"outDir":"dist/"
 	},

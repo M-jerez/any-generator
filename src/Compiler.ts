@@ -44,8 +44,26 @@ export class Compiler{
 	 * @param rootPath
 	 */
 	addGenerators(rootPath:string){
+		if(!fsx.existsSync(rootPath))
+			throw new Error(`${rootPath} is not a Directory.`);
 		let nRootPath =  path.normalize(rootPath);
-		Compiler.findGenerators(nRootPath);
+		let generators = Compiler.findGenerators(nRootPath);
+		generators.forEach((generator:Generator)=>{
+			var name = generator.name;
+			if (typeof this.genStore[name] != 'undefined')
+				throw new Error(`Duplicated generator ${name}. The generator already exists.`);
+			else
+				this.genStore[name] = generator;
+		})
+	}
+
+
+	/**
+	 * Returns an array containing all the names of the available generators.
+	 * @returns {string[]}
+     */
+	getGeneratorNames():string[]{
+		return Object.keys(this.genStore);
 	}
 
 
@@ -93,7 +111,7 @@ export class Compiler{
 
 				})
 		}else{
-			throw Error (`Generator ${generatorName} nor Found.`)
+			throw new Error (`Generator ${generatorName} nor Found.`);
 		}
 	}
 
@@ -121,16 +139,16 @@ export class Compiler{
      */
 	static findGenerators(rootPath:string):Generator[]{
 		let found:Generator[]=[];
-		if(!fsx.statSync(rootPath).isDirectory())
-			throw Error(`${rootPath} is not a Directory.`);
+
 		let subdirs = getSubDirectories(rootPath);
 		if(subdirs.length == 0)
-			throw Error(`No Generator found in ${rootPath}`);
+			throw  Error(`No Generator found in ${rootPath}`);
 
 
 		subdirs.forEach((generatorPath:string)=>{
 			let name = path.basename(generatorPath);
-			console.log(name);
+			let generator = new Generator(name,generatorPath);
+			found.push(generator);
 		});
 		return found;
 	}

@@ -2,14 +2,28 @@
 var path_1 = require('path');
 var fsx = require('fs-extra');
 var path = require("path");
+var Generator_1 = require("./Generator");
 var utils_1 = require("./utils");
 var Compiler = (function () {
     function Compiler() {
         this.genStore = {};
     }
     Compiler.prototype.addGenerators = function (rootPath) {
+        var _this = this;
+        if (!fsx.existsSync(rootPath))
+            throw new Error(rootPath + " is not a Directory.");
         var nRootPath = path.normalize(rootPath);
-        Compiler.findGenerators(nRootPath);
+        var generators = Compiler.findGenerators(nRootPath);
+        generators.forEach(function (generator) {
+            var name = generator.name;
+            if (typeof _this.genStore[name] != 'undefined')
+                throw new Error("Duplicated generator " + name + ". The generator already exists.");
+            else
+                _this.genStore[name] = generator;
+        });
+    };
+    Compiler.prototype.getGeneratorNames = function () {
+        return Object.keys(this.genStore);
     };
     Compiler.prototype.build = function (generatorName, moduleName, destPath) {
         if (!utils_1.isComplaintName(moduleName, Compiler.nameConstrain)) {
@@ -38,19 +52,18 @@ var Compiler = (function () {
             });
         }
         else {
-            throw Error("Generator " + generatorName + " nor Found.");
+            throw new Error("Generator " + generatorName + " nor Found.");
         }
     };
     Compiler.findGenerators = function (rootPath) {
         var found = [];
-        if (!fsx.statSync(rootPath).isDirectory())
-            throw Error(rootPath + " is not a Directory.");
         var subdirs = utils_1.getSubDirectories(rootPath);
         if (subdirs.length == 0)
             throw Error("No Generator found in " + rootPath);
         subdirs.forEach(function (generatorPath) {
             var name = path.basename(generatorPath);
-            console.log(name);
+            var generator = new Generator_1.Generator(name, generatorPath);
+            found.push(generator);
         });
         return found;
     };
@@ -59,3 +72,4 @@ var Compiler = (function () {
     return Compiler;
 }());
 exports.Compiler = Compiler;
+//# sourceMappingURL=Compiler.js.map
