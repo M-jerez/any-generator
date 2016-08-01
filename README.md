@@ -1,9 +1,9 @@
 # [Gulp](https://github.com/wearefractal/gulp) CLI Generator
-
-[![Build Status](https://secure.travis-ci.org/mariocasciaro/gulp-concat-css.png?branch=master)](https://travis-ci.org/mariocasciaro/gulp-concat-css)
-[![NPM version](http://img.shields.io/npm/v/gulp-concat-css.svg)](https://www.npmjs.org/package/gulp-concat-css)
-[![Dependency Status](https://david-dm.org/mariocasciaro/gulp-concat-css.svg)](https://david-dm.org/mariocasciaro/gulp-concat-css)
-[![Downloads](http://img.shields.io/npm/dm/gulp-concat-css.svg)](https://www.npmjs.org/package/gulp-concat-css)
+[![Travis](https://img.shields.io/travis/M-jerez/any-generator.svg?style=flat-square)]()
+[![npm](https://img.shields.io/npm/v/npm.svg?maxAge=2592000?style=flat-square)]()
+[![David](https://img.shields.io/david/M-jerez/any-generator.svg?maxAge=2592000?style=flat-square)]()
+[![Github All Releases](https://img.shields.io/github/downloads/M-jerez/any-generator/total.svg?maxAge=2592000?style=flat-square)]()
+[![npm](https://img.shields.io/npm/l/express.svg?maxAge=2592000?style=flat-square)]()
 
 > A gulp task to automatically generate scaffolding for your own project. 
 
