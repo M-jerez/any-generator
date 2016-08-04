@@ -33,6 +33,15 @@ export class Compiler{
 
 
 	/**
+	 * Returns the regexp used to constrain the allowed module names
+	 * @returns {RegExp}
+     */
+	public static  getNameConstrain():RegExp{
+		return Compiler.nameConstrain;
+	}
+
+
+	/**
 	 * String to be replaced when build the generator, in any file or directory name, or withing the file content.
 	 */
 	private static replaceName = "__name__";
@@ -79,7 +88,7 @@ export class Compiler{
 	 * @param moduleName
 	 * @param destPath
 	 */
-	build(generatorName:string,moduleName:string,destPath:string){
+	compile(generatorName:string,moduleName:string,destPath:string){
 
 		if (!isComplaintName(moduleName,Compiler.nameConstrain)){
 			throw new Error("Invalid argument 'moduleName'. Only characters, numbers and underscore allowed.")
