@@ -3,14 +3,14 @@
  */
 
 
-export class __name__View{
+export class refItemView {
 
-	constructor(){
+	constructor() {
+
+	}
+
+	refItemRender() {
 
 	}
 
-	__name__Render(){
-
-	}
-	
 }

@@ -7,7 +7,7 @@ import {join, basename} from 'path';
 import * as fsx from 'fs-extra';
 import * as path from "path";
 import {Generator} from "./Generator";
-import {replaceAll,isComplaintName, getSubDirectories} from "./utils";
+import {replaceAll,isComplaintName, getSubDirectoryNames} from "./utils";
 import {Stats} from "fs";
 
 
@@ -15,7 +15,7 @@ import {Stats} from "fs";
  * Generates scaffolding for any project.
  * It uses one directory as generator and wen
  */
-export class Compiler{
+export class Builder{
 
 
 	/**
@@ -37,7 +37,7 @@ export class Compiler{
 	 * @returns {RegExp}
      */
 	public static  getNameConstrain():RegExp{
-		return Compiler.nameConstrain;
+		return Builder.nameConstrain;
 	}
 
 
@@ -56,7 +56,7 @@ export class Compiler{
 		if(!fsx.existsSync(rootPath))
 			throw new Error(`${rootPath} is not a Directory.`);
 		let nRootPath =  path.normalize(rootPath);
-		let generators = Compiler.findGenerators(nRootPath);
+		let generators = Builder.findGenerators(nRootPath);
 		generators.forEach((generator:Generator)=>{
 			var name = generator.name;
 			if (typeof this.genStore[name] != 'undefined')
@@ -88,37 +88,51 @@ export class Compiler{
 	 * @param moduleName
 	 * @param destPath
 	 */
-	compile(generatorName:string,moduleName:string,destPath:string){
+	build(generatorName:string,moduleName:string,destPath:string,cb?:(err:Error,paths:string[])=>void){
 
-		if (!isComplaintName(moduleName,Compiler.nameConstrain)){
+		if (!isComplaintName(moduleName,Builder.nameConstrain)){
 			throw new Error("Invalid argument 'moduleName'. Only characters, numbers and underscore allowed.")
 		}
 
-		var generator = this.genStore[moduleName];
+		if(!fsx.statSync(destPath).isDirectory()){
+			throw new Error(`Invalid argument 'destPath', ${destPath} is not a valid directory.`)
+		}
+
+		var generator = this.genStore[generatorName];
 
 		if(typeof generator != 'undefined'){
-			var pattern =  Compiler.replaceName;
-			var src_dir = join(generator.path,pattern);
-			var dest_dir = join(destPath,moduleName);
+			var pattern =  Builder.replaceName;
+			var src_root = generator.path;
 
 
-
-			fsx.walk(src_dir)
+			var generatedList = [];
+			fsx.walk(src_root)
 				.on('data', function (item) {
 					let stats: Stats= <Stats>item.stats;
 					if(stats.isDirectory()){
-						fsx.ensureDirSync(dest_dir);
+						//fsx.ensureDirSync(destPath);
+						let generatedPath = "";//todo
+						generatedList.push(generatedPath);
+
 					}else if(stats.isFile()){
-						var basen = basename(item.path);
-						var newFile = 	join(destPath,moduleName,basen.replace(pattern,moduleName));
-						var content = fsx.readFileSync(item.path, "utf-8");
-						var newContent = replaceAll(content,pattern,moduleName);
-						fsx.writeFileSync(newFile,newContent,"utf-8");
+						// var basen = basename(item.path);
+						// var newFile = 	join(destPath,moduleName,basen.replace(pattern,moduleName));
+						// var content = fsx.readFileSync(item.path, "utf-8");
+						// var newContent = replaceAll(content,pattern,moduleName);
+						// fsx.writeFileSync(newFile,newContent,"utf-8");
+
+						let generatedPath = "";//todo
+						generatedList.push(generatedPath);
 					}
 				})
-				.on('end', function () {
-
+				.on('end', fn=>{
+					if(typeof cb != 'undefined')
+						cb(null,generatedList);
 				})
+				.on('error',err=>{
+					if(typeof cb != 'undefined')
+						cb(err,generatedList);
+				});
 		}else{
 			throw new Error (`Generator ${generatorName} nor Found.`);
 		}
@@ -149,13 +163,14 @@ export class Compiler{
 	static findGenerators(rootPath:string):Generator[]{
 		let found:Generator[]=[];
 
-		let subdirs = getSubDirectories(rootPath);
-		if(subdirs.length == 0)
+		let names = getSubDirectoryNames(rootPath);
+		if(names.length == 0)
 			throw  Error(`No Generator found in ${rootPath}`);
 
 
-		subdirs.forEach((generatorPath:string)=>{
-			let name = path.basename(generatorPath);
+		names.forEach((generatorName:string)=>{
+			let name = generatorName;
+			let generatorPath = path.join(rootPath,generatorName);
 			let generator = new Generator(name,generatorPath);
 			found.push(generator);
 		});

@@ -3,19 +3,19 @@
  */
 
 
-export class __name__Model{
+export class __name__Model {
 
-	constructor(){
+	constructor() {
 
 	}
 
 
-	__name__IsValid():boolean{
-		
+	__name__IsValid():boolean {
+
 		return false;
 	}
 
-	public static __name_FromJson(json:string){
+	public static __name__FromJson(json:string) {
 
 	}
 }

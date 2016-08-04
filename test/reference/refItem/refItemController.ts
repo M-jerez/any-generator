@@ -3,18 +3,18 @@
  */
 
 
-export class __name__Controller{
+export class refItemController {
 
-	constructor(){
-
-	}
-
-
-	get__name__(){
+	constructor() {
 
 	}
 
-	set__name__(){
+
+	getrefItem() {
+
+	}
+
+	setrefItem() {
 
 	}
 }

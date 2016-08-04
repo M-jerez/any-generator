@@ -3,19 +3,19 @@
  */
 
 
-export class __name__Model{
+export class refItemModel {
 
-	constructor(){
+	constructor() {
 
 	}
 
 
-	__name__IsValid():boolean{
-		
+	refItemIsValid():boolean {
+
 		return false;
 	}
 
-	public static __name_FromJson(json:string){
+	public static refItemFromJson(json:string) {
 
 	}
 }

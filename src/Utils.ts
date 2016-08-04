@@ -30,27 +30,13 @@ export function isComplaintName(moduleName:string,nameConstrain:RegExp){
 }
 
 
-/**
- * Checks if the 'generatorPath' is an existing directory.
- * @param generatorPath
- * @returns {boolean}
- */
-export function checkGeneratorExists(generatorPath){
-	try {
-		var stats = fsx.statSync(generatorPath);
-		return stats.isDirectory();
-	}catch (error) {
-		return false;
-	}
-}
-
 
 /**
  * Returns an array with the subdirectories of 'srcPath' (Non Recursive).
  * @param srcPath
  * @returns string[]
  */
-export function getSubDirectories(srcPath):string[]{
+export function getSubDirectoryNames(srcPath):string[]{
 	return fsx.readdirSync(srcPath).filter(function(file) {
 		return fsx.statSync(path.join(srcPath, file)).isDirectory();
 	});

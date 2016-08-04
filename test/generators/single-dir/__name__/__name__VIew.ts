@@ -3,14 +3,14 @@
  */
 
 
-export class __name__View{
+export class __name__View {
 
-	constructor(){
+	constructor() {
+
+	}
+
+	__name__Render() {
 
 	}
 
-	__name__Render(){
-
-	}
-	
 }

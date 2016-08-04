@@ -1,6 +1,6 @@
 
 
-import {Compiler} from "./Compiler";
+import {Compiler} from "./Builder";
 
 process.argv.forEach(function (val, index, array) {
 	console.log(index + ': ' + val);

@@ -17,7 +17,7 @@ npm install --save-dev  anygen
 
 ## Examples
 
-Using with gulp: [![Gulp](https://img.shields.io/badge/use--with-Gulp-orange.svg)]() 
+[![Gulp](https://img.shields.io/badge/use--via-Gulp-orange.svg)]() Using with gulp:
 ```js
 var gulp = require('gulp');
 var concatCss = require('gulp-concat-css');
@@ -29,7 +29,7 @@ gulp.task('default', function () {
 });
 ```
 
-Using with Grunt: [![Grunt](https://img.shields.io/badge/use--with-Grunt-yellow.svg)]()  
+[![Grunt](https://img.shields.io/badge/use--via-Grunt-yellow.svg)]() Using with Grunt:  
 ```js
 var gulp = require('gulp');
 var concatCss = require('gulp-concat-css');
@@ -42,16 +42,15 @@ gulp.task('default', function () {
 ```
 
 
-Using with npm:
+[![Grunt](https://img.shields.io/badge/use--via-npm-red.svg)]() Using with npm script: 
+Add the next line to the script section in the package.json file.
 ```js
-var gulp = require('gulp');
-var concatCss = require('gulp-concat-css');
-
-gulp.task('default', function () {
-  return gulp.src('assets/**/*.css')
-    .pipe(concatCss("styles/bundle.css"))
-    .pipe(gulp.dest('out/'));
-});
+//file package.json
+{
+	scripts:{
+		"anygen": "node node_modules/anygen/dist/index.js your/path/to/generators your/dest/path"
+	}
+}
 ```
 
 **TIP: for a proper import inlining and url rebase, make sure you set the proper `base` for the input files.**

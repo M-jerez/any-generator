@@ -3,18 +3,18 @@
  */
 
 
-export class __name__Controller{
+export class __name__Controller {
 
-	constructor(){
-
-	}
-
-
-	get__name__(){
+	constructor() {
 
 	}
 
-	set__name__(){
+
+	get__name__() {
+
+	}
+
+	set__name__() {
 
 	}
 }

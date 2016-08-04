@@ -11,11 +11,11 @@ export class __name__Model{
 
 
 	__name__IsValid():boolean{
-		
+
 		return false;
 	}
 
-	public static __name_FromJson(json:string){
+	public static __name__FromJson(json:string){
 
 	}
 }
