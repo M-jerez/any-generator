@@ -4,6 +4,7 @@ var fsx = require("fs-extra");
 var chai_1 = require("chai");
 var path = require("path");
 var rimraf = require("rimraf");
+var utils = require("./utils");
 describe('Builder', function () {
     var builder = new Builder_1.Builder();
     var validPath = "./test/generators";
@@ -37,43 +38,7 @@ describe('Builder', function () {
             }).to.throw(/Duplicated generator/i);
         });
     });
-    describe('Build "multiple-dir" should generate the same files as generators/multiple-dir with new Names', function () {
-        it('Should generate the missing directories and a list of files in the test/temp directory.', function (done) {
-            rimraf.sync(tempPath);
-            fsx.ensureDirSync(tempPath);
-            builder.build("multiple-dir", "testModule", tempPath, function (fn) {
-                var root = path.resolve(tempPath);
-                var shouldGenerate = [
-                    path.join(root, "controllers"),
-                    path.join(root, "models"),
-                    path.join(root, "views"),
-                    path.join(root, "controllers/testModuleController.ts"),
-                    path.join(root, "models/testModuleModel.ts"),
-                    path.join(root, "views/testModuleView.ts"),
-                ];
-                var generatedFiles = [];
-                fsx.walk(tempPath)
-                    .on('data', function (item) {
-                    generatedFiles.push(item.path);
-                })
-                    .on("end", function () {
-                    chai_1.expect(generatedFiles).to.be.eql(shouldGenerate);
-                    done();
-                })
-                    .on("error", function () {
-                    chai_1.expect(generatedFiles).to.be.eql(shouldGenerate);
-                    done();
-                });
-                console.log(shouldGenerate);
-            });
-        });
-    });
-    describe('Build "single-dir" success', function () {
-        it('Should generate the missing directories and a list of files in the test/temp directory. ' +
-            'A new directory must be created with the name of the new module.', function () {
-        });
-    });
-    describe('Module names accept only alphanumeric characters and underscore only', function () {
+    describe('Module names accept only alphanumeric characters and underscore only.', function () {
         it('Invalid moduleNames should thrown an error... only characters, numbers and underscore allowed', function () {
             var inValidNames = [
                 "hello world",
@@ -87,6 +52,7 @@ describe('Builder', function () {
                     builder.build("single-dir", moduleName, tempPath);
                 }).to.throw(/only characters, numbers and underscore allowed/i);
             });
+            rimraf.sync(tempPath);
         });
         it('Valid moduleNames should NOT thrown an error..  only characters, numbers and underscore allowed', function () {
             var validNames = [
@@ -101,6 +67,44 @@ describe('Builder', function () {
                     builder.build("single-dir", moduleName, tempPath);
                 }).to.not.throw(/only characters, numbers and underscore allowed/i);
             });
+            rimraf.sync(tempPath);
+        });
+    });
+    describe('Build "multiple-dir"', function () {
+        it('Should generate the missing directories and a list of files in the test/temp directory.', function () {
+            rimraf.sync(tempPath);
+            fsx.ensureDirSync(tempPath);
+            var root = path.resolve(tempPath);
+            var shouldGenerate = [
+                path.join(root, "controllers"),
+                path.join(root, "controllers/testModuleController.ts"),
+                path.join(root, "models"),
+                path.join(root, "models/testModuleModel.ts"),
+                path.join(root, "views"),
+                path.join(root, "views/testModuleView.ts"),
+            ];
+            builder.build("multiple-dir", "testModule", tempPath);
+            var generatedFiles = utils.listDir(root);
+            chai_1.expect(generatedFiles).to.be.eql(shouldGenerate);
+            rimraf.sync(tempPath);
+        });
+    });
+    describe('Build "single-dir" success', function () {
+        it('Should generate the missing directories and a list of files in the test/temp directory. ' +
+            'A new directory must be created with the name of the new module.', function () {
+            rimraf.sync(tempPath);
+            fsx.ensureDirSync(tempPath);
+            var root = path.resolve(tempPath);
+            var shouldGenerate = [
+                path.join(root, "refItem"),
+                path.join(root, "refItem/refItemController.ts"),
+                path.join(root, "refItem/refItemModel.ts"),
+                path.join(root, "refItem/refItemView.ts"),
+            ];
+            builder.build("single-dir", "refItem", tempPath);
+            var generatedFiles = utils.listDir(root);
+            chai_1.expect(generatedFiles).to.be.eql(shouldGenerate);
+            rimraf.sync(tempPath);
         });
     });
 });

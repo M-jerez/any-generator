@@ -8,8 +8,7 @@ import * as fsx from "fs-extra";
 import {expect} from "chai";
 import * as path from "path";
 import * as rimraf from "rimraf";
-import {Stats} from "fs";
-
+import * as utils from "./utils";
 
 describe('Builder', function () {
 	var builder = new Builder();
@@ -55,51 +54,7 @@ describe('Builder', function () {
 	});
 
 
-	//this should be called after some generators has benn added.
-	describe('Build "multiple-dir" should generate the same files as generators/multiple-dir with new Names', function () {
-		it('Should generate the missing directories and a list of files in the test/temp directory.', function (done) {
-			//TODO
-			rimraf.sync(tempPath);
-			fsx.ensureDirSync(tempPath);
-			builder.build("multiple-dir", "testModule", tempPath,fn=>{
-				let root = path.resolve(tempPath);
-				let shouldGenerate = [
-					path.join(root, "controllers"),
-					path.join(root, "models"),
-					path.join(root, "views"),
-					path.join(root, "controllers/testModuleController.ts"),
-					path.join(root, "models/testModuleModel.ts"),
-					path.join(root, "views/testModuleView.ts"),
-				];
-				let generatedFiles = [];
-				fsx.walk(tempPath)
-					.on('data', function (item) {
-						generatedFiles.push(item.path);
-					})
-					.on("end", function () {
-						expect(generatedFiles).to.be.eql(shouldGenerate);
-						done();
-					})
-					.on("error",function(){
-						expect(generatedFiles).to.be.eql(shouldGenerate);
-						done();
-					});
-				console.log(shouldGenerate);
-			});
-		});
-	});
-
-
-	//this should be called after some generators has benn added.
-	describe('Build "single-dir" success', function () {
-		it('Should generate the missing directories and a list of files in the test/temp directory. ' +
-			'A new directory must be created with the name of the new module.', function () {
-			//TODO
-		});
-	});
-
-
-	describe('Module names accept only alphanumeric characters and underscore only', function () {
+	describe('Module names accept only alphanumeric characters and underscore only.', function () {
 
 		it('Invalid moduleNames should thrown an error... only characters, numbers and underscore allowed', function () {
 			let inValidNames = [
@@ -110,12 +65,12 @@ describe('Builder', function () {
 				"=&*poo",
 			];
 
-
 			inValidNames.map((moduleName)=> {
 				expect(function () {
 					builder.build("single-dir", moduleName, tempPath);
 				}).to.throw(/only characters, numbers and underscore allowed/i);
 			});
+			rimraf.sync(tempPath);
 		});
 
 
@@ -133,12 +88,66 @@ describe('Builder', function () {
 					builder.build("single-dir", moduleName, tempPath);
 				}).to.not.throw(/only characters, numbers and underscore allowed/i);
 			});
-
+			rimraf.sync(tempPath);
 		});
-
-
 	});
 
+
+	//this should be called after some generators has benn added.
+	describe('Build "multiple-dir"', function () {
+		it('Should generate the missing directories and a list of files in the test/temp directory.', function () {
+			rimraf.sync(tempPath);
+			fsx.ensureDirSync(tempPath);
+			let root = path.resolve(tempPath);
+			//the order must be the same of the order returned by utils
+			// dirA
+			// --- sunFileA
+			// dirB
+			// ----sunFileB1
+			// ----sunFileB2
+			let shouldGenerate = [
+				path.join(root, "controllers"),
+				path.join(root, "controllers/testModuleController.ts"),
+				path.join(root, "models"),
+				path.join(root, "models/testModuleModel.ts"),
+				path.join(root, "views"),
+				path.join(root, "views/testModuleView.ts"),
+			];
+			builder.build("multiple-dir", "testModule", tempPath);
+			let generatedFiles = utils.listDir(root);
+			expect(generatedFiles).to.be.eql(shouldGenerate);
+			rimraf.sync(tempPath);
+		});
+	});
+
+
+	//this should be called after some generators has benn added.
+	describe('Build "single-dir" success', function () {
+		it('Should generate the missing directories and a list of files in the test/temp directory. ' +
+			'A new directory must be created with the name of the new module.', function () {
+			rimraf.sync(tempPath);
+			fsx.ensureDirSync(tempPath);
+			let root = path.resolve(tempPath);
+			//the order must be the same of the order returned by utils
+			// dirA
+			// --- sunFileA
+			// dirB
+			// ----sunFileB1
+			// ----sunFileB2
+			let shouldGenerate = [
+				path.join(root, "refItem"),
+				path.join(root, "refItem/refItemController.ts"),
+				path.join(root, "refItem/refItemModel.ts"),
+				path.join(root, "refItem/refItemView.ts"),
+			];
+
+			builder.build("single-dir", "refItem", tempPath);
+			let generatedFiles = utils.listDir(root);
+			expect(generatedFiles).to.be.eql(shouldGenerate);
+			rimraf.sync(tempPath);
+			//TODO check the content of the files is the same, this is tested in in utils.specs.ts too.
+		});
+	});
 
 });
 

@@ -2,6 +2,7 @@
 var util = require("./utils");
 var chai_1 = require("chai");
 var fsx = require("fs-extra");
+var path = require("path");
 describe('util', function () {
     describe('replaceAll matches in  multiline string', function () {
         it('Should replace all matches of "__name__" in the View File', function () {
@@ -33,6 +34,20 @@ describe('util', function () {
             'ie: module09, Test, user_admin, userAdmin', function () {
             chai_1.expect(util.getSubDirectoryNames("./test/generators")).to.be.eql(["multiple-dir", "single-dir"]);
             chai_1.expect(util.getSubDirectoryNames("./test/empty")).to.be.eql([]);
+        });
+    });
+    describe('getDirAsListSync', function () {
+        it('Should return an array with all directories and subdirectories within test/reference', function () {
+            var root = path.resolve("./test/reference");
+            var shouldGenerate = [
+                path.join(root, "readme.md"),
+                path.join(root, "refItem"),
+                path.join(root, "refItem/refItemController.ts"),
+                path.join(root, "refItem/refItemModel.ts"),
+                path.join(root, "refItem/refItemView.ts"),
+            ];
+            var generatedFiles = util.listDir(root);
+            chai_1.expect(generatedFiles).to.be.eql(shouldGenerate);
         });
     });
 });

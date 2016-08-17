@@ -5,6 +5,8 @@
 import * as util from "./utils";
 import {expect} from "chai";
 import * as fsx from "fs-extra";
+import * as path from "path";
+import {Builder} from "./Builder";
 
 describe('util',function(){
 
@@ -49,6 +51,26 @@ describe('util',function(){
 			expect(util.getSubDirectoryNames("./test/generators")).to.be.eql(["multiple-dir","single-dir"]);
 			expect(util.getSubDirectoryNames("./test/empty")).to.be.eql([]);
 		});
+	});
+
+
+
+	describe('getDirAsListSync',function(){
+
+		it('Should return an array with all directories and subdirectories within test/reference' ,function(){
+			let root = path.resolve("./test/reference");
+			let shouldGenerate = [
+				path.join(root, "readme.md"),
+				path.join(root, "refItem"),
+				path.join(root, "refItem/refItemController.ts"),
+				path.join(root, "refItem/refItemModel.ts"),
+				path.join(root, "refItem/refItemView.ts"),
+			];
+			let generatedFiles = util.listDir(root);
+			expect(generatedFiles).to.be.eql(shouldGenerate);
+		});
+
+
 	});
 
 });
