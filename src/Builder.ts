@@ -7,7 +7,7 @@ import {join, basename} from 'path';
 import * as fsx from 'fs-extra';
 import * as path from "path";
 import {Generator} from "./Generator";
-import {replaceAll,isComplaintName, getSubDirectoryNames} from "./utils";
+import {replaceAll,isComplaintName, getSubDirectoryNames, listDir} from "./utils";
 import {Stats} from "fs";
 
 
@@ -76,7 +76,6 @@ export class Builder{
 	}
 
 
-
 	/**
 	 * Builds a new directory structure based on the selected generator with 'generatorName'.
 	 *
@@ -84,11 +83,13 @@ export class Builder{
 	 * the 'destPath'.
 	 * All Directories, file Names and string occurrences matching the string '__name__' are replaced
 	 * by the string 'moduleName'
+	 *
 	 * @param generatorName
 	 * @param moduleName
 	 * @param destPath
-	 */
-	build(generatorName:string,moduleName:string,destPath:string,cb?:(err:Error,paths:string[])=>void){
+	 * @returns {Array} a list of the files generated
+     */
+	build(generatorName:string,moduleName:string,destPath:string):string[]{
 
 		if (!isComplaintName(moduleName,Builder.nameConstrain)){
 			throw new Error("Invalid argument 'moduleName'. Only characters, numbers and underscore allowed.")
@@ -101,38 +102,25 @@ export class Builder{
 		var generator = this.genStore[generatorName];
 
 		if(typeof generator != 'undefined'){
-			var pattern =  Builder.replaceName;
-			var src_root = generator.path;
-
-
+			var src_root = path.resolve(generator.path);
 			var generatedList = [];
-			fsx.walk(src_root)
-				.on('data', function (item) {
-					let stats: Stats= <Stats>item.stats;
-					if(stats.isDirectory()){
-						//fsx.ensureDirSync(destPath);
-						let generatedPath = "";//todo
-						generatedList.push(generatedPath);
-
-					}else if(stats.isFile()){
-						// var basen = basename(item.path);
-						// var newFile = 	join(destPath,moduleName,basen.replace(pattern,moduleName));
-						// var content = fsx.readFileSync(item.path, "utf-8");
-						// var newContent = replaceAll(content,pattern,moduleName);
-						// fsx.writeFileSync(newFile,newContent,"utf-8");
-
-						let generatedPath = "";//todo
-						generatedList.push(generatedPath);
-					}
-				})
-				.on('end', fn=>{
-					if(typeof cb != 'undefined')
-						cb(null,generatedList);
-				})
-				.on('error',err=>{
-					if(typeof cb != 'undefined')
-						cb(err,generatedList);
-				});
+			var files = listDir(src_root);
+			files.forEach((filePath)=>{
+				let stats= fsx.statSync(filePath);
+				let dest = path.resolve(destPath);
+				if(stats.isDirectory()){
+					let dest_dir = Builder.replacePath(filePath,src_root,dest,moduleName);//todo set the actual path
+					fsx.ensureDirSync(dest_dir);
+					generatedList.push(dest_dir);
+				}else if(stats.isFile()){
+					let dest_file = Builder.replacePath(filePath,src_root,dest,moduleName);
+					var content = fsx.readFileSync(filePath, "utf-8");
+					var newContent = replaceAll(content,Builder.replaceName,moduleName);
+					fsx.writeFileSync(dest_file,newContent,"utf-8");
+					generatedList.push(dest_file);
+				}
+			});
+			return generatedList;
 		}else{
 			throw new Error (`Generator ${generatorName} nor Found.`);
 		}
@@ -176,6 +164,20 @@ export class Builder{
 		});
 		return found;
 	}
+
+
+	/**
+	 * Gets a generator path and return the path required for the new generated file/directory
+	 * @param path
+	 * @param root
+	 * @param dest
+	 * @param moduleName
+     * @returns {string}
+     */
+	 private static replacePath(path:string,src_root:string,dest_root:string,moduleName:string):string{
+	 	let destpath = path.replace(src_root,dest_root);
+	 	return  replaceAll(destpath,Builder.replaceName,moduleName);
+	 }
 
 }
 

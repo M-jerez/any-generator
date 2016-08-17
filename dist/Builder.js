@@ -27,7 +27,7 @@ var Builder = (function () {
     Builder.prototype.getGeneratorNames = function () {
         return Object.keys(this.genStore);
     };
-    Builder.prototype.build = function (generatorName, moduleName, destPath, cb) {
+    Builder.prototype.build = function (generatorName, moduleName, destPath) {
         if (!utils_1.isComplaintName(moduleName, Builder.nameConstrain)) {
             throw new Error("Invalid argument 'moduleName'. Only characters, numbers and underscore allowed.");
         }
@@ -36,29 +36,26 @@ var Builder = (function () {
         }
         var generator = this.genStore[generatorName];
         if (typeof generator != 'undefined') {
-            var pattern = Builder.replaceName;
-            var src_root = generator.path;
+            var src_root = path.resolve(generator.path);
             var generatedList = [];
-            fsx.walk(src_root)
-                .on('data', function (item) {
-                var stats = item.stats;
+            var files = utils_1.listDir(src_root);
+            files.forEach(function (filePath) {
+                var stats = fsx.statSync(filePath);
+                var dest = path.resolve(destPath);
                 if (stats.isDirectory()) {
-                    var generatedPath = "";
-                    generatedList.push(generatedPath);
+                    var dest_dir = Builder.replacePath(filePath, src_root, dest, moduleName);
+                    fsx.ensureDirSync(dest_dir);
+                    generatedList.push(dest_dir);
                 }
                 else if (stats.isFile()) {
-                    var generatedPath = "";
-                    generatedList.push(generatedPath);
+                    var dest_file = Builder.replacePath(filePath, src_root, dest, moduleName);
+                    var content = fsx.readFileSync(filePath, "utf-8");
+                    var newContent = utils_1.replaceAll(content, Builder.replaceName, moduleName);
+                    fsx.writeFileSync(dest_file, newContent, "utf-8");
+                    generatedList.push(dest_file);
                 }
-            })
-                .on('end', function (fn) {
-                if (typeof cb != 'undefined')
-                    cb(null, generatedList);
-            })
-                .on('error', function (err) {
-                if (typeof cb != 'undefined')
-                    cb(err, generatedList);
             });
+            return generatedList;
         }
         else {
             throw new Error("Generator " + generatorName + " nor Found.");
@@ -76,6 +73,10 @@ var Builder = (function () {
             found.push(generator);
         });
         return found;
+    };
+    Builder.replacePath = function (path, src_root, dest_root, moduleName) {
+        var destpath = path.replace(src_root, dest_root);
+        return utils_1.replaceAll(destpath, Builder.replaceName, moduleName);
     };
     Builder.nameConstrain = /^[a-z0-9_]+$/i;
     Builder.replaceName = "__name__";

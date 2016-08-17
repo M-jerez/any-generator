@@ -42,5 +42,35 @@ export function getSubDirectoryNames(srcPath):string[]{
 	});
 }
 
+/**
+ * Recursive function to store a directory three in result[]
+ * @param $root
+ * @param result
+ */
+function dirAsListSync($root:string,result:string[]){
+	let p = path.normalize($root);
+	let items =fsx.readdirSync(p);
+	items.forEach((item)=>{
+		let fileName = path.join(p,item);
+		let stats = fsx.statSync(fileName);
+		if(stats.isDirectory()){
+			result.push(fileName);
+			dirAsListSync(fileName,result);
+		}else if(stats.isFile()){
+			result.push(fileName);
+		}
+	});
+}
+
+/**
+ * Returs an array caontaining all subdirectories and files of $root
+ * @param $root
+ * @returns {Array}
+ */
+export function listDir($root:string):string[]{
+	let $fileList = [];
+	dirAsListSync($root,$fileList);
+	return $fileList;
+}
 
 

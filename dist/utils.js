@@ -15,4 +15,25 @@ function getSubDirectoryNames(srcPath) {
     });
 }
 exports.getSubDirectoryNames = getSubDirectoryNames;
+function dirAsListSync($root, result) {
+    var p = path.normalize($root);
+    var items = fsx.readdirSync(p);
+    items.forEach(function (item) {
+        var fileName = path.join(p, item);
+        var stats = fsx.statSync(fileName);
+        if (stats.isDirectory()) {
+            result.push(fileName);
+            dirAsListSync(fileName, result);
+        }
+        else if (stats.isFile()) {
+            result.push(fileName);
+        }
+    });
+}
+function listDir($root) {
+    var $fileList = [];
+    dirAsListSync($root, $fileList);
+    return $fileList;
+}
+exports.listDir = listDir;
 //# sourceMappingURL=utils.js.map

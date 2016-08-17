@@ -1,6 +1,6 @@
 
 
-import {Compiler} from "./Builder";
+import {Builder} from "./Builder";
 
 process.argv.forEach(function (val, index, array) {
 	console.log(index + ': ' + val);
@@ -8,9 +8,9 @@ process.argv.forEach(function (val, index, array) {
 
 
 try{
-	const compiler =  new Compiler();
-	compiler.addGenerators("../test/generators");
-	compiler.addGenerators("../test/empty");
+	// const builder =  new Builder();
+	// builder.addGenerators("../test/generators");
+	// builder.addGenerators("../test/empty");
 }catch (err){
 		console.error(err.message);
 }

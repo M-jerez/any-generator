@@ -48,4 +48,4 @@ config/local.js
 ########################
 # generated files
 ########################
-public/comp
+test/temp
