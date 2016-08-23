@@ -1,41 +1,42 @@
 "use strict";
-var Builder_1 = require("./Builder");
+var Builder_1 = require("../lib/Builder");
 var fsx = require("fs-extra");
 var chai_1 = require("chai");
 var path = require("path");
 var rimraf = require("rimraf");
-var utils = require("./utils");
+var utils = require("../lib/utils");
 describe('Builder', function () {
     var builder = new Builder_1.Builder();
-    var validPath = "./test/generators";
+    var validPath = "./test/blueprints";
+    var validPath = "./test/blueprints";
     var invalidPath = 'not/existing/path';
     var emptyPath = "./test/empty";
     var tempPath = "./test/temp";
-    describe('Wrong Generator Path', function () {
+    describe('Wrong BlueprintBlueprint Path', function () {
         it('Should thrown an Error when path not exist', function () {
             chai_1.expect(function () {
-                builder.addGenerators(invalidPath);
+                builder.addBlueprints(invalidPath);
             }).to.throw(/is not a Directory/i);
         });
     });
-    describe('Wrong Generator Path', function () {
-        it("Should thrown an Error when the generator's root path is empty and no generators are detected.", function () {
+    describe('Wrong BlueprintBlueprint Path', function () {
+        it("Should thrown an Error when the blueprint's root path is empty and no blueprints are detected.", function () {
             chai_1.expect(function () {
-                builder.addGenerators(emptyPath);
-            }).to.throw(/No Generator found/i);
+                builder.addBlueprints(emptyPath);
+            }).to.throw(/No Blueprint found/i);
         });
     });
-    describe('Generator Path test/generators', function () {
-        it('Should create two generators [multiple-dir,single-dir]', function () {
-            builder.addGenerators(validPath);
-            chai_1.expect(builder.getGeneratorNames()).to.eql(["multiple-dir", "single-dir"]);
+    describe('BlueprintBlueprint Path test/blueprints', function () {
+        it('Should create two blueprints [multiple-dir,single-dir]', function () {
+            builder.addBlueprints(validPath);
+            chai_1.expect(builder.getBlueprintNames()).to.eql(["multiple-dir", "single-dir"]);
         });
     });
-    describe('Wrong Generator Path', function () {
-        it('Should thrown an Error when a trying to add a generator that already exist (same name)', function () {
+    describe('Wrong BlueprintBlueprint Path', function () {
+        it('Should thrown an Error when a trying to add a blueprint that already exist (same name)', function () {
             chai_1.expect(function () {
-                builder.addGenerators(validPath);
-            }).to.throw(/Duplicated generator/i);
+                builder.addBlueprints(validPath);
+            }).to.throw(/Duplicated blueprint/i);
         });
     });
     describe('Module names accept only alphanumeric characters and underscore only.', function () {

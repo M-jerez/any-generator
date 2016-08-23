@@ -6,23 +6,23 @@
 import {join, basename} from 'path';
 import * as fsx from 'fs-extra';
 import * as path from "path";
-import {Generator} from "./Generator";
+import {Blueprint} from "./Blueprint";
 import {replaceAll,isComplaintName, getSubDirectoryNames, listDir} from "./utils";
 import {Stats} from "fs";
 
 
 /**
  * Generates scaffolding for any project.
- * It uses one directory as generator and wen
+ * It uses one directory as blueprint and wen
  */
 export class Builder{
 
 
 	/**
-	 * Stores all the generators
+	 * Stores all the blueprints
 	 * @type {{}}
 	 */
-	private genStore:GeneratorStore={};
+	private genStore:BlueprintStore={};
 
 
 	/**
@@ -42,54 +42,54 @@ export class Builder{
 
 
 	/**
-	 * String to be replaced when build the generator, in any file or directory name, or withing the file content.
+	 * String to be replaced when build the blueprint, in any file or directory name, or withing the file content.
 	 */
 	private static replaceName = "__name__";
 
 
 
 	/**
-	 * Search for all the generator in the 'rootPath' and add them to the genreratorsRegistry
+	 * Search for all the blueprint in the 'rootPath' and add them to the genreratorsRegistry
 	 * @param rootPath
 	 */
-	addGenerators(rootPath:string){
+	addBlueprints(rootPath:string){
 		if(!fsx.existsSync(rootPath))
 			throw new Error(`${rootPath} is not a Directory.`);
 		let nRootPath =  path.normalize(rootPath);
-		let generators = Builder.findGenerators(nRootPath);
-		generators.forEach((generator:Generator)=>{
-			var name = generator.name;
+		let blueprints = Builder.findBlueprints(nRootPath);
+		blueprints.forEach((blueprint:Blueprint)=>{
+			var name = blueprint.name;
 			if (typeof this.genStore[name] != 'undefined')
-				throw new Error(`Duplicated generator ${name}. The generator already exists.`);
+				throw new Error(`Duplicated blueprint ${name}. The blueprint already exists.`);
 			else
-				this.genStore[name] = generator;
+				this.genStore[name] = blueprint;
 		})
 	}
 
 
 	/**
-	 * Returns an array containing all the names of the available generators.
+	 * Returns an array containing all the names of the available blueprints.
 	 * @returns {string[]}
      */
-	getGeneratorNames():string[]{
+	getBlueprintNames():string[]{
 		return Object.keys(this.genStore);
 	}
 
 
 	/**
-	 * Builds a new directory structure based on the selected generator with 'generatorName'.
+	 * Builds a new directory structure based on the selected blueprint with 'blueprintName'.
 	 *
-	 * When building de directory structure of the generator is copied from the generator to
+	 * When building de directory structure of the blueprint is copied from the blueprint to
 	 * the 'destPath'.
 	 * All Directories, file Names and string occurrences matching the string '__name__' are replaced
 	 * by the string 'moduleName'
 	 *
-	 * @param generatorName
+	 * @param blueprintName
 	 * @param moduleName
 	 * @param destPath
 	 * @returns {Array} a list of the files generated
      */
-	build(generatorName:string,moduleName:string,destPath:string):string[]{
+	build(blueprintName:string,moduleName:string,destPath:string):string[]{
 
 		if (!isComplaintName(moduleName,Builder.nameConstrain)){
 			throw new Error("Invalid argument 'moduleName'. Only characters, numbers and underscore allowed.")
@@ -99,10 +99,10 @@ export class Builder{
 			throw new Error(`Invalid argument 'destPath', ${destPath} is not a valid directory.`)
 		}
 
-		var generator = this.genStore[generatorName];
+		var blueprint = this.genStore[blueprintName];
 
-		if(typeof generator != 'undefined'){
-			var src_root = path.resolve(generator.path);
+		if(typeof blueprint != 'undefined'){
+			var src_root = path.resolve(blueprint.path);
 			var generatedList = [];
 			var files = listDir(src_root);
 			files.forEach((filePath)=>{
@@ -122,23 +122,23 @@ export class Builder{
 			});
 			return generatedList;
 		}else{
-			throw new Error (`Generator ${generatorName} nor Found.`);
+			throw new Error (`Blueprint ${blueprintName} nor Found.`);
 		}
 	}
 
 
 	/**
-	 * Search for all the generators in a given 'rootPath'.
-	 * A generator is any subdirectory of rootPaht containing another subdirectory named "__name__".
-	 * The search is not recursive the generator needs to be a direct subdirectory of rootPath.
+	 * Search for all the blueprints in a given 'rootPath'.
+	 * A blueprint is any subdirectory of rootPaht containing another subdirectory named "__name__".
+	 * The search is not recursive the blueprint needs to be a direct subdirectory of rootPath.
 	 *
 	 * rootPath
-	 * +──  generator1
+	 * +──  blueprint1
 	 * |   └──  __name__
 	 * |       +── __name__Controller.js
 	 * |       +── __name__Controller.js
 	 * |       └── __name__Template.html
-	 * └──  generator2
+	 * └──  blueprint2
 	 *     └──  __name__
 	 *         +── __name__Controller.js
 	 *         +── __name__Controller.js
@@ -146,28 +146,28 @@ export class Builder{
 	 *
 	 * @param rootPath
 	 * @param callback
-	 * @returns {Generator[]}
+	 * @returns {Blueprint[]}
      */
-	static findGenerators(rootPath:string):Generator[]{
-		let found:Generator[]=[];
+	static findBlueprints(rootPath:string):Blueprint[]{
+		let found:Blueprint[]=[];
 
 		let names = getSubDirectoryNames(rootPath);
 		if(names.length == 0)
-			throw  Error(`No Generator found in ${rootPath}`);
+			throw  Error(`No Blueprint found in ${rootPath}`);
 
 
-		names.forEach((generatorName:string)=>{
-			let name = generatorName;
-			let generatorPath = path.join(rootPath,generatorName);
-			let generator = new Generator(name,generatorPath);
-			found.push(generator);
+		names.forEach((blueprintName:string)=>{
+			let name = blueprintName;
+			let blueprintPath = path.join(rootPath,blueprintName);
+			let blueprint = new Blueprint(name,blueprintPath);
+			found.push(blueprint);
 		});
 		return found;
 	}
 
 
 	/**
-	 * Gets a generator path and return the path required for the new generated file/directory
+	 * Gets a blueprint path and return the path required for the new generated file/directory
 	 * @param path
 	 * @param root
 	 * @param dest
@@ -183,6 +183,6 @@ export class Builder{
 
 
 
-interface GeneratorStore{
-	[key: string]: Generator;
+interface BlueprintStore{
+	[key: string]: Blueprint;
 }

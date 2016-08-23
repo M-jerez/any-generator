@@ -3,53 +3,54 @@
  */
 
 
-import {Builder} from "./Builder";
+import {Builder} from "../lib/Builder";
 import * as fsx from "fs-extra";
 import {expect} from "chai";
 import * as path from "path";
 import * as rimraf from "rimraf";
-import * as utils from "./utils";
+import * as utils from "../lib/utils";
 
 describe('Builder', function () {
 	var builder = new Builder();
 	//path must be relative to project root (from where the node script is called)
-	var validPath = "./test/generators";
+	var validPath = "./test/blueprints";
+	var validPath = "./test/blueprints";
 	var invalidPath = 'not/existing/path';
 	var emptyPath = "./test/empty";
 	var tempPath = "./test/temp";
 
-	describe('Wrong Generator Path', function () {
+	describe('Wrong BlueprintBlueprint Path', function () {
 		it('Should thrown an Error when path not exist', function () {
 			expect(function () {
-				builder.addGenerators(invalidPath)
+				builder.addBlueprints(invalidPath)
 			}).to.throw(/is not a Directory/i);
 		});
 	});
 
 
-	describe('Wrong Generator Path', function () {
-		it("Should thrown an Error when the generator's root path is empty and no generators are detected.", function () {
+	describe('Wrong BlueprintBlueprint Path', function () {
+		it("Should thrown an Error when the blueprint's root path is empty and no blueprints are detected.", function () {
 			expect(function () {
-				builder.addGenerators(emptyPath)
-			}).to.throw(/No Generator found/i);
+				builder.addBlueprints(emptyPath)
+			}).to.throw(/No Blueprint found/i);
 		});
 	});
 
 
-	describe('Generator Path test/generators', function () {
-		it('Should create two generators [multiple-dir,single-dir]', function () {
-			builder.addGenerators(validPath);
-			expect(builder.getGeneratorNames()).to.eql(["multiple-dir", "single-dir"])
+	describe('BlueprintBlueprint Path test/blueprints', function () {
+		it('Should create two blueprints [multiple-dir,single-dir]', function () {
+			builder.addBlueprints(validPath);
+			expect(builder.getBlueprintNames()).to.eql(["multiple-dir", "single-dir"])
 		});
 	});
 
 
-	//this should be called after some generators has been added.
-	describe('Wrong Generator Path', function () {
-		it('Should thrown an Error when a trying to add a generator that already exist (same name)', function () {
+	//this should be called after some blueprints has been added.
+	describe('Wrong BlueprintBlueprint Path', function () {
+		it('Should thrown an Error when a trying to add a blueprint that already exist (same name)', function () {
 			expect(function () {
-				builder.addGenerators(validPath)
-			}).to.throw(/Duplicated generator/i);
+				builder.addBlueprints(validPath)
+			}).to.throw(/Duplicated blueprint/i);
 		});
 	});
 
@@ -93,7 +94,7 @@ describe('Builder', function () {
 	});
 
 
-	//this should be called after some generators has benn added.
+	//this should be called after some blueprints has benn added.
 	describe('Build "multiple-dir"', function () {
 		it('Should generate the missing directories and a list of files in the test/temp directory.', function () {
 			rimraf.sync(tempPath);
@@ -121,7 +122,7 @@ describe('Builder', function () {
 	});
 
 
-	//this should be called after some generators has benn added.
+	//this should be called after some blueprints has benn added.
 	describe('Build "single-dir" success', function () {
 		it('Should generate the missing directories and a list of files in the test/temp directory. ' +
 			'A new directory must be created with the name of the new module.', function () {

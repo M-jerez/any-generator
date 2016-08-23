@@ -1,7 +1,7 @@
 "use strict";
 var fsx = require('fs-extra');
 var path = require("path");
-var Generator_1 = require("./Generator");
+var Blueprint_1 = require("./Blueprint");
 var utils_1 = require("./utils");
 var Builder = (function () {
     function Builder() {
@@ -10,33 +10,33 @@ var Builder = (function () {
     Builder.getNameConstrain = function () {
         return Builder.nameConstrain;
     };
-    Builder.prototype.addGenerators = function (rootPath) {
+    Builder.prototype.addBlueprints = function (rootPath) {
         var _this = this;
         if (!fsx.existsSync(rootPath))
             throw new Error(rootPath + " is not a Directory.");
         var nRootPath = path.normalize(rootPath);
-        var generators = Builder.findGenerators(nRootPath);
-        generators.forEach(function (generator) {
-            var name = generator.name;
+        var blueprints = Builder.findBlueprints(nRootPath);
+        blueprints.forEach(function (blueprint) {
+            var name = blueprint.name;
             if (typeof _this.genStore[name] != 'undefined')
-                throw new Error("Duplicated generator " + name + ". The generator already exists.");
+                throw new Error("Duplicated blueprint " + name + ". The blueprint already exists.");
             else
-                _this.genStore[name] = generator;
+                _this.genStore[name] = blueprint;
         });
     };
-    Builder.prototype.getGeneratorNames = function () {
+    Builder.prototype.getBlueprintNames = function () {
         return Object.keys(this.genStore);
     };
-    Builder.prototype.build = function (generatorName, moduleName, destPath) {
+    Builder.prototype.build = function (blueprintName, moduleName, destPath) {
         if (!utils_1.isComplaintName(moduleName, Builder.nameConstrain)) {
             throw new Error("Invalid argument 'moduleName'. Only characters, numbers and underscore allowed.");
         }
         if (!fsx.statSync(destPath).isDirectory()) {
             throw new Error("Invalid argument 'destPath', " + destPath + " is not a valid directory.");
         }
-        var generator = this.genStore[generatorName];
-        if (typeof generator != 'undefined') {
-            var src_root = path.resolve(generator.path);
+        var blueprint = this.genStore[blueprintName];
+        if (typeof blueprint != 'undefined') {
+            var src_root = path.resolve(blueprint.path);
             var generatedList = [];
             var files = utils_1.listDir(src_root);
             files.forEach(function (filePath) {
@@ -58,19 +58,19 @@ var Builder = (function () {
             return generatedList;
         }
         else {
-            throw new Error("Generator " + generatorName + " nor Found.");
+            throw new Error("Blueprint " + blueprintName + " nor Found.");
         }
     };
-    Builder.findGenerators = function (rootPath) {
+    Builder.findBlueprints = function (rootPath) {
         var found = [];
         var names = utils_1.getSubDirectoryNames(rootPath);
         if (names.length == 0)
-            throw Error("No Generator found in " + rootPath);
-        names.forEach(function (generatorName) {
-            var name = generatorName;
-            var generatorPath = path.join(rootPath, generatorName);
-            var generator = new Generator_1.Generator(name, generatorPath);
-            found.push(generator);
+            throw Error("No Blueprint found in " + rootPath);
+        names.forEach(function (blueprintName) {
+            var name = blueprintName;
+            var blueprintPath = path.join(rootPath, blueprintName);
+            var blueprint = new Blueprint_1.Blueprint(name, blueprintPath);
+            found.push(blueprint);
         });
         return found;
     };
