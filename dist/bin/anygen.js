@@ -1,44 +1,53 @@
 #!/usr/bin/env node
 "use strict";
 var yargs = require('yargs');
+var fsx = require('fs-extra');
 var version = require('../../package').version;
-require('yargonaut')
-    .style('blue')
+var yargonaut = require('yargonaut');
+var chalk = yargonaut.chalk();
+var comandGenerate = function (argv) {
+    console.log('lol');
+    console.log(argv);
+};
+var commandList = function (argv) {
+};
+yargonaut.style('blue')
     .helpStyle('green')
     .errorsStyle('red');
 var ARGS = yargs
-    .usage("Version: " + version + "\nUsage: $0 <command> [options]")
-    .command('generate <blueprint_name> <module_name> [options...]', 'create a new module')
-    .option('br', {
+    .usage(chalk.green("Version:\n") + ("  " + version + "\n"))
+    .usage(chalk.green("Usage:\n") + "  $0 <command> [<args>] [<options>]")
+    .command('generate <blueprint_name> <new_module_name> [-b] [-m] [-c]', 'creates a new module.', function (yergs) {
+    return yergs.pkgConf("anygen").options("b", { alias: "blueprints_root" });
+}, comandGenerate)
+    .command('list [-b] [-c]', 'list all available Blueprints in a directory.', function (yergs) {
+    return yergs.pkgConf("anygen");
+}, commandList)
+    .option('b', {
     alias: 'blueprints_root',
     describe: "Root directory where the Blueprints are located",
-    type: 'string',
-    'default': './blueprints',
-    demand: true
+    type: 'string'
 })
-    .option('mr', {
+    .option('m', {
     alias: 'modules_root',
     describe: "Root directory where the Module will be generated",
-    type: 'string',
-    'default': './src',
-    demand: true
+    type: 'string'
 })
-    .option("c", {
-    alias: "config",
-    describe: 'Read the options from a json config file, it looks for the "anygen" key withing the json file.',
-    'default': './package.json',
-    demand: true
+    .config("c", 'Path to JSON config file. Pass this parameter to use a config file other than package.json', function (path) {
+    var package_settings = JSON.parse(fsx.readFileSync(path, 'utf-8'));
+    var anygen_settings = package_settings.anygen;
+    return anygen_settings;
 })
-    .command('list [options]', 'list all available Blueprints')
-    .example('$0 generate ng_component my-new-component -c', 'generates a new my-new-component the "ng_component" Blueprint, [blueprints_root] and [modules_root] options are read from package.json.')
-    .example('$0 list -br ./src/blueprints', 'list all the blueprint within the ./src/blueprints directory.')
+    .example('$0 generate ng_component my_new_component', 'generates a new my-new-component the "ng_component" Blueprint, [blueprints_root] and [modules_root] options are read from package.json.')
+    .example('$0 list -b ./src/blueprints', 'list all the blueprint within the ./src/blueprints directory.')
+    .epilog(chalk.green("Config file\n") +
+    'package.json is used as config file, All [' + chalk.cyan('options') + '] are read from the object "' + chalk.blue('anygen') + '" within package.json\n'
+    + 'i.e.: ' + chalk.green('package.json') + ' => {"' + chalk.blue('anygen') + '":{"' + chalk.cyan('blueprints_root') + '":"./tools/blueprints/","' + chalk.cyan('modules_root') + '":"./src/modules/"}}')
     .help()
     .wrap(null)
     .argv;
 if (ARGS._.length == 0) {
     yargs.showHelp();
 }
-else {
-    console.log(ARGS);
-}
+console.log(ARGS);
 //# sourceMappingURL=anygen.js.map

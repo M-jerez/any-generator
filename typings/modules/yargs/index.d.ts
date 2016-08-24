@@ -270,7 +270,7 @@ namespace yargs {
      * Method to execute when a failure occurs, rather than printing the failure message. fn is called with the failure
      * message that would have been printed and the Error instance originally thrown, if any.
      */
-    fail(fn: (message: string) => any): this;
+    fail(fn: (message: string,err:Error) => any): this;
 
     /**
      * Allows to programmatically get completion choices for any line.

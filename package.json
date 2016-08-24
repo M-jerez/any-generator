@@ -1,44 +1,48 @@
 {
-  "name": "gulp-cli-generator",
-  "version": "0.0.1",
-  "description": "0.1.0",
-  "main": "dist/index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://M-jerez@github.com/M-jerez/gulp-cli-generator.git"
-  },
-  "keywords": [
-    "gulp",
-    "generator",
-    "cli",
-    "scallfolding"
-  ],
-  "author": "Ma-Jerez",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/M-jerez/gulp-cli-generator/issues"
-  },
-  "homepage": "https://github.com/M-jerez/gulp-cli-generator#readme",
-  "devDependencies": {
-    "chai": "^1.10.0",
-    "mocha": "^2.1.0",
-    "rimraf": "^2.5.4",
-    "typescript": "^1.8.10",
-    "typings": "^1.3.2"
-  },
-  "bin": {
-    "anygen": "dist/bin/anygen.js"
-  },
-  "scripts": {
-    "test": "node node_modules/mocha/bin/mocha dist/test/*.spec.js --reporter spec",
-    "precompile": "npm run clean",
-    "clean": "rimraf dist/*",
-    "compile": "npm run compile:ts",
-    "compile:ts": "tsc"
-  },
-  "dependencies": {
-    "fs-extra": "^0.30.0",
-    "yargonaut": "^1.1.2",
-    "yargs": "^5.0.0"
-  }
+	"name": "gulp-cli-generator",
+	"version": "0.0.1",
+	"description": "0.1.0",
+	"main": "dist/index.js",
+	"repository": {
+		"type": "git",
+		"url": "git+https://M-jerez@github.com/M-jerez/gulp-cli-generator.git"
+	},
+	"keywords": [
+		"gulp",
+		"generator",
+		"cli",
+		"scallfolding"
+	],
+	"author": "Ma-Jerez",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/M-jerez/gulp-cli-generator/issues"
+	},
+	"homepage": "https://github.com/M-jerez/gulp-cli-generator#readme",
+	"devDependencies": {
+		"chai": "^1.10.0",
+		"mocha": "^2.1.0",
+		"rimraf": "^2.5.4",
+		"typescript": "^1.8.10",
+		"typings": "^1.3.2"
+	},
+	"bin": {
+		"anygen": "dist/bin/anygen.js"
+	},
+	"scripts": {
+		"test": "node node_modules/mocha/bin/mocha dist/test/*.spec.js --reporter spec",
+		"precompile": "npm run clean",
+		"clean": "rimraf dist/*",
+		"compile": "npm run compile:ts",
+		"compile:ts": "tsc"
+	},
+	"dependencies": {
+		"fs-extra": "^0.30.0",
+		"yargonaut": "^1.1.2",
+		"yargs": "^5.0.0"
+	},
+	"anygen": {
+		"blueprints_root": "./tools/blueprints/",
+		"modules_root": "./src/modules/"
+	}
 }
