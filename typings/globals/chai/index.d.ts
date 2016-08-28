@@ -232,7 +232,7 @@ declare namespace Chai {
 
     export interface Assert {
         /**
-         * @param expression Expression to test for truthiness.
+         * @param expression Expression to tools for truthiness.
          * @param message Message to display on error.
          */
         (expression: any, message?: string): void;

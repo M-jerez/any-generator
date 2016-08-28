@@ -15,7 +15,7 @@
 	"exclude": [
 		"node_modules",
 		"dist",
-		"test"
+		"tools"
 	],
 	"compileOnSave": true
 }

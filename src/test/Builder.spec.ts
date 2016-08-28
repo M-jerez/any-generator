@@ -13,11 +13,10 @@ import * as utils from "../lib/utils";
 describe('Builder', function () {
 	var builder = new Builder();
 	//path must be relative to project root (from where the node script is called)
-	var validPath = "./test/blueprints";
-	var validPath = "./test/blueprints";
+	var validPath = "./tools/blueprints";
 	var invalidPath = 'not/existing/path';
-	var emptyPath = "./test/empty";
-	var tempPath = "./test/temp";
+	var emptyPath = "./tools/empty";
+	var tempPath = "./tools/temp";
 
 	describe('Wrong BlueprintBlueprint Path', function () {
 		it('Should thrown an Error when path not exist', function () {
@@ -37,7 +36,7 @@ describe('Builder', function () {
 	});
 
 
-	describe('BlueprintBlueprint Path test/blueprints', function () {
+	describe('BlueprintBlueprint Path tools/blueprints', function () {
 		it('Should create two blueprints [multiple-dir,single-dir]', function () {
 			builder.addBlueprints(validPath);
 			expect(builder.getBlueprintNames()).to.eql(["multiple-dir", "single-dir"])
@@ -96,7 +95,7 @@ describe('Builder', function () {
 
 	//this should be called after some blueprints has benn added.
 	describe('Build "multiple-dir"', function () {
-		it('Should generate the missing directories and a list of files in the test/temp directory.', function () {
+		it('Should generate the missing directories and a list of files in the tools/temp directory.', function () {
 			rimraf.sync(tempPath);
 			fsx.ensureDirSync(tempPath);
 			let root = path.resolve(tempPath);
@@ -124,7 +123,7 @@ describe('Builder', function () {
 
 	//this should be called after some blueprints has benn added.
 	describe('Build "single-dir" success', function () {
-		it('Should generate the missing directories and a list of files in the test/temp directory. ' +
+		it('Should generate the missing directories and a list of files in the tools/temp directory. ' +
 			'A new directory must be created with the name of the new module.', function () {
 			rimraf.sync(tempPath);
 			fsx.ensureDirSync(tempPath);
@@ -147,6 +146,23 @@ describe('Builder', function () {
 			expect(generatedFiles).to.be.eql(shouldGenerate);
 			rimraf.sync(tempPath);
 			//TODO check the content of the files is the same, this is tested in in utils.specs.ts too.
+		});
+	});
+
+
+	//this should be called after some blueprints has benn added.
+	describe('Build fail when new module already exists', function () {
+		it('Should throw an exception when a new file exists with the new module name' , function () {
+			rimraf.sync(tempPath);
+			fsx.ensureDirSync(tempPath);
+			let root = path.resolve(tempPath);
+
+
+			builder.build("single-dir", "refItem", tempPath);
+			expect(function () {
+				builder.build("single-dir", "refItem", tempPath);
+			}).to.throw(/already exists, can't Generate new/i);
+			rimraf.sync(tempPath);
 		});
 	});
 

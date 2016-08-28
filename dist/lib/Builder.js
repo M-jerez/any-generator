@@ -31,31 +31,56 @@ var Builder = (function () {
         if (!utils_1.isComplaintName(moduleName, Builder.nameConstrain)) {
             throw new Error("Invalid argument 'moduleName'. Only characters, numbers and underscore allowed.");
         }
-        if (!fsx.statSync(destPath).isDirectory()) {
-            throw new Error("Invalid argument 'destPath', " + destPath + " is not a valid directory.");
-        }
+        fsx.ensureDir(destPath, function (err) {
+            if (err) {
+                throw new Error("Error creating destination directory: " + destPath + " ");
+            }
+        });
         var blueprint = this.genStore[blueprintName];
         if (typeof blueprint != 'undefined') {
-            var src_root = path.resolve(blueprint.path);
-            var generatedList = [];
-            var files = utils_1.listDir(src_root);
-            files.forEach(function (filePath) {
+            var src_root_1 = path.resolve(blueprint.path);
+            var generatedList_1 = [];
+            var src_files = utils_1.listDir(src_root_1);
+            var destDirs_1 = [];
+            var destFiles_1 = [];
+            var destFilesContent_1 = [];
+            src_files.forEach(function (filePath) {
                 var stats = fsx.statSync(filePath);
                 var dest = path.resolve(destPath);
                 if (stats.isDirectory()) {
-                    var dest_dir = Builder.replacePath(filePath, src_root, dest, moduleName);
-                    fsx.ensureDirSync(dest_dir);
-                    generatedList.push(dest_dir);
+                    var dest_dir = Builder.replacePath(filePath, src_root_1, dest, moduleName);
+                    destDirs_1.push(dest_dir);
+                    generatedList_1.push(dest_dir);
                 }
                 else if (stats.isFile()) {
-                    var dest_file = Builder.replacePath(filePath, src_root, dest, moduleName);
+                    var dest_file = Builder.replacePath(filePath, src_root_1, dest, moduleName);
+                    var exist = true;
+                    try {
+                        exist = fsx.statSync(dest_file).isFile();
+                    }
+                    catch (e) {
+                        exist = false;
+                    }
+                    if (exist) {
+                        throw new Error("File : " + dest_file + " already exists, can't Generate new '" + moduleName + "'");
+                    }
                     var content = fsx.readFileSync(filePath, "utf-8");
                     var newContent = utils_1.replaceAll(content, Builder.replaceName, moduleName);
-                    fsx.writeFileSync(dest_file, newContent, "utf-8");
-                    generatedList.push(dest_file);
+                    destFiles_1.push(dest_file);
+                    destFilesContent_1.push((newContent));
+                    generatedList_1.push(dest_file);
                 }
             });
-            return generatedList;
+            for (var i = 0; i < destDirs_1.length; i++) {
+                var dest_dir = destDirs_1[i];
+                fsx.ensureDirSync(dest_dir);
+            }
+            for (var i = 0; i < destFiles_1.length; i++) {
+                var dest_file = destFiles_1[i];
+                var newContent = destFilesContent_1[i];
+                fsx.writeFileSync(dest_file, newContent, "utf-8");
+            }
+            return generatedList_1;
         }
         else {
             throw new Error("Blueprint " + blueprintName + " nor Found.");

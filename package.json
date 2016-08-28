@@ -43,6 +43,6 @@
 	},
 	"anygen": {
 		"blueprints_root": "./tools/blueprints/",
-		"modules_root": "./src/modules/"
+		"modules_root": "./tools/temp/"
 	}
 }
