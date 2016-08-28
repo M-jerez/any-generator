@@ -4,12 +4,24 @@
 
 
 /**
- * Blueprints are the directories used as blueprints for the generated module.
+ * Blueprints are the directories used as templates or 'blueprints' for the new generated modules.
  */
-export class Blueprint{
+export class Blueprint {
 
 
-	constructor(public name:string, public path:string){
+	/**
+	 * Blueprint path: <code>name</code> + <code>path</code>
+	 * @param name
+	 * @param path
+	 */
+	constructor(/**
+				 * The name of the Blueprint, it should be equivalend to a directory name
+				 */
+				public name: string,
+				/**
+				 *  The root directory where the blueprint is located
+				 */
+				public path: string) {
 
 	}
 }

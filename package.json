@@ -1,8 +1,8 @@
 {
-	"name": "gulp-cli-generator",
+	"name": "Any-gen",
 	"version": "0.0.1",
 	"description": "0.1.0",
-	"main": "dist/index.js",
+	"main": "dist/lib/Builder.js",
 	"repository": {
 		"type": "git",
 		"url": "git+https://M-jerez@github.com/M-jerez/gulp-cli-generator.git"
@@ -31,7 +31,7 @@
 		"anygen": "dist/bin/anygen.js"
 	},
 	"scripts": {
-		"docs": "node node_modules/typedoc/bin/typedoc --out ./docs/ ./src/lib/ ./src/fs-extra/ ./typings/index.d.ts --mode modules",
+		"docs": "node node_modules/typedoc/bin/typedoc --out ./docs/ ./src/lib/ ./src/fs-extra/ ./typings/index.d.ts --mode modules --theme default",
 		"test": "node node_modules/mocha/bin/mocha dist/test/*.spec.js --reporter spec",
 		"precompile": "npm run clean && npm run docs",
 		"clean": "rimraf dist/*",

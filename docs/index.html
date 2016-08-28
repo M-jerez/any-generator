@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>gulp-cli-generator</title>
+	<title>Any-gen</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">gulp-cli-generator</a>
+					<a href="index.html" class="title">Any-gen</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -57,7 +57,7 @@
 					<a href="globals.html">Globals</a>
 				</li>
 			</ul>
-			<h1> gulp-cli-generator</h1>
+			<h1> Any-gen</h1>
 		</div>
 	</div>
 </header>
@@ -72,57 +72,82 @@
 					<a href=""><img src="https://img.shields.io/github/downloads/M-jerez/any-generator/total.svg?maxAge=2592000?style=flat-square" alt="Github All Releases"></a>
 				<a href=""><img src="https://img.shields.io/npm/l/express.svg?maxAge=2592000?style=flat-square" alt="npm"></a></p>
 				<blockquote>
-					<p>Automatic scaffold generator for any project.</p>
+					<p><strong>!!!Automatic Scaffolding Generator For Any Project!!!</strong><br>You declare some directories to use as <code>blueprints</code> and then <code>new modules</code> are automatically generated based on those blueprints.</p>
 				</blockquote>
 				<h2 id="install">Install</h2>
 				<p>Install globally  to use the CLI.</p>
 				<pre><code>npm <span class="hljs-keyword">install</span> -g  anygen
 </code></pre><p>Install locally  to use it programtically.</p>
 				<pre><code>npm <span class="hljs-keyword">install</span> <span class="hljs-comment">--save  anygen</span>
-</code></pre><h2 id="examples">Examples</h2>
-				<p><a href=""><img src="https://img.shields.io/badge/use--via-Gulp-orange.svg" alt="Gulp"></a> Using with gulp:</p>
-				<pre><code class="lang-js"><span class="hljs-keyword">var</span> gulp = <span class="hljs-built_in">require</span>(<span class="hljs-string">'gulp'</span>);
-<span class="hljs-keyword">var</span> concatCss = <span class="hljs-built_in">require</span>(<span class="hljs-string">'gulp-concat-css'</span>);
-
-gulp.task(<span class="hljs-string">'default'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
-  <span class="hljs-keyword">return</span> gulp.src(<span class="hljs-string">'assets/**/*.css'</span>)
-    .pipe(concatCss(<span class="hljs-string">"styles/bundle.css"</span>))
-    .pipe(gulp.dest(<span class="hljs-string">'out/'</span>));
-});
-</code></pre>
-				<p><a href=""><img src="https://img.shields.io/badge/use--via-Grunt-yellow.svg" alt="Grunt"></a> Using with Grunt:  </p>
-				<pre><code class="lang-js"><span class="hljs-keyword">var</span> gulp = <span class="hljs-built_in">require</span>(<span class="hljs-string">'gulp'</span>);
-<span class="hljs-keyword">var</span> concatCss = <span class="hljs-built_in">require</span>(<span class="hljs-string">'gulp-concat-css'</span>);
-
-gulp.task(<span class="hljs-string">'default'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
-  <span class="hljs-keyword">return</span> gulp.src(<span class="hljs-string">'assets/**/*.css'</span>)
-    .pipe(concatCss(<span class="hljs-string">"styles/bundle.css"</span>))
-    .pipe(gulp.dest(<span class="hljs-string">'out/'</span>));
-});
-</code></pre>
-				<p><a href=""><img src="https://img.shields.io/badge/use--via-npm-red.svg" alt="Grunt"></a> Using with npm script:
-				Add the next line to the script section in the package.json file.</p>
-				<pre><code class="lang-js"><span class="hljs-comment">//file package.json</span>
+</code></pre><h2 id="configuration">Configuration</h2>
+				<p>Anygen requires you to set the path of your <code>blueprints</code> and the path where you want to generate you new modules.<br>In your <code>package.json</code> add the object <code>anygen</code> and set both paths. You can override this values using the cli options <code>-b</code> for blueprints_root and <code>-m</code> for modules_root.</p>
+				<pre><code class="lang-js"><span class="hljs-comment">//file: package.json</span>
 {
-    scripts:{
-        <span class="hljs-string">"anygen"</span>: <span class="hljs-string">"node node_modules/anygen/dist/index.js your/path/to/generators your/dest/path"</span>
+    <span class="hljs-string">"anygen"</span>: {
+        <span class="hljs-string">"blueprints_root"</span>: <span class="hljs-string">"./path/to/your/blueprints/"</span>,
+        <span class="hljs-string">"modules_root"</span>: <span class="hljs-string">"./src/modules"</span>
     }
 }
 </code></pre>
-				<p><strong>TIP: for a proper import inlining and url rebase, make sure you set the proper <code>base</code> for the input files.</strong></p>
+				<h2 id="examples">Examples</h2>
+				<p><a href=""><img src="https://img.shields.io/badge/use--via-CLI-orange.svg" alt="CLI"></a><br>ganerate a new module:</p>
+				<pre><code class="lang-bash">anygen generate blueprint_name new_module_name
+</code></pre>
+				<p>list all Blueprints:</p>
+				<pre><code class="lang-bash">anygen list
+</code></pre>
+				<p><a href=""><img src="https://img.shields.io/badge/use--via-Javascript-yellow.svg" alt="Javascript"></a>  </p>
+				<pre><code class="lang-js"><span class="hljs-keyword">var</span> anygen = <span class="hljs-built_in">require</span>(<span class="hljs-string">'anygen'</span>);
+<span class="hljs-keyword">var</span> builder = anygen.Builder;
+
+<span class="hljs-keyword">var</span> modules_root = <span class="hljs-string">".src/modules/"</span>;
+<span class="hljs-keyword">var</span> blueprints_root = <span class="hljs-string">"./path/to/your/blueprints/"</span>;
+<span class="hljs-keyword">var</span> blueprint_name = <span class="hljs-string">"ng-component"</span>;<span class="hljs-comment">//this must be a direct subfolder of blueprints_root path (an existing blueprint).</span>
+<span class="hljs-keyword">var</span> new_module_name = <span class="hljs-string">"MyNewModule"</span>;
+<span class="hljs-keyword">var</span> builder = <span class="hljs-keyword">new</span> Builder();
+
+builder.addBlueprints(blueprints_root);
+<span class="hljs-keyword">var</span> files = builder.build(blueprint_name, new_module_name, modules_root);
+
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Generated files:"</span>);
+files.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">item</span>) </span>{
+   <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"   "</span> + item);
+});
+</code></pre>
 				<h2 id="api">API</h2>
-				<p><code>concatCss(targetFile, options)</code></p>
+				<p>For detailed info please check the API <a href="https://m-jerez.github.io/any-generator/">documentation</a> generated using <a href="https://www.npmjs.com/package/typedoc">typedoc</a>  </p>
+				<p><code>Builder.addBlueprints(blueprints_root)</code></p>
 				<ul>
-					<li><code>targetFile</code>: The relative path of the generated file containing the concatenated css</li>
-					<li><code>options</code>: (since 2.1.0)<ul>
-							<li><code>inlineImports</code>: (default <code>true</code>) Inline any local import statement found</li>
-							<li><code>rebaseUrls</code>: (default <code>true</code>) Adjust any relative URL to the location of the target file.</li>
-							<li><code>includePaths</code>: (default <code>[]</code>) Include additional paths when inlining imports</li>
-						</ul>
-					</li>
+					<li><code>blueprints_root</code>: root path to the Blueprint generators, each subdirectory of the <code>root_path</code> is a Blueprint</li>
+				</ul>
+				<p><code>Builder.build(blueprint_name, new_module_name, modules_root)</code></p>
+				<ul>
+					<li><code>blueprint_name</code>: Name od the Blueprint to be used (a direct subdirectory of <code>blueprints_oot</code>)</li>
+					<li><code>new_module_name</code>: the name of the new module that is generated</li>
+					<li><code>modules_root</code>: path where the new module will be generated, new module path = <code>modules_root</code> + <code>new_module_name</code></li>
+				</ul>
+				<h2 id="creating-your-blueprints">Creating Your Blueprints</h2>
+				<p>A blueprint is any direct <code>&quot;&gt;&quot;</code> subdirectory of your <code>blueprints_root</code> directory.</p>
+				<pre><code>path/to/your/blueprints_root
+  +──  blueprint1
+  <span class="hljs-string">|   └──  __name__</span>
+  <span class="hljs-string">|       +── __name__Controller.js</span>
+  <span class="hljs-string">|       +── __name__Controller.js</span>
+  <span class="hljs-string">|       └── __name__Template.html</span>
+  └──  blueprint2
+      └──  __name__
+          +── __name__Controller.js
+          +── __name__Controller.js
+          └── __name__Template.html
+</code></pre><p><strong>The <code>__name__</code> string:</strong><br>Any <code>__name__</code> string in a directory or file name will be replaced by the <code>new_module_name</code> when the build process is executed.<br>Any <code>__name__</code> string withing the content of the Blueprint files also will be replaced by the <code>new_module_name</code>.</p>
+				<p><strong>Examples of the Blueprints can be found withing the repo: <a href="https://github.com/M-jerez/any-generator/tree/master/tools/blueprints">tools/blueprints/</a>.</strong> </p>
+				<ul>
+					<li><code>single-dir</code> blueprint: shows how to create a blueprint with all the files in a single directory with the name of the module</li>
+					<li><code>multiple-dir</code> blueprint: show how to create a module where the files are split within multiple directories. in this case the <code>modules_root</code> parameter
+					should be the <code>common root</code> af all the split directories and blueprint should replicate the subdirectory structure of this <code>common root</code>. </li>
 				</ul>
 				<h2 id="license">License</h2>
-				<p><a href="http://en.wikipedia.org/wiki/MIT_License">MIT</a> @ Mario Casciaro</p>
+				<p><a href="http://en.wikipedia.org/wiki/MIT_License">MIT</a> @ Ma Jerez</p>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -136,6 +161,9 @@ gulp.task(<span class="hljs-string">'default'</span>, <span class="hljs-function
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_builder_.html">"<wbr>Builder"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_anygen_.html">"anygen"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_utils_.html">"utils"</a>

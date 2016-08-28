@@ -5,7 +5,8 @@
 [![Github All Releases](https://img.shields.io/github/downloads/M-jerez/any-generator/total.svg?maxAge=2592000?style=flat-square)]()
 [![npm](https://img.shields.io/npm/l/express.svg?maxAge=2592000?style=flat-square)]()
 
-> Automatic scaffold generator for any project.
+> **!!!Automatic Scaffolding Generator For Any Project!!!**  
+> You declare some directories to use as `blueprints` and then `new modules` are automatically generated based on those blueprints.
 
 ## Install
 
@@ -21,55 +22,97 @@ Install locally  to use it programtically.
 npm install --save  anygen
 ```
 
-## Examples
+## Configuration
 
-[![Gulp](https://img.shields.io/badge/use--via-Gulp-orange.svg)]() Using with gulp:
+Anygen requires you to set the path of your `blueprints` and the path where you want to generate you new modules.  
+In your `package.json` add the object `anygen` and set both paths. You can override this values using the cli options `-b` for blueprints_root and `-m` for modules_root.
+
 ```js
-var gulp = require('gulp');
-var concatCss = require('gulp-concat-css');
-
-gulp.task('default', function () {
-  return gulp.src('assets/**/*.css')
-    .pipe(concatCss("styles/bundle.css"))
-    .pipe(gulp.dest('out/'));
-});
-```
-
-[![Grunt](https://img.shields.io/badge/use--via-Grunt-yellow.svg)]() Using with Grunt:  
-```js
-var gulp = require('gulp');
-var concatCss = require('gulp-concat-css');
-
-gulp.task('default', function () {
-  return gulp.src('assets/**/*.css')
-    .pipe(concatCss("styles/bundle.css"))
-    .pipe(gulp.dest('out/'));
-});
-```
-
-
-[![Grunt](https://img.shields.io/badge/use--via-npm-red.svg)]() Using with npm script: 
-Add the next line to the script section in the package.json file.
-```js
-//file package.json
+//file: package.json
 {
-	scripts:{
-		"anygen": "node node_modules/anygen/dist/index.js your/path/to/generators your/dest/path"
+	"anygen": {
+		"blueprints_root": "./path/to/your/blueprints/",
+		"modules_root": "./src/modules"
 	}
 }
+
 ```
 
-**TIP: for a proper import inlining and url rebase, make sure you set the proper `base` for the input files.**
+## Examples
+
+[![CLI](https://img.shields.io/badge/use--via-CLI-orange.svg)]()  
+ganerate a new module:
+```bash
+anygen generate blueprint_name new_module_name
+```
+
+list all Blueprints:
+```bash
+anygen list
+```
+
+[![Javascript](https://img.shields.io/badge/use--via-Javascript-yellow.svg)]()  
+```js
+var anygen = require('anygen');
+var builder = anygen.Builder;
+
+var modules_root = ".src/modules/";
+var blueprints_root = "./path/to/your/blueprints/";
+var blueprint_name = "ng-component";//this must be a direct subfolder of blueprints_root path (an existing blueprint).
+var new_module_name = "MyNewModule";
+var builder = new Builder();
+
+builder.addBlueprints(blueprints_root);
+var files = builder.build(blueprint_name, new_module_name, modules_root);
+
+console.log("Generated files:");
+files.forEach(function (item) {
+   console.log("   " + item);
+});
+```
+
 
 ## API
 
-`concatCss(targetFile, options)`
-* `targetFile`: The relative path of the generated file containing the concatenated css
-* `options`: (since 2.1.0)
-    * `inlineImports`: (default `true`) Inline any local import statement found
-    * `rebaseUrls`: (default `true`) Adjust any relative URL to the location of the target file.
-    * `includePaths`: (default `[]`) Include additional paths when inlining imports
+For detailed info please check the API [documentation](https://m-jerez.github.io/any-generator/) generated using [typedoc](https://www.npmjs.com/package/typedoc)  
+
+`Builder.addBlueprints(blueprints_root)`
+* `blueprints_root`: root path to the Blueprint generators, each subdirectory of the `root_path` is a Blueprint
+
+`Builder.build(blueprint_name, new_module_name, modules_root)`
+* `blueprint_name`: Name od the Blueprint to be used (a direct subdirectory of `blueprints_oot`)
+* `new_module_name`: the name of the new module that is generated
+* `modules_root`: path where the new module will be generated, new module path = `modules_root` + `new_module_name`
+
+
+## Creating Your Blueprints
+
+A blueprint is any direct `">"` subdirectory of your `blueprints_root` directory.
+
+	path/to/your/blueprints_root
+	  +──  blueprint1
+	  |   └──  __name__
+	  |       +── __name__Controller.js
+	  |       +── __name__Controller.js
+	  |       └── __name__Template.html
+	  └──  blueprint2
+	      └──  __name__
+	          +── __name__Controller.js
+	          +── __name__Controller.js
+	          └── __name__Template.html
+
+
+
+**The `__name__` string:**  
+Any `__name__` string in a directory or file name will be replaced by the `new_module_name` when the build process is executed.  
+Any `__name__` string withing the content of the Blueprint files also will be replaced by the `new_module_name`.
+
+
+**Examples of the Blueprints can be found withing the repo: [tools/blueprints/](https://github.com/M-jerez/any-generator/tree/master/tools/blueprints).** 
+* `single-dir` blueprint: shows how to create a blueprint with all the files in a single directory with the name of the module
+* `multiple-dir` blueprint: show how to create a module where the files are split within multiple directories. in this case the `modules_root` parameter 
+should be the `common root` af all the split directories and blueprint should replicate the subdirectory structure of this `common root`. 
 
 ## License
 
-[MIT](http://en.wikipedia.org/wiki/MIT_License) @ Mario Casciaro
+[MIT](http://en.wikipedia.org/wiki/MIT_License) @ Ma Jerez

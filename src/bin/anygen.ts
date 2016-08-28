@@ -24,7 +24,7 @@ yargonaut.style('blue')
 let ARGS =
 	yargs
 		.usage(
-			chalk.green("Version:\n") + `  ${version}\n` +
+			chalk.green("Version:\n") + `  ${version}\n\n` +
 			chalk.green("Usage:\n") + `  $0 <command> [<args>] [options]`)
 		.command(
 			'generate <blueprint_name> <new_module_name> [options]',
@@ -59,10 +59,10 @@ let ARGS =
 			describe: "Root directory where the Module will be generated",
 			type: 'string'
 		})
-		.example('$0 generate ng_component my_new_component', 'generates a new my-new-component the "ng_component" Blueprint, [blueprints_root] and [modules_root] options are read from package.json.')
-		.example('$0 list -b ./src/blueprints', 'list all the blueprint within the ./src/blueprints directory.')
+		.example('$0 generate ng_component my_new_component', 'generates a new my-new-component using the "ng_component" Blueprint.')
+		.example('$0 list -b ./src/blueprints', `list all the blueprint within the './src/blueprints' directory.`)
 		.epilog(
-			chalk.green("Config file\n") +
+			chalk.green("Config file:\n") +
 			'package.json is used as config file, All [' + chalk.cyan('options') + '] are read from the object "' + chalk.blue('anygen') + '" within package.json\n'
 			+ 'i.e.: ' + chalk.green('package.json') + ' => {"' + chalk.blue('anygen') + '":{"' + chalk.cyan('blueprints_root') + '":"./tools/blueprints/","' + chalk.cyan('modules_root') + '":"./src/modules/"}}')
 		.help()
