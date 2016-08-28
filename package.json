@@ -23,6 +23,7 @@
 		"chai": "^1.10.0",
 		"mocha": "^2.1.0",
 		"rimraf": "^2.5.4",
+		"typedoc": "^0.4.5",
 		"typescript": "^1.8.10",
 		"typings": "^1.3.2"
 	},
@@ -30,8 +31,9 @@
 		"anygen": "dist/bin/anygen.js"
 	},
 	"scripts": {
+		"docs": "node node_modules/typedoc/bin/typedoc --out ./docs/ ./src/lib/ ./src/fs-extra/ ./typings/index.d.ts --mode modules",
 		"test": "node node_modules/mocha/bin/mocha dist/test/*.spec.js --reporter spec",
-		"precompile": "npm run clean",
+		"precompile": "npm run clean && npm run docs",
 		"clean": "rimraf dist/*",
 		"compile": "npm run compile:ts",
 		"compile:ts": "tsc"

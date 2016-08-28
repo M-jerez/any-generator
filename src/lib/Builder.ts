@@ -12,8 +12,8 @@ import {Stats} from "fs";
 
 
 /**
- * Generates scaffolding for any project.
- * It uses one directory as blueprint and wen
+ * Builds scaffolding files and directories copying from a Blueprint src directory.
+ *
  */
 export class Builder {
 

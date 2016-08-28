@@ -9,10 +9,16 @@
 
 ## Install
 
-Install with [npm](https://npmjs.org/package/gulp-concat-css).
+Install globally  to use the CLI.
 
 ```
-npm install --save-dev  anygen
+npm install -g  anygen
+```
+
+Install locally  to use it programtically.
+
+```
+npm install --save  anygen
 ```
 
 ## Examples
