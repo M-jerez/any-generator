@@ -21,6 +21,7 @@ export  function Generate(argv){
 	}
 
 	let modules_root = argv["modules_root"];
+	console.log(modules_root);
 	let blueprints_root = argv["blueprints_root"];
 	let blueprint_name = argv["blueprint_name"];
 	let new_module_name = argv["new_module_name"];

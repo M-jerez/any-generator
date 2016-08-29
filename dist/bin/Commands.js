@@ -16,6 +16,7 @@ function Generate(argv) {
         return;
     }
     var modules_root = argv["modules_root"];
+    console.log(modules_root);
     var blueprints_root = argv["blueprints_root"];
     var blueprint_name = argv["blueprint_name"];
     var new_module_name = argv["new_module_name"];

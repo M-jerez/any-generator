@@ -16,7 +16,7 @@ Install globally  to use the CLI.
 npm install -g  anygen
 ```
 
-Install locally  to use it programtically.
+Install locally  to use programtically.
 
 ```
 npm install --save  anygen

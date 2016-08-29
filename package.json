@@ -8,7 +8,6 @@
 		"url": "git+https://M-jerez@github.com/M-jerez/gulp-cli-generator.git"
 	},
 	"keywords": [
-		"gulp",
 		"generator",
 		"cli",
 		"scallfolding"
@@ -42,9 +41,5 @@
 		"fs-extra": "^0.30.0",
 		"yargonaut": "^1.1.2",
 		"yargs": "^5.0.0"
-	},
-	"anygen": {
-		"blueprints_root": "./tools/blueprints/",
-		"modules_root": "./tools/temp/"
 	}
 }

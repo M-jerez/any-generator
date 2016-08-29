@@ -21,16 +21,31 @@ yargonaut.style('blue')
 	.helpStyle('green')
 	.errorsStyle('red');
 
+const name = 'anygen';
+
 let ARGS =
 	yargs
 		.usage(
 			chalk.green("Version:\n") + `  ${version}\n\n` +
-			chalk.green("Usage:\n") + `  $0 <command> [<args>] [options]`)
+			chalk.green("Usage:\n") + `  ${name} <command> [<args>] [options]`)
 		.command(
 			'generate <blueprint_name> <new_module_name> [options]',
 			'creates a new module.',
 			function (yergs) {
-				return yergs.pkgConf("anygen")
+				return yergs.pkgConf("anygen",process.cwd())
+					.options("b",{alias:"blueprints_root"})
+					.options("m",{alias:"modules_root"});
+			},
+			function(argv){
+				command = true;
+				Generate(argv);
+			}
+		)
+		.command(
+			'g <blueprint_name> <new_module_name> [options]',
+			'generate alias.',
+			function (yergs) {
+				return yergs.pkgConf("anygen",process.cwd())
 					.options("b",{alias:"blueprints_root"})
 					.options("m",{alias:"modules_root"});
 			},
@@ -43,7 +58,7 @@ let ARGS =
 			'list [--blueprints_root]',
 			'list all available Blueprints in a directory.',
 			function (yergs) {
-				return yergs.pkgConf("anygen");
+				return yergs.pkgConf("anygen",process.cwd();
 			},
 			function(argv){
 				command = true;
@@ -59,8 +74,8 @@ let ARGS =
 			describe: "Root directory where the Module will be generated",
 			type: 'string'
 		})
-		.example('$0 generate ng_component my_new_component', 'generates a new my-new-component using the "ng_component" Blueprint.')
-		.example('$0 list -b ./src/blueprints', `list all the blueprint within the './src/blueprints' directory.`)
+		.example(`${name} generate ng_component my_new_component`, 'generates a new my-new-component using the "ng_component" Blueprint.')
+		.example(`${name} list -b ./src/blueprints`, `list all the blueprint within the './src/blueprints' directory.`)
 		.epilog(
 			chalk.green("Config file:\n") +
 			'package.json is used as config file, All [' + chalk.cyan('options') + '] are read from the object "' + chalk.blue('anygen') + '" within package.json\n'
