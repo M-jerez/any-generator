@@ -31,7 +31,7 @@
 		"anygen": "dist/bin/anygen.js"
 	},
 	"scripts": {
-		"docs": "node node_modules/typedoc/bin/typedoc --out ./docs/ ./src/lib/ ./src/fs-extra/ ./typings/index.d.ts --mode modules --theme default",
+		"docs": "node node_modules/typedoc/bin/typedoc --out ./docs/ ./src/lib/ ./src/fs-extra/ ./typings/index.d.ts --mode modules && cp ./tools/.nojekyll ./docs/.nojekyll",
 		"test": "node node_modules/mocha/bin/mocha dist/test/*.spec.js --reporter spec",
 		"precompile": "npm run clean && npm run docs",
 		"clean": "rimraf dist/*",
