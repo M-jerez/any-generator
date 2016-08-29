@@ -1,7 +1,7 @@
 {
 	"name": "anygen",
 	"version": "0.0.2",
-	"description": "Automatic Scaffolding Generator For Any Project",
+	"description": "!!!Automatic Scaffolding Generator For Any Project!!!",
 	"main": "dist/lib/Builder.js",
 	"repository": {
 		"type": "git",
