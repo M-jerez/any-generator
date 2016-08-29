@@ -96,6 +96,7 @@ describe('Builder', function () {
             fsx.ensureDirSync(tempPath);
             var root = path.resolve(tempPath);
             var shouldGenerate = [
+                path.join(root, ".gitkeep"),
                 path.join(root, "refItem"),
                 path.join(root, "refItem/refItemController.ts"),
                 path.join(root, "refItem/refItemModel.ts"),

@@ -135,6 +135,7 @@ describe('Builder', function () {
 			// ----sunFileB1
 			// ----sunFileB2
 			let shouldGenerate = [
+				path.join(root, ".gitkeep"),
 				path.join(root, "refItem"),
 				path.join(root, "refItem/refItemController.ts"),
 				path.join(root, "refItem/refItemModel.ts"),
