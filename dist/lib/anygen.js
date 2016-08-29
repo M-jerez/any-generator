@@ -1,8 +1,8 @@
 "use strict";
-var Blueprint_1 = require("./Blueprint");
-exports.Blueprint = Blueprint_1.Blueprint;
-var Builder_1 = require("./Builder");
-exports.Builder = Builder_1.Builder;
-var ut = require("./utils");
-exports.utils = ut;
+var Bl = require("./Blueprint");
+var Bu = require("./Builder");
+var UT = require("./utils");
+exports.Blueprint = Bl.Blueprint;
+exports.Builder = Bu.Builder;
+exports.utils = UT;
 //# sourceMappingURL=anygen.js.map
