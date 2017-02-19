@@ -4,7 +4,7 @@
 [![Github All Releases](https://img.shields.io/github/downloads/M-jerez/any-generator/total.svg?maxAge=2592000?style=flat-square)]()
 [![npm](https://img.shields.io/npm/l/express.svg?maxAge=2592000?style=flat-square)]()
 
-> You declare some directories to use as `blueprints` and then `new modules` are automatically generated based on those blueprints.
+> Automatically generate project scaffolding for any project using `blueprints`.
 
 ## Install
 
