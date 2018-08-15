@@ -4,7 +4,7 @@
 </p>
 <p align="center">
   <strong>Simple scaffolding generator for any project.</strong><br/>
-   With Anygen you can use your own code as blueprint to generate more code.
+   No need for cli-tools, automate scaffolding generation based on your own code.
 </p>
 
 ---
@@ -18,7 +18,9 @@
 <img src="https://img.shields.io/npm/l/express.svg?style=flat-square" alt="npm"  style="max-width:100%;">
 </p>
 
-> Automatically generate project scaffolding for any project using `blueprints`.
+
+&nbsp;
+
 
 ## Install
 
