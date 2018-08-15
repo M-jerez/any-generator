@@ -13,7 +13,7 @@
 		"scallfolding"
 	],
 	"author": "Ma-Jerez",
-	"license": "ISC",
+	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/M-jerez/gulp-cli-generator/issues"
 	},

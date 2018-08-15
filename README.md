@@ -1,8 +1,22 @@
-[![Travis](https://img.shields.io/travis/M-jerez/any-generator.svg?style=flat-square)]()
-[![npm](https://img.shields.io/npm/v/npm.svg?maxAge=2592000?style=flat-square)]()
-[![David](https://img.shields.io/david/M-jerez/any-generator.svg?maxAge=2592000?style=flat-square)]()
-[![Github All Releases](https://img.shields.io/github/downloads/M-jerez/any-generator/total.svg?maxAge=2592000?style=flat-square)]()
-[![npm](https://img.shields.io/npm/l/express.svg?maxAge=2592000?style=flat-square)]()
+<p align="center">
+  <img alt='Anygen, Simple scaffolding generator for any project' src='https://raw.githubusercontent.com/M-jerez/any-generator/master/logo/public/logox150-inverse.png' 
+  height=70 width=355>
+</p>
+<p align="center">
+  <strong>Simple scaffolding generator for any project.</strong><br/>
+   With Anygen you can use your own code as blueprint to generate more code.
+</p>
+
+---
+
+
+<p align=center>
+<img src="https://img.shields.io/travis/M-jerez/any-generator.svg?style=flat-square&maxAge=86400" alt="Travis" style="max-width:100%;">
+<img src="https://img.shields.io/npm/v/anygen.svg?style=flat-square&maxAge=86400" alt="npm" style="max-width:100%;">
+<img src="https://img.shields.io/david/M-jerez/any-generator.svg?style=flat-square" alt="David" style="max-width:100%;">
+<img src="https://img.shields.io/npm/dt/anygen.svg?style=flat-square&maxAge=86400" alt="Github All Releases"  style="max-width:100%;">
+<img src="https://img.shields.io/npm/l/express.svg?style=flat-square" alt="npm"  style="max-width:100%;">
+</p>
 
 > Automatically generate project scaffolding for any project using `blueprints`.
 
