@@ -4,7 +4,7 @@
 </p>
 <p align="center">
   <strong>Simple scaffolding generator for any project.</strong><br/>
-   No need for cli-tools, automate scaffolding generation based on your own code.
+   Anygen is your own custom cli-tool, automate code generation based on your project.
 </p>
 
 ---
