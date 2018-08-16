@@ -13,9 +13,12 @@
 <p align=center>
 <img src="https://img.shields.io/travis/M-jerez/any-generator.svg?style=flat-square&maxAge=86400" alt="Travis" style="max-width:100%;">
 <img src="https://img.shields.io/npm/v/anygen.svg?style=flat-square&maxAge=86400" alt="npm" style="max-width:100%;">
-<img src="https://img.shields.io/david/M-jerez/any-generator.svg?style=flat-square" alt="David" style="max-width:100%;">
+<img src="https://img.shields.io/david/M-jerez/any-generator.svg?style=flat-square&maxAge=86400" alt="David" style="max-width:100%;">
 <img src="https://img.shields.io/npm/dt/anygen.svg?style=flat-square&maxAge=86400" alt="Github All Releases"  style="max-width:100%;">
-<img src="https://img.shields.io/npm/l/express.svg?style=flat-square" alt="npm"  style="max-width:100%;">
+<img src="https://img.shields.io/npm/l/anygen.svg?style=flat-square&maxAge=86400" alt="npm"  style="max-width:100%;">
+<br/>
+<img src="https://badges.greenkeeper.io/M-jerez/any-generator.svg" alt="npm"  style="max-width:100%;">
+<img src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square&maxAge=99999999" alt="npm"  style="max-width:100%;">
 </p>
 
 
@@ -65,7 +68,7 @@ list all Blueprints:
 anygen list
 ```
 
-[![Javascript](https://img.shields.io/badge/use--via-Javascript-yellow.svg)]() [![Greenkeeper badge](https://badges.greenkeeper.io/M-jerez/any-generator.svg)](https://greenkeeper.io/)  
+[![Javascript](https://img.shields.io/badge/use--via-Javascript-yellow.svg)]() 
 ```js
 var anygen = require('anygen');
 var builder = anygen.Builder;
