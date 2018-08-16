@@ -65,7 +65,7 @@ list all Blueprints:
 anygen list
 ```
 
-[![Javascript](https://img.shields.io/badge/use--via-Javascript-yellow.svg)]()  
+[![Javascript](https://img.shields.io/badge/use--via-Javascript-yellow.svg)]() [![Greenkeeper badge](https://badges.greenkeeper.io/M-jerez/any-generator.svg)](https://greenkeeper.io/)  
 ```js
 var anygen = require('anygen');
 var builder = anygen.Builder;

@@ -1,5 +1,6 @@
 "use strict";
-var fsx = require('fs-extra');
+Object.defineProperty(exports, "__esModule", { value: true });
+var fsx = require("fs-extra");
 var path = require("path");
 var Blueprint_1 = require("./Blueprint");
 var utils_1 = require("./utils");
@@ -31,11 +32,12 @@ var Builder = (function () {
         if (!utils_1.isComplaintName(moduleName, Builder.nameConstrain)) {
             throw new Error("Invalid argument 'moduleName'. Only characters, numbers and underscore allowed.");
         }
-        fsx.ensureDir(destPath, function (err) {
-            if (err) {
-                throw new Error("Error creating destination directory: " + destPath + " ");
-            }
-        });
+        try {
+            fsx.ensureDirSync(destPath);
+        }
+        catch (err) {
+            throw new Error("Error creating destination directory: " + destPath + " ");
+        }
         var blueprint = this.genStore[blueprintName];
         if (typeof blueprint != 'undefined') {
             var src_root_1 = path.resolve(blueprint.path);

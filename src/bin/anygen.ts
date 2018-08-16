@@ -58,7 +58,7 @@ let ARGS =
 			'list [--blueprints_root]',
 			'list all available Blueprints in a directory.',
 			function (yergs) {
-				return yergs.pkgConf("anygen",process.cwd();
+				return yergs.pkgConf("anygen",process.cwd());
 			},
 			function(argv){
 				command = true;
