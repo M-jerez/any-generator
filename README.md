@@ -1,5 +1,5 @@
 <p align="center">
-  <img alt='Anygen, Simple scaffolding generator for any project' src='https://raw.githubusercontent.com/M-jerez/any-generator/master/logo/public/logox150-inverse.png' 
+  <img alt='Anygen' src='https://raw.githubusercontent.com/M-jerez/any-generator/master/logo/public/logo.svg' 
   height=70 width=355>
 </p>
 <p align="center">
