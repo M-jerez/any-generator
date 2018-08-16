@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var Builder_1 = require("../lib/Builder");
 var chalk = require('yargonaut').chalk();
 function Generate(argv) {

@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var fsx = require("fs-extra");
 var path = require("path");
 function replaceAll(target, search, replacement) {

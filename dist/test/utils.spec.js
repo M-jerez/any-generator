@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var util = require("../lib/utils");
 var chai_1 = require("chai");
 var fsx = require("fs-extra");
