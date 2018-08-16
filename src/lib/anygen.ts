@@ -2,10 +2,9 @@
  * Created by Ma jerez on 28/08/2016.
  */
 
-import * as Bl from "./Blueprint";
-import * as Bu from "./Builder";
-import * as UT from "./utils";
-
+import * as Bl from './Blueprint';
+import * as Bu from './Builder';
+import * as UT from './utils';
 
 /**
  * Blueprint interface declaration

@@ -2,20 +2,12 @@
  * Created by Ma jerez on 01/08/2016.
  */
 
-
 export class refItemModel {
+	constructor() {}
 
-	constructor() {
-
-	}
-
-
-	refItemIsValid():boolean {
-
+	refItemIsValid(): boolean {
 		return false;
 	}
 
-	public static refItemFromJson(json:string) {
-
-	}
+	public static refItemFromJson(json: string) {}
 }

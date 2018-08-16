@@ -5,8 +5,8 @@
   ],
   "linterOptions": {
     "exclude": [
-        "packages/**/node_modules/**"
-    ] 
+        "node_modules/**"
+    ]
   },
   "rules": {
     "no-console": false

@@ -2,28 +2,28 @@
  * Created by Ma jerez on 30/07/2016.
  */
 
-
 import {join, basename} from 'path';
 import * as fsx from 'fs-extra';
-import * as path from "path";
-import {Blueprint} from "./Blueprint";
-import {replaceAll, isComplaintName, getSubDirectoryNames, listDir} from "./utils";
-import {Stats} from "fs";
-
+import * as path from 'path';
+import {Blueprint} from './Blueprint';
+import {
+	replaceAll,
+	isComplaintName,
+	getSubDirectoryNames,
+	listDir,
+} from './utils';
+import {Stats} from 'fs';
 
 /**
  * Builds scaffolding files and directories copying from a Blueprint src directory.
  *
  */
 export class Builder {
-
-
 	/**
 	 * Stores all the blueprints
 	 * @type {{}}
 	 */
 	private genStore: BlueprintStore = {};
-
 
 	/**
 	 * Alphanumeric and underscore regex, used to constrain the Name of new generated module.
@@ -31,21 +31,18 @@ export class Builder {
 	 */
 	private static nameConstrain = /^[a-z0-9_]+$/i;
 
-
 	/**
 	 * Returns the regexp used to constrain the allowed module names
 	 * @returns {RegExp}
 	 */
-	public static  getNameConstrain(): RegExp {
+	public static getNameConstrain(): RegExp {
 		return Builder.nameConstrain;
 	}
-
 
 	/**
 	 * String to be replaced when build the blueprint, in any file or directory name, or withing the file content.
 	 */
-	private static replaceName = "__name__";
-
+	private static replaceName = '__name__';
 
 	/**
 	 * Search for all the blueprint in the 'rootPath' and add them to the genreratorsRegistry
@@ -56,15 +53,15 @@ export class Builder {
 			throw new Error(`${rootPath} is not a Directory.`);
 		let nRootPath = path.normalize(rootPath);
 		let blueprints = Builder.findBlueprints(nRootPath);
-		blueprints.forEach((blueprint: Blueprint)=> {
+		blueprints.forEach((blueprint: Blueprint) => {
 			var name = blueprint.name;
 			if (typeof this.genStore[name] != 'undefined')
-				throw new Error(`Duplicated blueprint ${name}. The blueprint already exists.`);
-			else
-				this.genStore[name] = blueprint;
-		})
+				throw new Error(
+					`Duplicated blueprint ${name}. The blueprint already exists.`,
+				);
+			else this.genStore[name] = blueprint;
+		});
 	}
-
 
 	/**
 	 * Returns an array containing all the names of the available blueprints.
@@ -73,7 +70,6 @@ export class Builder {
 	getBlueprintNames(): string[] {
 		return Object.keys(this.genStore);
 	}
-
 
 	/**
 	 * Builds a new directory structure based on the selected blueprint with 'blueprintName'.
@@ -88,22 +84,28 @@ export class Builder {
 	 * @param destPath
 	 * @returns {Array} a list of the files generated
 	 */
-	build(blueprintName: string, moduleName: string, destPath: string): string[] {
-
+	build(
+		blueprintName: string,
+		moduleName: string,
+		destPath: string,
+	): string[] {
 		if (!isComplaintName(moduleName, Builder.nameConstrain)) {
-			throw new Error("Invalid argument 'moduleName'. Only characters, numbers and underscore allowed.")
+			throw new Error(
+				"Invalid argument 'moduleName'. Only characters, numbers and underscore allowed.",
+			);
 		}
 
 		// if (!fsx.statSync(destPath).isDirectory()) {
 		// 	throw new Error(`Invalid argument 'destPath', ${destPath} is not a valid directory.`)
 		// }
 
-		try{
+		try {
 			fsx.ensureDirSync(destPath);
-		}catch (err){
-			throw new Error(`Error creating destination directory: ${destPath} `);
+		} catch (err) {
+			throw new Error(
+				`Error creating destination directory: ${destPath} `,
+			);
 		}
-
 
 		var blueprint = this.genStore[blueprintName];
 
@@ -117,31 +119,47 @@ export class Builder {
 
 			//parses all source files and generates its corresponding dest file name
 			// if destFile already exists an exception is thrown
-			src_files.forEach((filePath)=> {
+			src_files.forEach(filePath => {
 				let stats = fsx.statSync(filePath);
 				let dest = path.resolve(destPath);
 				if (stats.isDirectory()) {
-					let dest_dir = Builder.replacePath(filePath, src_root, dest, moduleName);
+					let dest_dir = Builder.replacePath(
+						filePath,
+						src_root,
+						dest,
+						moduleName,
+					);
 					destDirs.push(dest_dir);
 					generatedList.push(dest_dir);
 				} else if (stats.isFile()) {
-					let dest_file = Builder.replacePath(filePath, src_root, dest, moduleName);
+					let dest_file = Builder.replacePath(
+						filePath,
+						src_root,
+						dest,
+						moduleName,
+					);
 					let exist = true;
-					try{
+					try {
 						exist = fsx.statSync(dest_file).isFile();
-					}catch(e){
+					} catch (e) {
 						//error has been thrown so file does not exists
-						exist = false
+						exist = false;
 					}
 
 					if (exist) {
-						throw new Error(`File : ${dest_file} already exists, can't Generate new '${moduleName}'`)
+						throw new Error(
+							`File : ${dest_file} already exists, can't Generate new '${moduleName}'`,
+						);
 					}
 
-					let content = fsx.readFileSync(filePath, "utf-8");
-					let newContent = replaceAll(content, Builder.replaceName, moduleName);
+					let content = fsx.readFileSync(filePath, 'utf-8');
+					let newContent = replaceAll(
+						content,
+						Builder.replaceName,
+						moduleName,
+					);
 					destFiles.push(dest_file);
-					destFilesContent.push((newContent));
+					destFilesContent.push(newContent);
 					generatedList.push(dest_file);
 				}
 			});
@@ -152,12 +170,11 @@ export class Builder {
 				fsx.ensureDirSync(dest_dir);
 			}
 
-
 			//generate new files
 			for (let i = 0; i < destFiles.length; i++) {
 				let dest_file = destFiles[i];
 				let newContent = destFilesContent[i];
-				fsx.writeFileSync(dest_file, newContent, "utf-8");
+				fsx.writeFileSync(dest_file, newContent, 'utf-8');
 			}
 
 			return generatedList;
@@ -165,9 +182,6 @@ export class Builder {
 			throw new Error(`Blueprint ${blueprintName} nor Found.`);
 		}
 	}
-
-
-
 
 	/**
 	 * Search for all the blueprints in a given 'rootPath'.
@@ -194,11 +208,9 @@ export class Builder {
 		let found: Blueprint[] = [];
 
 		let names = getSubDirectoryNames(rootPath);
-		if (names.length == 0)
-			throw  Error(`No Blueprint found in ${rootPath}`);
+		if (names.length == 0) throw Error(`No Blueprint found in ${rootPath}`);
 
-
-		names.forEach((blueprintName: string)=> {
+		names.forEach((blueprintName: string) => {
 			let name = blueprintName;
 			let blueprintPath = path.join(rootPath, blueprintName);
 			let blueprint = new Blueprint(name, blueprintPath);
@@ -206,7 +218,6 @@ export class Builder {
 		});
 		return found;
 	}
-
 
 	/**
 	 * Gets a blueprint path and return the path required for the new generated file/directory
@@ -216,13 +227,16 @@ export class Builder {
 	 * @param moduleName
 	 * @returns {string}
 	 */
-	private static replacePath(path: string, src_root: string, dest_root: string, moduleName: string): string {
+	private static replacePath(
+		path: string,
+		src_root: string,
+		dest_root: string,
+		moduleName: string,
+	): string {
 		let destpath = path.replace(src_root, dest_root);
 		return replaceAll(destpath, Builder.replaceName, moduleName);
 	}
-
 }
-
 
 interface BlueprintStore {
 	[key: string]: Blueprint;

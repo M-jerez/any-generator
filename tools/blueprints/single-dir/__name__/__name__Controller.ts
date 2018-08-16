@@ -2,19 +2,10 @@
  * Created by Ma jerez on 01/08/2016.
  */
 
-
 export class __name__Controller {
+	constructor() {}
 
-	constructor() {
+	get__name__() {}
 
-	}
-
-
-	get__name__() {
-
-	}
-
-	set__name__() {
-
-	}
+	set__name__() {}
 }
