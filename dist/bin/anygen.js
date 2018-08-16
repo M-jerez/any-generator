@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 "use strict";
-var yargs = require('yargs');
+Object.defineProperty(exports, "__esModule", { value: true });
+var yargs = require("yargs");
 var Commands_1 = require("./Commands");
 var version = require('../../package').version;
 var yargonaut = require('yargonaut');

@@ -98,11 +98,12 @@ export class Builder {
 		// 	throw new Error(`Invalid argument 'destPath', ${destPath} is not a valid directory.`)
 		// }
 
-		fsx.ensureDir(destPath,(err)=>{
-			if(err){
-				throw new Error(`Error creating destination directory: ${destPath} `);
-			}
-		});
+		try{
+			fsx.ensureDirSync(destPath);
+		}catch (err){
+			throw new Error(`Error creating destination directory: ${destPath} `);
+		}
+
 
 		var blueprint = this.genStore[blueprintName];
 
