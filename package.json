@@ -29,8 +29,7 @@
 		"mocha": "^5.2.0",
 		"rimraf": "^2.5.4",
 		"typedoc": "^0.11.1",
-		"typescript": "^3.0.1",
-		"typings": "^2.1.1"
+		"typescript": "^3.0.1"
 	},
 	"bin": {
 		"anygen": "dist/bin/anygen.js"
