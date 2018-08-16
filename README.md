@@ -1,6 +1,6 @@
 <p align="center">
-  <img alt='Anygen' src='https://raw.githubusercontent.com/M-jerez/any-generator/master/logo/public/logo.svg?sanitize=true' 
-  height=110 width=356>
+  <img alt='Anygen' src='./logo/public/logo.svg?sanitize=true' 
+  height=120 width=388>
 </p>
 <p align="center">
   <strong>Simple scaffolding generator for any project.</strong><br/>
@@ -130,5 +130,3 @@ Any `__name__` string withing the content of the Blueprint files also will be re
 ## License
 
 [MIT](http://en.wikipedia.org/wiki/MIT_License) @ Ma Jerez
-
-![anygen](./logo/public/logo.svg)
