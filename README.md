@@ -94,7 +94,7 @@ Runnig `anygen create_component myNewComponent` will generate a new component `m
 -------------- | ------------ | ----- |
 *src* | The root directory of your template. | Usually the parent directory of your component template. |
 *dest* | The destination directory. | New scaffolding will be generated within this directory. |
-*files*| A [glob](https://www.npmjs.com/package/glob) pattern to set te files to be copied or excluded. <br/> **This pattern should be relative to the *`src`* directory.** <br/> By default all files within the `src` directory are coppied. | To exclude files use the `!` character at the beguining of the pattern.<br/> i.e. excluding png files: `!assets/**/*.png`.
+*files*| A list of [glob](https://www.npmjs.com/package/glob) patterns to set included and excluded files in the template. <br/> **This filepaths are relative to the *`src`* directory.** <br/> By default all files within the `src` directory are coppied. | To exclude files use a negation of the pattern.<br/> i.e. `!assets/**/*.png` will exclude all png files within the assets folder.
 *transform_new_name* | A pattern to match strings within your files and file-paths.<br/> The matched string will be replaced by the `<new_name>` parameter from the anygen command.| Used to transform class names, function names, etc. <br/> [minimatch](https://www.npmjs.com/package/minimatch) is used to transform glob patterns into Regular expressions  used for string replacement.|
 *transforms* | An array of other transformations to be executed on the files.<br/>See bellow table for more info.  | Used to replace other data in your files like dates, author, etc.. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <!-- so many spaces is used to set column width --> | 
 <!-- prettier-ignore-end -->
@@ -105,7 +105,7 @@ Runnig `anygen create_component myNewComponent` will generate a new component `m
 
 1. A file-tree is generated using only the files that mathc the `files` pattern. The `src` directory is used as root of the file-tree.
 2. All file names that match the `replace_name` pattern are renamed using the `<new_name>` argument from the anygen command.
-3. Check that the resulting file names does not conflict wiht existing files, if a file already exists the command is aborted.
+3. Check the resulting file names so dont conflict wiht existing files, if a file already exists the command is aborted.
 4. All files are parsed and the strings that match the `replace_name` pattern are replaced using the `<new_name>` argument from the anygen command.
 5. Execute all extra transforms especified in the `transforms` object.
 6. All new files are moved to the `dest` directory.
