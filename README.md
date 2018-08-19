@@ -53,7 +53,7 @@ create_component:
   src: 'lib/components/'
   dest: 'lib/components/'
   files: ['component-starter/**']
-  transform_new_name: ['componentStarter']
+  old_name: ['componentStarter']
 ```
 
 ```ts
@@ -63,7 +63,7 @@ create_component:
     "src": "lib/components/",
     "dest": "lib/components/",
     "files": ["componentStarter/**"],
-    "transform_new_name": ["starterComponent"]
+    "old_name": ["starterComponent"]
   }
 }
 ```
@@ -76,7 +76,7 @@ create_component:
       "src": "lib/components/",
       "dest": "lib/components/",
       "files": ["componentStarter/**"],
-      "transform_new_name": ["starterComponent"]
+      "old_name": ["starterComponent"]
     }
   }
 }
@@ -95,7 +95,7 @@ Runnig `anygen create_component myNewComponent` will generate a new component `m
 *src* | The root directory of your template. | This is usually the parent directory of your scaffolding template. |
 *dest* | The destination directory. | New scaffolding will be generated within this directory. |
 *files*| A list of [glob](https://www.npmjs.com/package/glob) patterns to included and excluded files in your template. <br/> **This filepaths are relative to the *`src`* directory.** <br/> By default all files within the `src` directory are coppied. | To exclude files use a negation of the pattern.<br/> i.e. `!assets/**/*.png` will exclude all png files within the assets folder.
-*transform_new_name* | A list of patterns to match strings within your files and file-paths.<br/> The matched string will be replaced by the `<new_name>` parameter from the anygen command.| Use this to transform class names, variable names, exports, etc. <br/> [minimatch](https://www.npmjs.com/package/minimatch) is used to transform glob patterns into Regular expressions.|
+*old_name* | A list of patterns to match strings within your files and file-paths.<br/> The matched string will be replaced by the `<new_name>` parameter from the anygen command.| Use this to transform class names, variable names, exports, etc. <br/> [minimatch](https://www.npmjs.com/package/minimatch) is used to transform glob patterns into Regular expressions.|
 *transforms* | An array of other transformations to be executed on the files.<br/>See bellow table for more info.  | Used this to replace some other data in your scaffolding like dates, author, etc.. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <!-- so many spaces is used to set column width --> | 
 <!-- prettier-ignore-end -->
 
