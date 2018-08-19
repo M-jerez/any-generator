@@ -4,7 +4,7 @@
 </p>
 <p align="center">
   <strong>Simple scaffolding generator for any project.</strong><br/>
-   Anygen is your own little cli-tool or advanced copy-paste command.
+   Anygen can be an advanced copy-paste command or your little cli-tool.
 </p>
 
 ---
@@ -42,7 +42,7 @@ npx anygen <template_name>  <new_name>
 
 Anygen uses [cosmiconfig](https://github.com/davidtheclark/cosmiconfig) to read the configuration. It is possible to write your cofign in `.anygenrc.json`, `.anygenrc.yaml`, `.anygenrc.js` or a property called `anygen` in `package.json`.
 
-Each object in the config file represents a `template` to generate a diferrent scaffolding for your project.
+Each object in the config file represents a `template` to generate a diferrent scaffolding for  your project.
 
 <!-- prettier-ignore-start -->
 ```yaml
@@ -82,6 +82,15 @@ create_component:
 <!-- prettier-ignore-end -->
 
 Runnig `anygen create_component myNewComponent` will generate a new component `myNewComponent` based on the `starterComponent`.
+
+
+## Cofiguratin Parameters
+Parameter | Desscription | Tips |
+-------------- | ------------ | ----- |
+src | The direcory used as your source. | Usually the parent directory of your component template. |
+dest | The directory used as destination. | The new component will be generated wihtin this directory. |
+files| A [glob](https://www.npmjs.com/package/glob) pattern to match all files to be coppied | To exclude some files prexif your glob patter with the `!` character, ie: to exclude png images use `!assets/**/*.png`.
+replace_names | A pattern to match strings wihtin your files and filepaths. mathed string will be replaced by the `<new_name>` paremeter from the anygen command | you can use glob patterns to match both names an filepaths to be replaced by the `<new_name>` parameter [minimatch](https://www.npmjs.com/package/minimatch) is used to 
 
 ## Examples
 
