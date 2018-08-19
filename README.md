@@ -42,9 +42,9 @@ npx anygen <template_name>  <new_name>
 
 ## Configuration
 
-Anygen uses [cosmiconfig](https://github.com/davidtheclark/cosmiconfig) to read the configuration. It is possible to write your config in `.anygenrc.json`, `.anygenrc.yaml`, `.anygenrc.js` or a property called `anygen` in `package.json`.
+Anygen uses [cosmiconfig](https://github.com/davidtheclark/cosmiconfig) to read the configuration. It is possible to write your config using the files `.anygenrc.json`, `.anygenrc.yaml`, `.anygenrc.js` or in a property called `anygen` in `package.json`.
 
-Each object in the config file represents a `template` to generate a different scaffolding for your project.
+Each object in the config file represents a template to generate a different scaffolding for your project and is using as the first parameter in the anygen command `anygen <template_name> <new_name>`
 
 <!-- prettier-ignore-start -->
 ```yaml
@@ -94,8 +94,8 @@ Runnig `anygen create_component myNewComponent` will generate a new component `m
 -------------- | ------------ | ----- |
 *src* | The root directory of your template. | Usually the parent directory of your component template. |
 *dest* | The destination directory. | New scaffolding will be generated within this directory. |
-*files*| A [glob](https://www.npmjs.com/package/glob) pattern to match all files to be copied. <br/> **This pattern should be relative to the *`src`* directory.** <br/> By default all files within the `src` directory are coppied. | To exclude files use the `!` character at the beguining of the pattern.<br/> i.e. excluding png files: `!assets/**/*.png`.
-*transform_new_name* | A pattern to match strings within your files and file-paths.<br/> The matched string will be replaced by the `<new_name>` parameter from the anygen command.| Used to transform class names, function names, etc,  wiht the new module name.<br/>You can use glob patterns to match strings on files and also file-paths. <br/> [minimatch](https://www.npmjs.com/package/minimatch) is used to transform glob patterns into Regular expressions.|
+*files*| A [glob](https://www.npmjs.com/package/glob) pattern to set te files to be copied or excluded. <br/> **This pattern should be relative to the *`src`* directory.** <br/> By default all files within the `src` directory are coppied. | To exclude files use the `!` character at the beguining of the pattern.<br/> i.e. excluding png files: `!assets/**/*.png`.
+*transform_new_name* | A pattern to match strings within your files and file-paths.<br/> The matched string will be replaced by the `<new_name>` parameter from the anygen command.| Used to transform class names, function names, etc. <br/> [minimatch](https://www.npmjs.com/package/minimatch) is used to transform glob patterns into Regular expressions  used for string replacement.|
 *transforms* | An array of other transformations to be executed on the files.<br/>See bellow table for more info.  | Used to replace other data in your files like dates, author, etc.. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <!-- so many spaces is used to set column width --> | 
 <!-- prettier-ignore-end -->
 
@@ -103,16 +103,16 @@ Runnig `anygen create_component myNewComponent` will generate a new component `m
 
 ## Scaffolding Generation Process
 
-1. A list of files is generated that mathc the `files` pattern. The `src` directory is used as root direcory.
-2. All file-name that match the `replace_name` are renamed to the `<new_name>` argument from the anygen command.
-3. Check that the resulting file-names doesn't conflict wiht existing files, if a file already exist the command is abborted.
-4. All files are parsed and the strings that match `replace_name` are replaced by the `<new_name>` argument from the anygen command.
-5. Execute all string transforms especified in the `transforms` object.
-6. All transformed files are moved to the `dest` directory.
+1. A file-tree is generated using only the files that mathc the `files` pattern. The `src` directory is used as root of the file-tree.
+2. All file names that match the `replace_name` pattern are renamed using the `<new_name>` argument from the anygen command.
+3. Check that the resulting file names does not conflict wiht existing files, if a file already exists the command is aborted.
+4. All files are parsed and the strings that match the `replace_name` pattern are replaced using the `<new_name>` argument from the anygen command.
+5. Execute all extra transforms especified in the `transforms` object.
+6. All new files are moved to the `dest` directory.
 
 &nbsp;
 
-## Example
+## Full Example
 
 //TODO
 
