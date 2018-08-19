@@ -4,7 +4,7 @@
 </p>
 <p align="center">
   <strong>Simple scaffolding generator for any project.</strong><br/>
-   Anygen is your own custom cli-tool, automate code generation based on your project.
+   Anygen is your own little cli-tool or advanced copy-paste command.
 </p>
 
 ---
@@ -24,32 +24,64 @@
 
 ## Install
 
-Install globally to use the CLI.
+Install globally.
 
 ```
-npm install -g  anygen
+npm i -g  anygen
+anygen <template_name>  <new_name>
 ```
 
-Install locally to use programtically.
+Install locally to use programtically or using [npx](https://medium.com/@maybekatz/introducing-npx-an-npm-package-runner-55f7d4bd282b).
 
 ```
-npm install --save  anygen
+npm i -D anygen
+npx anygen <template_name>  <new_name>
 ```
 
 ## Configuration
 
-Anygen requires you to set the path of your `blueprints` and the path where you want to generate you new modules.  
-In your `package.json` add the object `anygen` and set both paths. You can override this values using the cli options `-b` for blueprints_root and `-m` for modules_root.
+Anygen uses [cosmiconfig](https://github.com/davidtheclark/cosmiconfig) to read the configuration. It is possible to write your cofign in `.anygenrc.json`, `.anygenrc.yaml`, `.anygenrc.js` or a property called `anygen` in `package.json`.
 
-```js
-//file: package.json
+Each object in the config file represents a `template` to generate a diferrent scaffolding for your project.
+
+<!-- prettier-ignore-start -->
+```yaml
+#file:  .anygenrc.yaml
+create_component:
+  src: 'lib/components/'
+  dest: 'lib/components/'
+  files: ['component-starter/**']
+  replace_names: ['componentStarter']
+```
+
+```ts
+//file: .anygenrc.json
 {
-	"anygen": {
-		"blueprints_root": "./path/to/your/blueprints/",
-		"modules_root": "./src/modules"
-	}
+  "create_component": {
+    "src": "lib/components/",
+    "dest": "lib/components/",
+    "files": ["componentStarter/**"],
+    "replace_names": ["starterComponent"]
+  }
 }
 ```
+
+```ts
+//file: package.json
+{
+  "anygen": {
+    "create_component": {
+      "src": "lib/components/",
+      "dest": "lib/components/",
+      "files": ["componentStarter/**"],
+      "replace_names": ["starterComponent"]
+    }
+  }
+}
+```
+<!-- prettier-ignore-end -->
+
+Runnig `anygen create_component myNewComponent` will generate a new component `myNewComponent` based on the `starterComponent`.
 
 ## Examples
 
