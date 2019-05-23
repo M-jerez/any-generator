@@ -44,26 +44,27 @@ npx anygen <template_name>  <new_name>
 
 Anygen uses [cosmiconfig](https://github.com/davidtheclark/cosmiconfig) to read the configuration. It is possible to write your config using the files `.anygenrc.json`, `.anygenrc.yaml`, `.anygenrc.js` or in a property called `anygen` in `package.json`.
 
-Each object in the config file represents a template to generate a different scaffolding for your project and is using as the first parameter in the anygen command `anygen <template_name> <new_name>`
+Each object in the config file represents a template to generate a different scaffolding for your project and is using as the first parameter in the anygen command `anygen <template_name> <new_name>`.  
+Running `anygen starter_component myNewComponent` will generate a new component `myNewComponent` based on the `starter_component`.
 
 <!-- prettier-ignore-start -->
 ```yaml
 #file:  .anygenrc.yaml
-create_component:
-  src: 'lib/components/'
+starter_component:
+  src: 'anygen/templates/starter_component'
   dest: 'lib/components/'
-  files: ['component-starter/**']
-  old_name: ['componentStarter']
+  files: '*/**'
+  replace_name:  ['starter_component']
 ```
 
 ```ts
 //file: .anygenrc.json
 {
-  "create_component": {
-    "src": "lib/components/",
+  "starter_component": {
+    "src": "anygen/templates/starter_component",
     "dest": "lib/components/",
-    "files": ["componentStarter/**"],
-    "old_name": ["starterComponent"]
+    "files": ["*/**"],
+    "replace_name": ["starter_component"]
   }
 }
 ```
@@ -72,18 +73,17 @@ create_component:
 //file: package.json
 {
   "anygen": {
-    "create_component": {
-      "src": "lib/components/",
+    "starter_component": {
+      "src": "anygen/templates/starter_component",
       "dest": "lib/components/",
-      "files": ["componentStarter/**"],
-      "old_name": ["starterComponent"]
+      "files": ["*/**"],
+      "replace_name": ["starter_component"]
     }
   }
 }
 ```
 <!-- prettier-ignore-end -->
 
-Runnig `anygen create_component myNewComponent` will generate a new component `myNewComponent` based on the `starterComponent`.
 
 &nbsp;
 
@@ -91,12 +91,105 @@ Runnig `anygen create_component myNewComponent` will generate a new component `m
 
 <!-- prettier-ignore-start -->
 *Parameter* | Description  | Tips  |
--------------- | ------------ | ----- |
-*src* | The root directory of your template. | This is usually the parent directory of your scaffolding template. |
+----------- | ------------ | ----- |
+*src* | The root directory of your template. | This is usually the directory of your scaffolding template. |
 *dest* | The destination directory. | New scaffolding will be generated within this directory. |
-*files*| A list of [glob](https://www.npmjs.com/package/glob) patterns to included and excluded files in your template. <br/> **This filepaths are relative to the *`src`* directory.** <br/> By default all files within the `src` directory are coppied. | To exclude files use a negation of the pattern.<br/> i.e. `!assets/**/*.png` will exclude all png files within the assets folder.
-*old_name* | A list of patterns to match strings within your files and file-paths.<br/> The matched string will be replaced by the `<new_name>` parameter from the anygen command.| Use this to transform class names, variable names, exports, etc. <br/> [minimatch](https://www.npmjs.com/package/minimatch) is used to transform glob patterns into Regular expressions.|
-*transforms* | An array of other transformations to be executed on the files.<br/>See bellow table for more info.  | Used this to replace some other data in your scaffolding like dates, author, etc.. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <!-- so many spaces is used to set column width --> | 
+*files*| [Glob](https://www.npmjs.com/package/glob) patterns to included and excluded files in your template. This are relative to the *`src`* directory. If this parameter is omitted, all files in the `src` directory will be included. | Usi this to exclude files use a negation of the pattern.  &nbsp; ***i.e:*** `!assets/**/*.png` will exclude all png files within the assets folder.
+*replace_name* | A regular expression to be replaced by the `<new_name>` parameter. It will be replaced both within files and on file-paths.| Use this to transform class names, variable names, exports, etc. [Minimatch](https://www.npmjs.com/package/minimatch) is used to transform glob patterns into Regular expressions.|
+[*transforms*](##Transforms) | An list of extra transformations to be performed on files and/or file paths.| Used to replace some custom data in your scaffolding templates like dates, author, etc.. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <!-- so many spaces is used to set column width --> | 
+<!-- prettier-ignore-end -->
+
+
+&nbsp;
+
+## Transforms
+
+Besides the `<new_name>` parameter it is also possible to declare extra regular expression to be replaced in the file or file paths. It is also possible to configure if the regexp should be replaced only in the file, only in the file path or both.
+
+Lets say we have a readme file within the template and want to customize the ***version number*** and the ***author***.
+
+**Command:**  
+```shell
+anygen starter_component  myComponent --version='v0.1.3' --author='Ma Jerez' 
+```
+
+<!-- prettier-ignore-start -->
+<table>
+<tbody>
+<tr>
+<td width='400px'>
+<i>src file<i>
+</td>
+<td width='400px'>
+<i>generated file<i>
+</td>
+</tr>
+<tr>
+<td style='margin:0;padding:0'>
+
+```txt
+//starter_component/readme.md
+
+#Readme file for starter_component __v1__
+
+this is the starter component developed under ...
+
+@author: __author_name__
+```
+</td>
+<td style='margin:0;padding:0'>
+
+```txt
+// myComponent/readme.md
+
+#Readme file for myComponent v0.1.3
+
+this is the starter component developed under ...
+
+@author: Ma Jerez
+```
+</td>
+</tr>
+</tbody>
+</table>
+<!-- prettier-ignore-end -->
+
+Note how the text `__v1__` and  `__author_name__` in the src file will be replaced by `v0.1.3` and `Ma Jerez` respectively.
+
+```ts
+//file: .anygenrc.json
+{
+  "starter_component": {
+    "src": "anygen/templates/starter_component",
+    "dest": "lib/components/",
+    "files": ["*/**"],
+    "replace_name": ["starter_component"]
+    "transforms": {
+      "version" : { //name of the parameter in command line
+        "replace": "__v1__", // will replace '__v1__'
+        "files": "*/**.md", // only in markdown files
+        "in_files": true,
+        "in_paths": false
+	  },
+      "author" : {
+        "replace": "__author_name__", //will replace '__author_name__' in all files
+      }
+    }
+  }
+}
+```
+
+**Transform Config:**
+
+The name of each entry in the transforms object will be used as parameter name for the `anygen` command.
+
+<!-- prettier-ignore-start -->
+*Transform Parameter* | Default Value | Optional | Description |
+--------------------- | ------------- | -------- | ----------- |
+*replace*             | ❌            | ❌      | regular expression to match |
+*files*               | *             | ✔️      | glob patter to match files, all files matched by default |
+*in_files*            | true          | ✔️      | by default transform on files content |
+*in_paths*            | false         | ✔️      | by default path names are not transformed |
 <!-- prettier-ignore-end -->
 
 &nbsp;
