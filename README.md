@@ -22,6 +22,14 @@
 
 &nbsp;
 
+## How It Works
+
+Anygen is Command Line Tool that generates project scaffolding based on your own project files, Anygen does not require special files as templates so you can write a first component and replicate it easily using Anygen.
+
+Anygen automatically sarch for anygen config files on installed packages so templates configured on those packages can be reused (this is simmilar to to the way typescript search and import definition fiels on installed packages).  
+
+&nbsp;
+
 ## Install
 
 Install globally.
@@ -39,6 +47,7 @@ npx anygen <template_name>  <new_name>
 ```
 
 &nbsp;
+
 
 ## Configuration
 
