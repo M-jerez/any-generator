@@ -26,7 +26,7 @@
 
 Anygen is Command Line Tool that generates project scaffolding based on your own project files, Anygen does not require special files as templates so you can write a first component and replicate it easily using Anygen.
 
-Anygen automatically sarch for anygen config files on installed packages so templates configured on those packages can be reused (this is simmilar to to the way typescript search and import definition fiels on installed packages).  
+Anygen automatically sarch for anygen config files on installed packages so templates configured on those packages can be reused (this is simmilar to to the way typescript search and import definition fiels on installed packages).
 
 &nbsp;
 
@@ -47,7 +47,6 @@ npx anygen <template_name>  <new_name>
 ```
 
 &nbsp;
-
 
 ## Configuration
 
@@ -93,7 +92,6 @@ starter_component:
 ```
 <!-- prettier-ignore-end -->
 
-
 &nbsp;
 
 ## Configuration Parameters
@@ -108,18 +106,18 @@ starter_component:
 [*transforms*](##Transforms) | An list of extra transformations to be performed on files and/or file paths.| Used to replace some custom data in your scaffolding templates like dates, author, etc.. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <!-- so many spaces is used to set column width --> | 
 <!-- prettier-ignore-end -->
 
-
 &nbsp;
 
 ## Transforms
 
 Besides the `<new_name>` parameter it is also possible to declare extra regular expression to be replaced in the file or file paths. It is also possible to configure if the regexp should be replaced only in the file, only in the file path or both.
 
-Lets say we have a readme file within the template and want to customize the ***version number*** and the ***author***.
+Lets say we have a readme file within the template and want to customize the **_version number_** and the **_author_**.
 
-**Command:**  
+**Command:**
+
 ```shell
-anygen starter_component  myComponent --version='v0.1.3' --author='Ma Jerez' 
+anygen starter_component  myComponent --version='v0.1.3' --author='Ma Jerez'
 ```
 
 <!-- prettier-ignore-start -->
@@ -188,17 +186,18 @@ Note how the text `__v1__` and  `__author_name__` in the src file will be replac
 }
 ```
 
-**Transform Config:**
+**Transforms Config:**
 
-The name of each entry in the transforms object will be used as parameter name for the `anygen` command.
+The name of each entry in the transforms object is be used as parameter name in the `anygen` command.  
+If the parameter is not passed in the `anygen` command the user will be asked in the console using [inquirer](https://github.com/SBoudrias/Inquirer.js).
 
 <!-- prettier-ignore-start -->
 *Transform Parameter* | Default Value | Optional | Description |
 --------------------- | ------------- | -------- | ----------- |
 *replace*             | ❌            | ❌      | regular expression to match |
 *files*               | *             | ✔️      | glob patter to match files, all files matched by default |
-*in_files*            | true          | ✔️      | by default transform on files content |
-*in_paths*            | false         | ✔️      | by default path names are not transformed |
+*in_files*            | true          | ✔️      | only file content transformed by default |
+*in_paths*            | false         | ✔️      | path names are not transformed by default |
 <!-- prettier-ignore-end -->
 
 &nbsp;
@@ -283,6 +282,6 @@ Any `__name__` string within the content of the Blueprint files also will be rep
 -   `multiple-dir` blueprint: show how to create a module where the files are split within multiple directories. in this case the `modules_root` parameter
     should be the `common root` of all the split directories and blueprint should replicate the subdirectory structure of this `common root`.
 
-## License
+## License & Author
 
-[MIT](http://en.wikipedia.org/wiki/MIT_License) @ Ma Jerez
+@License: [MIT](http://en.wikipedia.org/wiki/MIT_License) &nbsp;&nbsp;|&nbsp;&nbsp; @Author: [Ma Jerez](https://github.com/M-jerez)
