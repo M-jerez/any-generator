@@ -1,18 +1,21 @@
 {
 	"name": "anygen",
-	"version": "0.0.2",
-	"description": "!!!Automatic Scaffolding Generator For Any Project!!!",
+	"version": "0.4.0",
+	"description": "Simple scaffolding code generation for any project.",
 	"main": "dist/lib/Builder.js",
 	"repository": {
 		"type": "git",
 		"url": "git+https://M-jerez@github.com/M-jerez/gulp-cli-generator.git"
+	},
+	"engines": {
+		"node": ">=10 <=12"
 	},
 	"keywords": [
 		"generator",
 		"cli",
 		"scallfolding"
 	],
-	"author": "Ma-Jerez",
+	"author": "Ma Jerez (https://twitter.com/Ma_jrz)",
 	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/M-jerez/gulp-cli-generator/issues"
