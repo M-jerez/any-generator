@@ -20,18 +20,17 @@
 <img src="https://badges.greenkeeper.io/M-jerez/any-generator.svg?style=flat-square" alt="npm"  style="max-width:100%;">    
 </p>
 
-
-
 &nbsp;
+
 ## How It Works
+
 Anygen is a Command Line Tool that generates new scaffolding code based on your own project files. Anygen does not require special files as templates, you can write a first component and replicate it easily using Anygen.
 
 Anygen automatically search for other anygen config files in your npm modules, so templates be reused from other packages.  
-*This is similar to to the way Typescript search and import type definition files on installed packages.*
-
-
+_This is similar to to the way Typescript search and import type definition files on installed packages._
 
 &nbsp;
+
 ## Install
 
 Install globally.
@@ -48,13 +47,13 @@ npm i -D anygen
 npx anygen <template_name>  <new_name>
 ```
 
-
 &nbsp;
+
 ## Config File
 
-Anygen uses a file `anygen.json` in the root of your project as config file. This is done so config files can be easily found on installed npm modules without any performance overhead.  
+Anygen uses a file `anygen.json` in the root of your project as config file. This is done so config files can be easily found on installed npm modules without any performance overhead.
 
-Each object in the config file represents a template to generate code for your project. The name of the template is used in the anygen command as follows: `anygen <template_name> <new_name>`.  
+Each object in the config file represents a template to generate code for your project. The name of the template is used in the anygen command as follows: `anygen <template_name> <new_name>`.
 
 Running `anygen starterComponent myNewComponent` will generate a new component `myNewComponent` based on the `starterComponent`.
 
@@ -78,9 +77,8 @@ Running `anygen starterComponent myNewComponent` will generate a new component `
 }
 ```
 
-
-
 &nbsp;
+
 ## Config Parameters
 
 <!-- prettier-ignore-start -->
@@ -93,9 +91,8 @@ Running `anygen starterComponent myNewComponent` will generate a new component `
 [*transforms*](##Transforms) | An list of extra transformations to be performed on files and/or file paths.| Used to replace some custom data in your scaffolding templates like dates, author, etc.. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <!-- so many spaces is used to set column width --> | 
 <!-- prettier-ignore-end -->
 
-
-
 &nbsp;
+
 ## Transforms
 
 Besides the `<new_name>` parameter it is also possible to declare a list of transformations to be executed when generating the new code. Each transformation is basically a regular expression to match and replace some text in the files content or files name.
@@ -186,9 +183,8 @@ If the parameter is not passed in the `anygen` command the user will be asked in
 *in_paths*            | false         | ✔️      | path names are not transformed by default |
 <!-- prettier-ignore-end -->
 
-
-
 &nbsp;
+
 ## Scaffolding Generation Process
 
 1. A file-tree is generated using only the files that mathc the `files` pattern. The `src` directory is used as root of the file-tree.
@@ -198,24 +194,22 @@ If the parameter is not passed in the `anygen` command the user will be asked in
 5. Execute all extra transforms especified in the `transforms` object.
 6. All new files are moved to the `dest` directory.
 
-
-
 &nbsp;
+
 ## Full Example
 
 //TODO
 
-
-
 &nbsp;
+
 ## License
 
-[MIT License](http://en.wikipedia.org/wiki/MIT_License)  
+[MIT License](http://en.wikipedia.org/wiki/MIT_License)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-*The software is provided "as is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement. In no event shall the authors or copyright holders be liable for any claim, damages or other liability, whether in an action of contract, tort or otherwise, arising from, out of or in connection with the software or the use or other dealings in the software.*
+_The software is provided "as is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement. In no event shall the authors or copyright holders be liable for any claim, damages or other liability, whether in an action of contract, tort or otherwise, arising from, out of or in connection with the software or the use or other dealings in the software._
 
 [Created by @Ma Jerez](https://twitter.com/Ma_jrz)
