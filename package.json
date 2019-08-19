@@ -49,6 +49,6 @@
 	"dependencies": {
 		"fs-extra": "^8.0.1",
 		"yargonaut": "^1.1.2",
-		"yargs": "^13.2.4"
+		"yargs": "^14.0.0"
 	}
 }
