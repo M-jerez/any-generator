@@ -24,11 +24,12 @@
 
 ## How It Works
 
-- Anygen is a Command Line Tool that generates new scaffolding files based on your own project files.   
+- Anygen is a CLI that generates new scaffolding files based on your own project files.   
 - Anygen does not require special templates files (you still can use templates for advanced use cases).   
 - You can write a first component and replicate it easily using Anygen.
 
-Anygen automatically search for other `anygen.json` files in your npm modules, so templates from other packages can be reused in your own project. _This is similar to to the way Typescript search and import type definition files on installed packages._
+Anygen automatically search for other `anygen.json` files in your npm modules, so templates from other packages can be reused in your own project.    
+_This is similar to the way Typescript automatically discovers type definition files._
 
 &nbsp;
 
@@ -114,7 +115,7 @@ anygen someComponent  myComponent --version='v0.1.3'
 <tbody>
 <tr>
 <td width='400px'>
-Src: &nbsp;&nbsp; <i><small>starterComponent/readme.md</small><i>
+Src: &nbsp;&nbsp; <i><small>someComponent/readme.md</small><i>
 </td>
 <td width='400px'>
 Dest: &nbsp;&nbsp; <i><small>myComponent/readme.md</small><i>
@@ -126,8 +127,8 @@ Dest: &nbsp;&nbsp; <i><small>myComponent/readme.md</small><i>
 ```txt
 #Readme file for starterComponent v0.1
 
-Lorem ipsum dolor sit amet, consectetur adipiscing  
-elit, sed do eiusmod tempor ...
+Lorem ipsum dolor sit amet...    
+elit, sed do eiusmod tempor, dolor ...
 
 @author: Ma Jerez
 ```
@@ -137,8 +138,8 @@ elit, sed do eiusmod tempor ...
 ```txt
 #Readme file for myComponent v0.1.3
 
-Lorem ipsum dolor sit amet, consectetur adipiscing  
-elit, sed do eiusmod tempor ...
+Lorem ipsum dolor sit amet...    
+elit, sed do eiusmod tempor, dolor ...
 
 @author: Ma Jerez
 ```
