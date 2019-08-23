@@ -4,7 +4,7 @@
 </p>
 <p align="center">
   <strong>Simple scaffolding code generation.</strong><br/>
-   Anygen is your own cli-tool based on your own project.
+   Anygen is your own CLI tool for your own project.
 </p>
 
 ---
@@ -24,10 +24,11 @@
 
 ## How It Works
 
-Anygen is a Command Line Tool that generates new scaffolding code based on your own project files. Anygen does not require special files as templates, you can write a first component and replicate it easily using Anygen.
+- Anygen is a Command Line Tool that generates new scaffolding files based on your own project files.   
+- Anygen does not require special templates files (you still can use templates for advanced use cases).   
+- You can write a first component and replicate it easily using Anygen.
 
-Anygen automatically search for other anygen config files in your npm modules, so templates be reused from other packages.  
-_This is similar to to the way Typescript search and import type definition files on installed packages._
+Anygen automatically search for other `anygen.json` files in your npm modules, so templates from other packages can be reused in your own project. _This is similar to to the way Typescript search and import type definition files on installed packages._
 
 &nbsp;
 
@@ -37,41 +38,41 @@ Install globally.
 
 ```
 npm i -g  anygen
-anygen <template_name>  <new_name>
+anygen <recipe_name>  <new_name>
 ```
 
 Install locally to use programmatically or using [npx](https://medium.com/@maybekatz/introducing-npx-an-npm-package-runner-55f7d4bd282b).
 
 ```
 npm i -D anygen
-npx anygen <template_name>  <new_name>
+npx anygen <recipe_name>  <new_name>
 ```
 
 &nbsp;
 
-## Config File
+## Recipes File (config file)
 
-Anygen uses a file `anygen.json` in the root of your project as config file. This is done so config files can be easily found on installed npm modules without any performance overhead.
+Anygen uses a file `anygen.json` in the root of your project as configuration file. This way other anygen 'recipies' can be found executed from intalled npm modules.
 
-Each object in the config file represents a template to generate code for your project. The name of the template is used in the anygen command as follows: `anygen <template_name> <new_name>`.
+Each entry in the config file represents a recipe to generate code. The name of the recipe is used in the anygen command as follows: `anygen <recipe_name> <new_name>`
 
-Running `anygen starterComponent myNewComponent` will generate a new component `myNewComponent` based on the `starterComponent`.
+Using bellow recipies file and running the command `anygen someComponent myNewComponent` will generate a new component `myNewComponent` from `someComponent`.
 
 ```ts
 //file: anygen.json
 {
-  "starterComponent": {
-    "src": "anygen/templates/starterComponent",
+  "someComponent": {
+    "src": "anygen/templates/someComponent",
     "dest": "lib/components/",
     "files": ["*/**"],
-    "replace_name": ["starterComponent"],
+    "replace_name": ["someComponent"],
     "transforms" : {}
   },
-  "starterService": {
-    "src": "anygen/templates/starterService",
+  "someService": {
+    "src": "anygen/templates/someService",
     "dest": "lib/services/",
     "files": ["*/**"],
-    "replace_name": ["starterService"],
+    "replace_name": ["someService"],
     "transforms" : {}
   }
 }
@@ -84,11 +85,11 @@ Running `anygen starterComponent myNewComponent` will generate a new component `
 <!-- prettier-ignore-start -->
 *Parameter* | Description  | Tips  |
 ----------- | ------------ | ----- |
-*src* | The root directory of your template. | This is usually the directory of your scaffolding template. |
+*src* | The root directory of your original code or template. | This is usually the directory of your scaffolding template. |
 *dest* | The destination directory. | New scaffolding will be generated within this directory. |
-*files*| [Glob](https://www.npmjs.com/package/glob) patterns to included and excluded files in your template. This are relative to the *`src`* directory. If this parameter is omitted, all files in the `src` directory will be included. | Usi this to exclude files use a negation of the pattern.  &nbsp; ***i.e:*** `!assets/**/*.png` will exclude all png files within the assets folder.
-*replace_name* | A regular expression to be replaced by the `<new_name>` parameter. It will be replaced both within files and on file-paths.| Use this to transform class names, variable names, exports, etc. [Minimatch](https://www.npmjs.com/package/minimatch) is used for regular expressions.|
-[*transforms*](##Transforms) | An list of extra transformations to be performed on files and/or file paths.| Used to replace some custom data in your scaffolding templates like dates, author, etc.. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <!-- so many spaces is used to set column width --> | 
+*files*| [Glob](https://www.npmjs.com/package/glob) patterns to included or exclude files in your recipe. This are relative to the *`src`* directory. If this parameter is omitted, all files in the `src` directory will be included. | To exclude files use a negation of the pattern.  ***i.e:*** `!assets/**/*.png` will exclude all png files within the assets folder.
+*replace_name* | A regular expression to be replaced by the `<new_name>` parameter. It will be replaced both within files content and file names.| Use this to transform class names, variable names, exports, etc. [Minimatch](https://www.npmjs.com/package/minimatch) is used for regular expressions.|
+[*transforms*](##Transforms) | An list of extra transformations to be performed on files and/or file names.| Used to replace some custom data in your scaffolding templates like dates, author, etc.. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <!-- so many spaces is used to set column width --> | 
 <!-- prettier-ignore-end -->
 
 &nbsp;
@@ -105,7 +106,7 @@ The text `v0.1` in the src file will be replaced by `v0.1.3` in the generated fi
 **Command Line:**
 
 ```shell
-anygen starterComponent  myComponent --version='v0.1.3'
+anygen someComponent  myComponent --version='v0.1.3'
 ```
 
 <!-- prettier-ignore-start -->
@@ -152,11 +153,11 @@ elit, sed do eiusmod tempor ...
 ```ts
 //file: anygen.json
 {
-  "starterComponent": {
-    "src": "anygen/templates/starterComponent",
+  "someComponent": {
+    "src": "anygen/templates/someComponent",
     "dest": "lib/components/",
     "files": ["*/**"],
-    "replace_name": ["starterComponent"]
+    "replace_name": ["someComponent"]
     "transforms": {
       "version" : { //name of the parameter in command line
         "replace": "^v0\.1", // match and replaces 'v0.1'
@@ -177,10 +178,10 @@ If the parameter is not passed in the `anygen` command the user will be asked in
 <!-- prettier-ignore-start -->
 *Transform Parameter* | Default Value | Optional | Description |
 --------------------- | ------------- | -------- | ----------- |
-*replace*             | ❌            | ❌      | regular expression to match |
-*files*               | *             | ✔️      | glob patter to match files, all files matched by default |
-*in_files*            | true          | ✔️      | only file content transformed by default |
-*in_paths*            | false         | ✔️      | path names are not transformed by default |
+*replace*             | none          | no       | regular expression to match |
+*files*               | *             | yes      | glob patter to match files, all files matched by default |
+*in_files*            | true          | yes      | only file content transformed by default |
+*in_paths*            | false         | yes      | path names are not transformed by default |
 <!-- prettier-ignore-end -->
 
 &nbsp;
