@@ -3,7 +3,7 @@
   height=120 width=388>
 </p>
 <p align="center">
-  <strong>Simple scaffolding code generation.</strong><br/>
+  <strong>Simple code scaffolding generation.</strong><br/>
    Anygen is your own CLI tool for your own project.
 </p>
 
@@ -24,12 +24,11 @@
 
 ## How It Works
 
-- Anygen is a CLI that generates new scaffolding files based on your own project files.   
-- Anygen does not require special templates files (you still can use templates for advanced use cases).   
-- You can write a first component and replicate it easily using Anygen.
+-   Anygen is a CLI that generates new scaffolding files based on your own project files.
+-   Anygen does not require special templates files (although templates can be used for advanced cases).
+-   You can write a first component and replicate it easily using Anygen.
 
-Anygen automatically search for other `anygen.json` files in your npm modules, so templates from other packages can be reused in your own project.    
-_This is similar to the way Typescript automatically discovers type definition files._
+Anygen automatically search for other `anygen.json` files in your npm modules, so templates from other packages can be reused in your own project. _This is similar to the way Typescript automatically discovers type definition files._
 
 &nbsp;
 
@@ -51,13 +50,13 @@ npx anygen <recipe_name>  <new_name>
 
 &nbsp;
 
-## Recipes File (config file)
+## Recipes File
 
-Anygen uses a file `anygen.json` in the root of your project as configuration file. This way other anygen 'recipies' can be found executed from intalled npm modules.
+Anygen uses a file `anygen.json` in the root of your project as **configuration file**. This way other anygen 'recipes' can be found end executed from installed npm modules.
 
-Each entry in the config file represents a recipe to generate code. The name of the recipe is used in the anygen command as follows: `anygen <recipe_name> <new_name>`
+Each entry in the config file represents a 'recipe' to generate scaffold code. The name of the recipe is used in the anygen command as follows: `anygen <recipe_name> <new_name>`
 
-Using bellow recipies file and running the command `anygen someComponent myNewComponent` will generate a new component `myNewComponent` from `someComponent`.
+Using bellow recipes file and running the command `anygen someComponent myNewComponent` will generate a new component `myNewComponent` from `someComponent`.
 
 ```ts
 //file: anygen.json
@@ -97,7 +96,7 @@ Using bellow recipies file and running the command `anygen someComponent myNewCo
 
 ## Transforms
 
-Besides the `<new_name>` parameter it is also possible to declare a list of transformations to be executed when generating the new code. Each transformation is basically a regular expression to match and replace some text in the files content or files name.
+It is possible to declare a list of transformations to be executed when generating the new code. Each transformation is basically a regular expression to match and replace some text in the files content or files name.
 
 **[Minimatch](https://www.npmjs.com/package/minimatch) is used to generate the regular expressions.** Please read Minimatch docs for all differences with the standard javascript Regexp.
 
@@ -162,7 +161,8 @@ elit, sed do eiusmod tempor, dolor ...
     "transforms": {
       "version" : { //name of the parameter in command line
         "replace": "^v0\.1", // match and replaces 'v0.1'
-        "files": "*/**.md", // executes only in markdown files
+		"files": "*/**.md", // executes only in markdown files
+		"lines": null, // optional start and end line limit for the regexp replace. [startLine, endLine]
         "in_files": true,
         "in_paths": false
       }
@@ -181,6 +181,7 @@ If the parameter is not passed in the `anygen` command the user will be asked in
 --------------------- | ------------- | -------- | ----------- |
 *replace*             | none          | no       | regular expression to match |
 *files*               | *             | yes      | glob patter to match files, all files matched by default |
+*lines*               | null          | yes      | [*startLine*, *endLine*], applies only to files |
 *in_files*            | true          | yes      | only file content transformed by default |
 *in_paths*            | false         | yes      | path names are not transformed by default |
 <!-- prettier-ignore-end -->
