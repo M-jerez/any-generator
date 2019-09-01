@@ -52,7 +52,7 @@ npx anygen <recipe_name>  <new_name>
 
 ## Recipes File
 
-Anygen uses a file `anygen.json` in the root of your project as **configuration file**. This way other anygen 'recipes' can be found end executed from installed npm modules.
+Anygen uses `anygen.json` file in the root of your project as **configuration file**. This way other anygen 'recipes' can be found end executed from installed npm modules.
 
 Each entry in the config file represents a 'recipe' to generate scaffold code. The name of the recipe is used in the anygen command as follows: `anygen <recipe_name> <new_name>`
 
