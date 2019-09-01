@@ -27,7 +27,6 @@
 		"@types/mocha": "^5.2.5",
 		"@types/node": "^12.0.4",
 		"@types/rimraf": "^2.0.2",
-		"@types/yargs": "^13.0.0",
 		"chai": "^4.1.2",
 		"mocha": "^6.1.4",
 		"prettier": "^1.14.2",
@@ -41,7 +40,8 @@
 		"anygen": "dist/bin/anygen.js"
 	},
 	"scripts": {
-		"test": "node node_modules/mocha/bin/mocha dist/test/*.spec.js --reporter spec",
+		"test": "",
+		"test_old": "node node_modules/mocha/bin/mocha dist/test/*.spec.js --reporter spec",
 		"precompile": "npm run clean && npm run docs",
 		"clean": "rimraf dist/*",
 		"compile": "npm run compile:ts",
@@ -50,8 +50,5 @@
 		"lint": "tslint -c tslint.json 'src/**/*.ts'"
 	},
 	"dependencies": {
-		"fs-extra": "^8.0.1",
-		"yargonaut": "^1.1.2",
-		"yargs": "^13.2.4"
 	}
 }
