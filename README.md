@@ -4,7 +4,7 @@
 </p>
 <p align="center">
   <strong>Simple code scaffolding generation.</strong><br/>
-   Anygen is your own CLI tool for your own project.
+   Anygen is a simple CLI tool for your own projects.
 </p>
 
 ---
@@ -28,7 +28,7 @@
 -   Anygen does not require special templates files (although templates can be used for advanced cases).
 -   You can write a first component and replicate it easily using Anygen.
 
-Anygen automatically search for other `anygen.json` files in your npm modules, so templates from other packages can be reused in your own project. _This is similar to the way Typescript automatically discovers type definition files._
+Anygen automatically search for other `anygen.json` files in your `node_modules`, so scaffolding from other packages can be shared and reused using npm packages. 
 
 &nbsp;
 
@@ -52,7 +52,7 @@ npx anygen <recipe_name>  <new_name>
 
 ## Recipes File
 
-Anygen uses `anygen.json` file in the root of your project as **configuration file**. This way other anygen 'recipes' can be found end executed from local installed npm packages (**'node_modules'** directory).
+Anygen uses `anygen.json` file in the root of your project as **configuration file**.
 
 Each entry in the config file represents a 'recipe' to generate scaffold code. The name of the recipe is used in the anygen command as follows: `anygen <recipe_name> <new_name>`
 
@@ -96,16 +96,42 @@ Using bellow recipes file and running the command `anygen someComponent myNewCom
 
 ## Transforms
 
-It is possible to declare a list of transformations to be executed when generating the new code. Each transformation is basically a regular expression to match and replace some text in the files content or files name.
+It is possible to declare a list of transformations to be executed when generating the new code. Each transformation is basically a regular expression to match and replace text in the file's content or name.
 
 **[Minimatch](https://www.npmjs.com/package/minimatch) is used to generate the regular expressions.** Please read Minimatch docs for all differences with the standard javascript Regexp.
+
+
+The name of each entry in the transforms property, is used as parameter name in the `anygen` command.  
+If the parameter is not passed in the command, the user will be asked in the console.
+
+**Transform example**
 
 Lets say there is a readme file within the template and we want to customize the **_Version Number_**.  
 The text `v0.1` in the src file will be replaced by `v0.1.3` in the generated file.
 
-**Command Line:**
+```ts
+//file: anygen.json
+{
+  "someComponent": {
+    "src": "anygen/templates/someComponent",
+    "dest": "lib/components/",
+    "files": ["*/**"],
+    "replace_name": ["someComponent"]
+    "transforms": {
+      "version" : { //name of the parameter in command line
+        "replace": "^v0\.1", // match and replaces 'v0.1'
+        "files": "*/**.md", // executes only in markdown files
+        "lines": null, // optional start and end line limit for the regexp replace. [startLine, endLine]
+        "in_files": true,
+        "in_paths": false
+      }
+    }
+  }
+}
+```
 
 ```shell
+#executed command line
 anygen someComponent  myComponent --version='v0.1.3'
 ```
 
@@ -114,10 +140,10 @@ anygen someComponent  myComponent --version='v0.1.3'
 <tbody>
 <tr>
 <td width='400px'>
-Src: &nbsp;&nbsp; <i><small>someComponent/readme.md</small><i>
+Original file: &nbsp;&nbsp; <i><small>someComponent/readme.md</small><i>
 </td>
 <td width='400px'>
-Dest: &nbsp;&nbsp; <i><small>myComponent/readme.md</small><i>
+Generated file: &nbsp;&nbsp; <i><small>myComponent/readme.md</small><i>
 </td>
 </tr>
 <tr>
@@ -149,39 +175,13 @@ elit, sed do eiusmod tempor, dolor ...
 <!-- prettier-ignore-end -->
 
 
-
-```ts
-//file: anygen.json
-{
-  "someComponent": {
-    "src": "anygen/templates/someComponent",
-    "dest": "lib/components/",
-    "files": ["*/**"],
-    "replace_name": ["someComponent"]
-    "transforms": {
-      "version" : { //name of the parameter in command line
-        "replace": "^v0\.1", // match and replaces 'v0.1'
-		"files": "*/**.md", // executes only in markdown files
-		"lines": null, // optional start and end line limit for the regexp replace. [startLine, endLine]
-        "in_files": true,
-        "in_paths": false
-      }
-    }
-  }
-}
-```
-
 **Transforms Config:**
-
-The name of each entry in the transforms object is be used as parameter name in the `anygen` command.  
-If the parameter is not passed in the `anygen` command the user will be asked in the console using [inquirer](https://github.com/SBoudrias/Inquirer.js).
-
 <!-- prettier-ignore-start -->
 *Transform Parameter* | Default Value | Optional | Description |
 --------------------- | ------------- | -------- | ----------- |
 *replace*             | none          | no       | regular expression to match |
 *files*               | *             | yes      | glob patter to match files, all files matched by default |
-*lines*               | null          | yes      | [*startLine*, *endLine*], applies only to files |
+*lines*               | null          | yes      | start and end line to limit regexp replace. [startLine, endLine |
 *in_files*            | true          | yes      | only file content transformed by default |
 *in_paths*            | false         | yes      | path names are not transformed by default |
 <!-- prettier-ignore-end -->
@@ -199,11 +199,6 @@ If the parameter is not passed in the `anygen` command the user will be asked in
 
 &nbsp;
 
-## Full Example
-
-//TODO
-
-&nbsp;
 
 ## License
 
