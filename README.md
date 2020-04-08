@@ -127,7 +127,8 @@ If the parameter is not passed in the command, the user will be asked in the con
         "lines": [0,-1], // [start, end], negative values count from the end of the file, by default include all file lines.
         "in_files": true, // Only the file content transformed by default
         "in_paths": true, // Path names are not transformed by default
-        "default_value": null //optional default value
+        "default_value": null //optional default value,
+        "prompt": null //optional message to display to the user
       }
     }
   }
@@ -213,8 +214,8 @@ Expanded way:
 
 
 ## Full example
-Lets say there is a readme file within the template and we want to customize the *Version Number*.  
-The text `v0.1` in the src file will be replaced by `v0.1.3` in the generated file.
+Lets say we want to create a new component, and there is a readme file within it. We want to customize the *Version Number* and *Author* only in the readme file.  
+To do this we have to replace the version, author and name of the blueprint component using bellow config file.  
 
 ```ts
 //file: anygen.json
@@ -229,7 +230,7 @@ The text `v0.1` in the src file will be replaced by `v0.1.3` in the generated fi
       "version" : { //name of the parameter in command line
         "replace": "0.1", // match and replaces '0.1'
         "files": "*/**.md", // executes only in markdown files
-        "lines": [0,0], // Search for the regexp only in the first line of any file
+        "lines": [0,0], // Search for the regexp only in the first line
         "in_files": true,
         "in_paths": false,
         "prompt": "Please use semver for the new version" //message to display in the prompt
@@ -249,12 +250,14 @@ The text `v0.1` in the src file will be replaced by `v0.1.3` in the generated fi
   }
 }
 ```
-Run anygen
+**Run anygen:**  
+The version `v0.1` will by replaced by `v0.1.3` and the author `Ma jerez` will be replaced by `Joe Jones` in the generated component.
 ```shell
 anygen createComponent  myComponent --version='0.1.3' --author='Joe Jones'
 ```
-Generated files:   
-All files within `app/components/myOriginalComponent` will be copied and transformed. For this example we just display the transformation applied to `app/components/myOriginalComponent/readme.md` file. 
+**Generated files:**   
+All files within `app/components/myOriginalComponent` will be copied and transformed.   
+For this example we just display the transformation applied to `app/components/myOriginalComponent/readme.md` file. 
 <!-- prettier-ignore-start -->
 <table>
 <tbody>
