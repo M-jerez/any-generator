@@ -65,17 +65,17 @@ Anygen uses `anygen.json` file in the root of your project as **configuration fi
 
 Each entry in the config file represents a 'blueprint' to generate code. The name of the blueprint is used in the anygen command as follows: `anygen <blueprint_name> <new_name>`
 
-Using bellow config file and running the command `anygen myFirstComponent myNewComponent` will generate a new component `myNewComponent` based ob `myFirstComponent` on the `app/components/` directory.
+Using bellow config file and running the command `anygen createComponent myNewComponent` will generate a new component `myNewComponent` based ob `myOriginalComponent` on the `app/components/` directory.
 
 ```ts
 //file: anygen.json
 {
-  "myFirstComponent": {
-    "src": "app/components/myFirstComponent",
+  "createComponent": { //createComponent Blueprint
+    "src": "app/components/myOriginalComponent",
     "dest": "app/components/",
     "files": ["*/**"],
     "transforms": {
-      "_default_" : ["myFirstComponent"]
+      "_default_" : ["myOriginalComponent"]
     }
   }
 }
@@ -95,7 +95,7 @@ Using bellow config file and running the command `anygen myFirstComponent myNewC
 *dest* | The destination directory. | New scaffolding code will be generated within this directory. |
 *files* | [Glob](https://www.npmjs.com/package/glob) pattern to include/exclude files in your blueprint **relative to the *`src`* directory.** &nbsp;&nbsp; ***i.e:*** `'*/**'` is internally transformed into `'${src}/*/**'`<br/>If this parameter is omitted, all files within the `src` directory will be included. | To exclude files use a negation of the pattern.  ***i.e:*** `!assets/**/*.png` will exclude all png files within the assets folder of your blueprint.|
 [*transforms*](#transforms) | An list of transformations to be performed on files and/or file paths.<br/>Transformations are applied in the same order that they appear in the config file.| Transformations are basically regexp replacement.<br/>Use it to replace custom data in your blueprints, like class names, function names, variable names, dates, author, copyright etc.. | 
-[*transforms.\_default\_*](#transforms._default_) | The minimum 'default' transformation required to replace `<blueprint_name>` by `<new_name>`.<br/>It can be a list of strings or regular expressions. It will be replaced within the files content and file paths.| This can be used in a **shorthand way** for quick setup and replace file names, class names, etc.<br/>Or can be used in an **expanded way** for more advanced transformations.<br/>[Minimatch](https://www.npmjs.com/package/minimatch) is used for regular expressions.|
+[*transforms.\_default\_*](#transforms-shorthand) | The minimum 'default' transformation required to replace `<blueprint_name>` by `<new_name>`.<br/>It can be a list of strings or regular expressions. It will be replaced within the files content and file paths.| This can be used in a **shorthand way** for quick setup and replace file names, class names, etc.<br/>Or can be used in an **expanded way** for more advanced transformations.<br/>[Minimatch](https://www.npmjs.com/package/minimatch) is used for regular expressions.|
 <!-- prettier-ignore-end -->
 
 
@@ -117,15 +117,15 @@ If the parameter is not passed in the command, the user will be asked in the con
 ```ts
 //file: anygen.json
 {
-  "myFirstComponent": {
-    //...
+  "createComponent": { //createComponent Blueprint
+    // other params ...
     "transforms": {
       "some_transformation" : { //name of the transformation
-        "replace": null, //required value, it is minimatch regexp i.e: 'myFirstComponent'
-        "files": "*/**", // executes on all files by default
+        "replace": ["myOriginalComponent"], //required value, it is minimatch regexp.
+        "files": "*/**", // executes on all files by default, these files are relative to the 'src' directory
         "lines": [0,-1], // [start, end], negative values count from the end of the file, by default include all file lines.
         "in_files": true, // Only the file content transformed by default
-        "in_paths": false, // Path names are not transformed by default
+        "in_paths": true, // Path names are not transformed by default
         "default_value": null //optional default value
       }
     }
@@ -134,21 +134,24 @@ If the parameter is not passed in the command, the user will be asked in the con
 ```
 
 <!-- prettier-ignore-start -->
-*Transform Parameter* | Default Value | Optional | Description |
---------------------- | ------------- | -------- | ----------- |
-*replace*             | None          | No       | Regular expression to match |
-*files*               | `'*/**'`      | Yes      | Glob patter to match files, all files matched by default |
-*lines*               | `[0,-1]`      | Yes      | Start and End lines to limit regexp replace. Using negative values indicates a line number from the end of the file.|
-*in_files*            | `true`        | Yes      | Only the file content transformed by default |
-*in_paths*            | `false`       | Yes      | Path names are not transformed by default<br/>Except for the \_default\_ shorthand transformation where paths are also transformed by default. |
-*default_value*       | None          | Yes       | A default value to be used for replacement in the transformation.<br/>if this parameter is omitted the user will be asked for the value in the console.|
+*Transform Parameter* | Default Value | Required          | Description |
+--------------------- | ------------- | ----------------- | ----------- |
+*replace*             | None          | Yes               | Regular expressions to match|
+*files*               | `'*/**'`      | No - Uses Default | Glob patter to match files, all files matched by default, these files are relative to the `src` directory |
+*lines*               | `[0,-1]`      | No - Uses Default | Start and End lines to limit regexp search. Using negative values indicates a line number starting from the end of the file. By default all lines are included.|
+*in_files*            | `true`        | No - Uses Default | File content is transformed by default |
+*in_paths*            | `true`        | No - Uses Default | Path names are transformed by default |
+*default_value*       | None          | No                | A default value to be used for replacement in the transformation.<br/>if this parameter is omitted the user will be asked for the value in the console.|
+*prompt*              | None          | No                | A message to display in the console when the user is asked fot the replacement value |
 <!-- prettier-ignore-end -->
 
-### Transforms.\_default\_
-The `_default_` entry within the `transforms` object is just shorthand to simplify the config file.   
-It is always required either ins a shorthand way or expanded way. Use expanded object allows for better customization.
+### Transforms Shorthand
 
-**Bellow configuration files are equivalent:**
+To simplify configuration a little bit you can set the transform object using a shorthand way as per bellow table.
+In the shorthand the transform is just an array of regular expressions that corresponds to the `replace` field, the rest of fields will be set to the default value.
+
+Bellow configuration files show how you can write the minimum required '\_default\_' transformation in shorthand or expanded way.   
+**Both files are equivalent:**
 
 <!-- prettier-ignore-start -->
 <table>
@@ -167,10 +170,10 @@ Expanded way:
 ```ts
 //file: anygen.json
 {
-  "myFirstComponent": {
-    //...
+  "createService": { //createService Blueprint
+    // other params ...
     "transforms": {
-      "_default_" : ["myFirstComponent"]
+      "_default_" : ["myBlueprintService"]
     }
   }
 }
@@ -186,11 +189,11 @@ Expanded way:
 ```ts
 //file: anygen.json
 {
-  "myFirstComponent": {
-    //...
+  "createService": { //createService Blueprint
+    // other params ...
     "transforms": {
       "_default_": {
-        "replace": ["myFirstComponent"],
+        "replace": ["myBlueprintService"],
         "files": "*/**", 
         "in_files": true,
         "in_paths": true
@@ -210,51 +213,64 @@ Expanded way:
 
 
 ## Full example
-Lets say there is a readme file within the template and we want to customize the **_Version Number_**.  
+Lets say there is a readme file within the template and we want to customize the *Version Number*.  
 The text `v0.1` in the src file will be replaced by `v0.1.3` in the generated file.
 
 ```ts
 //file: anygen.json
 {
-  "myFirstComponent": {
-    "src": "app/components/myFirstComponent",
+  //createComponent Blueprint
+  "createComponent": { 
+    "src": "app/components/myOriginalComponent",
     "dest": "app/components/",
     "files": ["*/**"],
-    "transform_names": ["myFirstComponent"]
     "transforms": {
+      "_default_" : ["myOriginalComponent"], // shorthand to transform 'myOriginalComponent'
       "version" : { //name of the parameter in command line
-        "replace": "^v0\.1", // match and replaces 'v0.1'
+        "replace": "0.1", // match and replaces '0.1'
         "files": "*/**.md", // executes only in markdown files
-        "lines": null, // optional start and end line limit for the regexp replace. [startLine, endLine]
+        "lines": [0,0], // Search for the regexp only in the first line of any file
         "in_files": true,
         "in_paths": false,
-        "default_value": null //optional default value
-      }
+        "prompt": "Please use semver for the new version" //message to display in the prompt
+      },
+      "author": ["Ma Jerez"] // match 'Ma Jerez' on all the files and all lines.
+    }
+  },
+  
+  //createService Blueprint
+  "createService": { 
+    "src": "app/services/someService",
+    "dest": "app/services/",
+    "files": ["*/**"],
+    "transforms": {
+      "_default_" : ["someService"] // shorthand to transform 'someService'
     }
   }
 }
 ```
 Run anygen
 ```shell
-anygen myFirstComponent  myComponent --version='v0.1.3'
+anygen createComponent  myComponent --version='0.1.3' --author='Joe Jones'
 ```
-Generated files:
+Generated files:   
+All files within `app/components/myOriginalComponent` will be copied and transformed. For this example we just display the transformation applied to `app/components/myOriginalComponent/readme.md` file. 
 <!-- prettier-ignore-start -->
 <table>
 <tbody>
 <tr>
 <td width='400px'>
-Original file: &nbsp;&nbsp; <i><small>myFirstComponent/readme.md</small><i>
+Original file: &nbsp;&nbsp; <code>myOriginalComponent/readme.md</code>
 </td>
 <td width='400px'>
-Generated file: &nbsp;&nbsp; <i><small>myComponent/readme.md</small><i>
+Generated file: &nbsp;&nbsp; <code>myComponent/readme.md</code>
 </td>
 </tr>
 <tr>
 <td style='margin:0;padding:0'>
 
 ```txt
-#Readme file for starterComponent v0.1
+#Readme file for myOriginalComponent v0.1
 
 Lorem ipsum dolor sit amet...    
 elit, sed do eiusmod tempor, dolor ...
@@ -270,7 +286,7 @@ elit, sed do eiusmod tempor, dolor ...
 Lorem ipsum dolor sit amet...    
 elit, sed do eiusmod tempor, dolor ...
 
-@author: Ma Jerez
+@author: Joe Jones
 ```
 </td>
 </tr>
@@ -285,12 +301,13 @@ elit, sed do eiusmod tempor, dolor ...
 ## Scaffolding Generation Process
 
 
-1. A file-tree is generated using only the files that mathc the `files` pattern. The `src` directory is used as root of the file-tree.
-2. All file names that match the `transform_names` pattern are renamed using the `<new_name>` argument from the anygen command.
-3. Check the resulting file names so dont conflict wiht existing files, if a file already exists the command is aborted.
-4. All files are parsed and the strings that match the `transform_names` pattern are replaced using the `<new_name>` argument from the anygen command.
-5. Execute all extra transforms especified in the `transforms` object.
+1. A file-tree is generated using only the files that match `src` + `files` pattern. The `src` directory is used as root of the file-tree.
+2. Applies all the possible transformations to file paths.
+3. Check the resulting file-tree with teh existing file-tree so there are no conflicts with existing files, if a file already exists the command is aborted.   
+Use the `-force` parameter in the command line to force overwrite existing files. 
+4. Applies all the possible transformations to files content.
 6. All new files are moved to the `dest` directory.
+7. If there is an error during the execution, the process is aborted an no files get ever generated.
 
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
