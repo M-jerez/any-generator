@@ -94,8 +94,8 @@ Using bellow config file and running the command `anygen myFirstComponent myNewC
 *src* | The root directory of your original code or 'blueprint'. | This is usually the directory of your own `'component/service/module/etc'` used as blueprint. |
 *dest* | The destination directory. | New scaffolding code will be generated within this directory. |
 *files* | [Glob](https://www.npmjs.com/package/glob) pattern to include/exclude files in your blueprint **relative to the *`src`* directory.** &nbsp;&nbsp; ***i.e:*** `'*/**'` is internally transformed into `'${src}/*/**'`<br/>If this parameter is omitted, all files within the `src` directory will be included. | To exclude files use a negation of the pattern.  ***i.e:*** `!assets/**/*.png` will exclude all png files within the assets folder of your blueprint.|
-[*transforms*](##Transforms) | An list of transformations to be performed on files and/or file paths.<br/>Transformations are applied in the same order that they appear in the config file.| Transformations are basically regexp replacement.<br/>Use it to replace custom data in your blueprints, like class names, function names, variable names, dates, author, copyright etc.. | 
-[*transforms.\_default\_*](##transforms._default_) | The minimum 'default' transformation required to replace `<blueprint_name>` by `<new_name>`.<br/>It can be a list of strings or regular expressions. It will be replaced within the files content and file paths.| This can be used in a **shorthand way** for quick setup and replace file names, class names, etc.<br/>Or can be used in an **expanded way** for more advanced transformations.<br/>[Minimatch](https://www.npmjs.com/package/minimatch) is used for regular expressions.|
+[*transforms*](#transforms) | An list of transformations to be performed on files and/or file paths.<br/>Transformations are applied in the same order that they appear in the config file.| Transformations are basically regexp replacement.<br/>Use it to replace custom data in your blueprints, like class names, function names, variable names, dates, author, copyright etc.. | 
+[*transforms.\_default\_*](#transforms._default_) | The minimum 'default' transformation required to replace `<blueprint_name>` by `<new_name>`.<br/>It can be a list of strings or regular expressions. It will be replaced within the files content and file paths.| This can be used in a **shorthand way** for quick setup and replace file names, class names, etc.<br/>Or can be used in an **expanded way** for more advanced transformations.<br/>[Minimatch](https://www.npmjs.com/package/minimatch) is used for regular expressions.|
 <!-- prettier-ignore-end -->
 
 
@@ -113,19 +113,42 @@ The name of each entry in the transforms property, is used as parameter name in 
 If the parameter is not passed in the command, the user will be asked in the console.
 
 ### Transforms Object:
+
+```ts
+//file: anygen.json
+{
+  "myFirstComponent": {
+    //...
+    "transforms": {
+      "some_transformation" : { //name of the transformation
+        "replace": null, //required value, it is minimatch regexp i.e: 'myFirstComponent'
+        "files": "*/**", // executes on all files by default
+        "lines": [0,-1], // [start, end], negative values count from the end of the file, by default include all file lines.
+        "in_files": true, // Only the file content transformed by default
+        "in_paths": false, // Path names are not transformed by default
+        "default_value": null //optional default value
+      }
+    }
+  }
+}
+```
+
 <!-- prettier-ignore-start -->
 *Transform Parameter* | Default Value | Optional | Description |
 --------------------- | ------------- | -------- | ----------- |
 *replace*             | None          | No       | Regular expression to match |
 *files*               | `'*/**'`      | Yes      | Glob patter to match files, all files matched by default |
-*lines*               | `null`        | Yes      | Start and end line to limit regexp replace. &nbsp; `[startLine, endLine]`<br/> ***ie:***: `"lines": [23,27]`|
+*lines*               | `[0,-1]`      | Yes      | Start and End lines to limit regexp replace. Using negative values indicates a line number from the end of the file.|
 *in_files*            | `true`        | Yes      | Only the file content transformed by default |
-*in_paths*            | `false`       | Yes      | Path names are not transformed by default<br/>Except for the \_default\_ transformation that paths are also transformed by default. |
-*default_value*       | None          | Yes       | A default value to be used for replacement in the transformation|
+*in_paths*            | `false`       | Yes      | Path names are not transformed by default<br/>Except for the \_default\_ shorthand transformation where paths are also transformed by default. |
+*default_value*       | None          | Yes       | A default value to be used for replacement in the transformation.<br/>if this parameter is omitted the user will be asked for the value in the console.|
 <!-- prettier-ignore-end -->
 
-### transforms.\_default\_
-The `_default_` entry within the `transforms` object is just shorthand for to simplify the config file. It is always required either as shorthand or full transform object. Usee expanded object allows for better customization. 
+### Transforms.\_default\_
+The `_default_` entry within the `transforms` object is just shorthand to simplify the config file.   
+It is always required either ins a shorthand way or expanded way. Use expanded object allows for better customization.
+
+**Bellow configuration files are equivalent:**
 
 <!-- prettier-ignore-start -->
 <table>
@@ -145,6 +168,7 @@ Expanded way:
 //file: anygen.json
 {
   "myFirstComponent": {
+    //...
     "transforms": {
       "_default_" : ["myFirstComponent"]
     }
@@ -163,6 +187,7 @@ Expanded way:
 //file: anygen.json
 {
   "myFirstComponent": {
+    //...
     "transforms": {
       "_default_": {
         "replace": ["myFirstComponent"],
@@ -180,7 +205,11 @@ Expanded way:
 </table>
 <!-- prettier-ignore-end -->
 
-### Transform example
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+## Full example
 Lets say there is a readme file within the template and we want to customize the **_Version Number_**.  
 The text `v0.1` in the src file will be replaced by `v0.1.3` in the generated file.
 
