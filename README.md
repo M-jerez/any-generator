@@ -66,7 +66,7 @@ Anygen uses `anygen.json` file in the root of your project as **configuration fi
 Each entry in the config file represents a 'blueprint' to generate code. The name of the blueprint is used in the anygen command as follows: `anygen <blueprint_name> <new_name>`
 
 Having bellow config file,  when the user runs the command `anygen createComponent myNewComponent`; 
-Anygen will generate a new component `myNewComponent` based on `app/components/myOriginalComponent`.
+Anygen will generate a new component `app/components/myNewComponent` based on `app/components/myOriginalComponent`.
 
 ```ts
 //file: anygen.json
@@ -76,7 +76,7 @@ Anygen will generate a new component `myNewComponent` based on `app/components/m
     "dest": "app/components/",
     "files": ["*/**"],
     "transforms": {
-      "_default_" : ["myOriginalComponent"] //regexp to match and replace when generating the new component
+      "name" : ["myOriginalComponent"] //regexp to match and replace the name when generating the new component
     }
   }
 }
@@ -96,7 +96,7 @@ Anygen will generate a new component `myNewComponent` based on `app/components/m
 *dest* | The destination directory. | New scaffolding code will be generated within this directory. |
 *files* | [Glob](https://www.npmjs.com/package/glob) pattern to include/exclude files in your blueprint **relative to the *`src`* directory.** &nbsp;&nbsp; ***i.e:*** `'*/**'` is internally transformed into `'${src}/*/**'`<br/>If this parameter is omitted, all files within the `src` directory will be included. | To exclude files use a negation of the pattern.  ***i.e:*** `!assets/**/*.png` will exclude all png files within the assets folder of your blueprint.|
 [*transforms*](#transforms) | An list of transformations to be performed on files and/or file paths.<br/>Transformations are applied in the same order that they appear in the config file.| Transformations are basically regexp replacement.<br/>Use it to replace custom data in your blueprints, like class names, function names, variable names, dates, author, copyright etc.. | 
-[*transforms.\_default\_*](#transforms-shorthand) | The minimum 'default' transformation required to replace `<blueprint_name>` by `<new_name>`.<br/>It can be a list of strings or regular expressions. It will be replaced within the files content and file paths.| This can be used in a **shorthand way** for quick setup and replace file names, class names, etc.<br/>Or can be used in an **expanded way** for more advanced transformations.<br/>[Minimatch](https://www.npmjs.com/package/minimatch) is used for regular expressions.|
+[*transforms.name*](#transformsname) | The minimum transformation required to replace `<blueprint_name>` by `<new_name>`.<br/>It can be a list of strings or regular expressions. It will be replaced in file paths and files content.| This can be used in a **shorthand way** for quick setup, is intended to replace file names, class names, etc.<br/>Or can be used in an **expanded way** for more advanced transformations.<br/>[Minimatch](https://www.npmjs.com/package/minimatch) is used for regular expressions.|
 <!-- prettier-ignore-end -->
 
 
@@ -152,7 +152,10 @@ If the parameter is not passed in the command, the user will be asked in the con
 To simplify configuration a little bit you can set the transform object using a shorthand way as per bellow table.
 In the shorthand the transform is just an array of regular expressions that corresponds to the `replace` field, the rest of fields will be set to the default value.
 
-**Bellow examples show how you can write the minimum required '\_default\_' transformation in shorthand or expanded way. Both files are equivalent:** 
+### Transforms.name
+
+Transforms.name is the minimum required transformation to replace the original blueprint name into the generated code.
+Bellow example shows the  'name' transformation in shorthand or expanded way. **Both files are equivalent:**
 
 <!-- prettier-ignore-start -->
 <table>
@@ -174,7 +177,7 @@ Expanded way:
   "createService": { //createService Blueprint
     // other params ...
     "transforms": {
-      "_default_" : ["myBlueprintService"]
+      "name" : ["myBlueprintService"]
     }
   }
 }
@@ -193,7 +196,7 @@ Expanded way:
   "createService": { //createService Blueprint
     // other params ...
     "transforms": {
-      "_default_": {
+      "name": {
         "replace": ["myBlueprintService"],
         "files": "*/**", 
         "in_files": true,
@@ -226,7 +229,7 @@ To do this we have to replace the version, author and name of the blueprint comp
     "dest": "app/components/",
     "files": ["*/**"],
     "transforms": {
-      "_default_" : ["myOriginalComponent"], // shorthand to transform 'myOriginalComponent'
+      "name" : ["myOriginalComponent"], // shorthand to transform 'myOriginalComponent'
       "version" : { //name of the parameter in command line
         "replace": "0.1", // match and replaces '0.1'
         "files": "*/**.md", // executes only in markdown files
@@ -245,7 +248,7 @@ To do this we have to replace the version, author and name of the blueprint comp
     "dest": "app/services/",
     "files": ["*/**"],
     "transforms": {
-      "_default_" : ["someService"] // shorthand to transform 'someService'
+      "name" : ["someService"] // shorthand to transform 'someService'
     }
   }
 }
