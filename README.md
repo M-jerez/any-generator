@@ -154,7 +154,7 @@ In the shorthand the transform is just an array of regular expressions that corr
 
 ### Transforms.name
 
-Transforms.name is the minimum required transformation to replace the original blueprint name into the generated code.
+Transforms.name is the minimum required transformation to replace the original blueprint name into the generated code and is always required within the transforms object.   
 Bellow example shows the  'name' transformation in shorthand or expanded way. **Both files are equivalent:**
 
 <!-- prettier-ignore-start -->
