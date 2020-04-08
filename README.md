@@ -17,130 +17,205 @@
 <img src="https://img.shields.io/npm/l/anygen.svg?style=flat-square&maxAge=86400" alt="npm"  style="max-width:100%;">
 <br/>
 <img src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square&maxAge=99999999" alt="npm"  style="max-width:100%;">
-<img src="https://badges.greenkeeper.io/M-jerez/any-generator.svg?style=flat-square" alt="npm"  style="max-width:100%;">    
 </p>
 
-&nbsp;
 
-## How It Works
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
--   Anygen is a CLI that generates new scaffolding files based on your own project files.
--   Anygen does not require special templates files (although templates can be used for advanced cases).
+
+## Features
+
+
+Anygen is a CLI tool that generates new scaffolding code based on your own project files. it is aimed for simplicity.
+
+-   Anygen does not require special blueprint files, although custom made blueprints can be used for advanced cases.
 -   You can write a first component and replicate it easily using Anygen.
+-   Anygen bluePrints can be shared and reused using npm. 
+-   Anygen automatically searches for other `anygen.json` files in your `node_modules`, so it can reuse blueprints from installed packages. 
 
-Anygen automatically search for other `anygen.json` files in your `node_modules`, so scaffolding from other packages can be shared and reused using npm packages. 
 
-&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 
 ## Install
+
 
 Install globally.
 
 ```
 npm i -g  anygen
-anygen <recipe_name>  <new_name>
+anygen <blueprint_name>  <new_name>
 ```
 
 Install locally to use programmatically or using [npx](https://medium.com/@maybekatz/introducing-npx-an-npm-package-runner-55f7d4bd282b).
 
 ```
 npm i -D anygen
-npx anygen <recipe_name>  <new_name>
+npx anygen <blueprint_name>  <new_name>
 ```
 
-&nbsp;
 
-## Recipes File
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+## Cofig File
+
 
 Anygen uses `anygen.json` file in the root of your project as **configuration file**.
 
-Each entry in the config file represents a 'recipe' to generate scaffold code. The name of the recipe is used in the anygen command as follows: `anygen <recipe_name> <new_name>`
+Each entry in the config file represents a 'blueprint' to generate code. The name of the blueprint is used in the anygen command as follows: `anygen <blueprint_name> <new_name>`
 
-Using bellow recipes file and running the command `anygen someComponent myNewComponent` will generate a new component `myNewComponent` from `someComponent`.
-
-```ts
-//file: anygen.json
-{
-  "someComponent": {
-    "src": "anygen/templates/someComponent",
-    "dest": "lib/components/",
-    "files": ["*/**"],
-    "replace_name": ["someComponent"],
-    "transforms" : {}
-  },
-  "someService": {
-    "src": "anygen/templates/someService",
-    "dest": "lib/services/",
-    "files": ["*/**"],
-    "replace_name": ["someService"],
-    "transforms" : {}
-  }
-}
-```
-
-&nbsp;
-
-## Config Parameters
-
-<!-- prettier-ignore-start -->
-*Parameter* | Description  | Tips  |
------------ | ------------ | ----- |
-*src* | The root directory of your original code or template. | This is usually the directory of your scaffolding template. |
-*dest* | The destination directory. | New scaffolding will be generated within this directory. |
-*files*| [Glob](https://www.npmjs.com/package/glob) patterns to included or exclude files in your recipe. This are relative to the *`src`* directory. If this parameter is omitted, all files in the `src` directory will be included. | To exclude files use a negation of the pattern.  ***i.e:*** `!assets/**/*.png` will exclude all png files within the assets folder.
-*replace_name* | A regular expression to be replaced by the `<new_name>` parameter. It will be replaced both within files content and file names.| Use this to transform class names, variable names, exports, etc. [Minimatch](https://www.npmjs.com/package/minimatch) is used for regular expressions.|
-[*transforms*](##Transforms) | An list of extra transformations to be performed on files and/or file names.| Used to replace some custom data in your scaffolding templates like dates, author, etc.. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <!-- so many spaces is used to set column width --> | 
-<!-- prettier-ignore-end -->
-
-&nbsp;
-
-## Transforms
-
-It is possible to declare a list of transformations to be executed when generating the new code. Each transformation is basically a regular expression to match and replace text in the file's content or name.
-
-**[Minimatch](https://www.npmjs.com/package/minimatch) is used to generate the regular expressions.** Please read Minimatch docs for all differences with the standard javascript Regexp.
-
-
-The name of each entry in the transforms property, is used as parameter name in the `anygen` command.  
-If the parameter is not passed in the command, the user will be asked in the console.
-
-**Transform example**
-
-Lets say there is a readme file within the template and we want to customize the **_Version Number_**.  
-The text `v0.1` in the src file will be replaced by `v0.1.3` in the generated file.
+Using bellow config file and running the command `anygen myFirstComponent myNewComponent` will generate a new component `myNewComponent` based ob `myFirstComponent` on the `app/components/` directory.
 
 ```ts
 //file: anygen.json
 {
-  "someComponent": {
-    "src": "anygen/templates/someComponent",
-    "dest": "lib/components/",
+  "myFirstComponent": {
+    "src": "app/components/myFirstComponent",
+    "dest": "app/components/",
     "files": ["*/**"],
-    "replace_name": ["someComponent"]
     "transforms": {
-      "version" : { //name of the parameter in command line
-        "replace": "^v0\.1", // match and replaces 'v0.1'
-        "files": "*/**.md", // executes only in markdown files
-        "lines": null, // optional start and end line limit for the regexp replace. [startLine, endLine]
-        "in_files": true,
-        "in_paths": false
-      }
+      "_default_" : ["myFirstComponent"]
     }
   }
 }
 ```
 
-```shell
-#executed command line
-anygen someComponent  myComponent --version='v0.1.3'
-```
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+## Config Parameters
+
+
+<!-- prettier-ignore-start -->
+*Parameter* | Description  | Tips  |
+----------- | ------------ | ----- |
+*src* | The root directory of your original code or 'blueprint'. | This is usually the directory of your own `'component/service/module/etc'` used as blueprint. |
+*dest* | The destination directory. | New scaffolding code will be generated within this directory. |
+*files* | [Glob](https://www.npmjs.com/package/glob) pattern to include/exclude files in your blueprint **relative to the *`src`* directory.** &nbsp;&nbsp; ***i.e:*** `'*/**'` is internally transformed into `'${src}/*/**'`<br/>If this parameter is omitted, all files within the `src` directory will be included. | To exclude files use a negation of the pattern.  ***i.e:*** `!assets/**/*.png` will exclude all png files within the assets folder of your blueprint.|
+[*transforms*](##Transforms) | An list of transformations to be performed on files and/or file paths.<br/>Transformations are applied in the same order that they appear in the config file.| Transformations are basically regexp replacement.<br/>Use it to replace custom data in your blueprints, like class names, function names, variable names, dates, author, copyright etc.. | 
+[*transforms.\_default\_*](##transforms._default_) | The minimum 'default' transformation required to replace `<blueprint_name>` by `<new_name>`.<br/>It can be a list of strings or regular expressions. It will be replaced within the files content and file paths.| This can be used in a **shorthand way** for quick setup and replace file names, class names, etc.<br/>Or can be used in an **expanded way** for more advanced transformations.<br/>[Minimatch](https://www.npmjs.com/package/minimatch) is used for regular expressions.|
+<!-- prettier-ignore-end -->
+
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+## Transforms
+
+
+It is possible to declare a list of transformations to be executed when generating the new code. Each transformation is basically a regular expression to match and replace text in file's content or path names.  *In the future there might be other types of transformations other than regexp replacement.*
+
+**[Minimatch](https://www.npmjs.com/package/minimatch) is used to generate the regular expressions.** Please read Minimatch docs for all differences with the standard javascript Regexp.
+
+The name of each entry in the transforms property, is used as parameter name in the `anygen` command.  
+If the parameter is not passed in the command, the user will be asked in the console.
+
+### Transforms Object:
+<!-- prettier-ignore-start -->
+*Transform Parameter* | Default Value | Optional | Description |
+--------------------- | ------------- | -------- | ----------- |
+*replace*             | None          | No       | Regular expression to match |
+*files*               | `'*/**'`      | Yes      | Glob patter to match files, all files matched by default |
+*lines*               | `null`        | Yes      | Start and end line to limit regexp replace. &nbsp; `[startLine, endLine]`<br/> ***ie:***: `"lines": [23,27]`|
+*in_files*            | `true`        | Yes      | Only the file content transformed by default |
+*in_paths*            | `false`       | Yes      | Path names are not transformed by default<br/>Except for the \_default\_ transformation that paths are also transformed by default. |
+*default_value*       | None          | Yes       | A default value to be used for replacement in the transformation|
+<!-- prettier-ignore-end -->
+
+### transforms.\_default\_
+The `_default_` entry within the `transforms` object is just shorthand for to simplify the config file. It is always required either as shorthand or full transform object. Usee expanded object allows for better customization. 
 
 <!-- prettier-ignore-start -->
 <table>
 <tbody>
 <tr>
 <td width='400px'>
-Original file: &nbsp;&nbsp; <i><small>someComponent/readme.md</small><i>
+Shorthand way:
+</td>
+<td width='400px'>
+Expanded way:
+</td>
+</tr>
+<tr>
+<td style='margin:0;padding:0'>
+
+```ts
+//file: anygen.json
+{
+  "myFirstComponent": {
+    "transforms": {
+      "_default_" : ["myFirstComponent"]
+    }
+  }
+}
+
+
+
+
+
+```
+</td>
+<td style='margin:0;padding:0'>
+
+```ts
+//file: anygen.json
+{
+  "myFirstComponent": {
+    "transforms": {
+      "_default_": {
+        "replace": ["myFirstComponent"],
+        "files": "*/**", 
+        "in_files": true,
+        "in_paths": true
+      }
+    }
+  }
+}
+```
+</td>
+</tr>
+</tbody>
+</table>
+<!-- prettier-ignore-end -->
+
+### Transform example
+Lets say there is a readme file within the template and we want to customize the **_Version Number_**.  
+The text `v0.1` in the src file will be replaced by `v0.1.3` in the generated file.
+
+```ts
+//file: anygen.json
+{
+  "myFirstComponent": {
+    "src": "app/components/myFirstComponent",
+    "dest": "app/components/",
+    "files": ["*/**"],
+    "transform_names": ["myFirstComponent"]
+    "transforms": {
+      "version" : { //name of the parameter in command line
+        "replace": "^v0\.1", // match and replaces 'v0.1'
+        "files": "*/**.md", // executes only in markdown files
+        "lines": null, // optional start and end line limit for the regexp replace. [startLine, endLine]
+        "in_files": true,
+        "in_paths": false,
+        "default_value": null //optional default value
+      }
+    }
+  }
+}
+```
+Run anygen
+```shell
+anygen myFirstComponent  myComponent --version='v0.1.3'
+```
+Generated files:
+<!-- prettier-ignore-start -->
+<table>
+<tbody>
+<tr>
+<td width='400px'>
+Original file: &nbsp;&nbsp; <i><small>myFirstComponent/readme.md</small><i>
 </td>
 <td width='400px'>
 Generated file: &nbsp;&nbsp; <i><small>myComponent/readme.md</small><i>
@@ -175,32 +250,25 @@ elit, sed do eiusmod tempor, dolor ...
 <!-- prettier-ignore-end -->
 
 
-**Transforms Config:**
-<!-- prettier-ignore-start -->
-*Transform Parameter* | Default Value | Optional | Description |
---------------------- | ------------- | -------- | ----------- |
-*replace*             | none          | no       | regular expression to match |
-*files*               | *             | yes      | glob patter to match files, all files matched by default |
-*lines*               | null          | yes      | start and end line to limit regexp replace. [startLine, endLine |
-*in_files*            | true          | yes      | only file content transformed by default |
-*in_paths*            | false         | yes      | path names are not transformed by default |
-<!-- prettier-ignore-end -->
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-&nbsp;
 
 ## Scaffolding Generation Process
 
+
 1. A file-tree is generated using only the files that mathc the `files` pattern. The `src` directory is used as root of the file-tree.
-2. All file names that match the `replace_name` pattern are renamed using the `<new_name>` argument from the anygen command.
+2. All file names that match the `transform_names` pattern are renamed using the `<new_name>` argument from the anygen command.
 3. Check the resulting file names so dont conflict wiht existing files, if a file already exists the command is aborted.
-4. All files are parsed and the strings that match the `replace_name` pattern are replaced using the `<new_name>` argument from the anygen command.
+4. All files are parsed and the strings that match the `transform_names` pattern are replaced using the `<new_name>` argument from the anygen command.
 5. Execute all extra transforms especified in the `transforms` object.
 6. All new files are moved to the `dest` directory.
 
-&nbsp;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 
 ## License
+
 
 [MIT License](http://en.wikipedia.org/wiki/MIT_License)
 
