@@ -26,7 +26,7 @@
 ## Features
 
 
-Anygen is a CLI tool that generates new scaffolding code based on your own project files. it is aimed for simplicity.
+Anygen is a CLI tool that generates new scaffolding code based on your own project files. It is build aiming for simplicity.
 
 -   Anygen does not require special blueprint files, although custom made blueprints can be used for advanced cases.
 -   You can write a first component and replicate it easily using Anygen.
@@ -65,17 +65,18 @@ Anygen uses `anygen.json` file in the root of your project as **configuration fi
 
 Each entry in the config file represents a 'blueprint' to generate code. The name of the blueprint is used in the anygen command as follows: `anygen <blueprint_name> <new_name>`
 
-Using bellow config file and running the command `anygen createComponent myNewComponent` will generate a new component `myNewComponent` based ob `myOriginalComponent` on the `app/components/` directory.
+Having bellow config file,  when the user runs the command `anygen createComponent myNewComponent`; 
+Anygen will generate a new component `myNewComponent` based on `app/components/myOriginalComponent`.
 
 ```ts
 //file: anygen.json
 {
   "createComponent": { //createComponent Blueprint
-    "src": "app/components/myOriginalComponent",
+    "src": "app/components/myOriginalComponent", //blueprint component root
     "dest": "app/components/",
     "files": ["*/**"],
     "transforms": {
-      "_default_" : ["myOriginalComponent"]
+      "_default_" : ["myOriginalComponent"] //regexp to match and replace when generating the new component
     }
   }
 }
@@ -150,8 +151,7 @@ If the parameter is not passed in the command, the user will be asked in the con
 To simplify configuration a little bit you can set the transform object using a shorthand way as per bellow table.
 In the shorthand the transform is just an array of regular expressions that corresponds to the `replace` field, the rest of fields will be set to the default value.
 
-Bellow configuration files show how you can write the minimum required '\_default\_' transformation in shorthand or expanded way.   
-**Both files are equivalent:**
+**Bellow examples show how you can write the minimum required '\_default\_' transformation in shorthand or expanded way. Both files are equivalent:** 
 
 <!-- prettier-ignore-start -->
 <table>
