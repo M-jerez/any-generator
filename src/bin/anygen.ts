@@ -22,6 +22,7 @@ const anygen = new Command()
 	.option('-tn, --transformName <string>', 'The name or regExp to be replaced in the "blueprint"')
 	.option('-vb, --verbose', 'Provides additional details while executing the command')
 	.action((blueprintName, newName, command) => {
+		/* tslint:disable:no-console*/
 		console.log('blueprintName', blueprintName);
 		console.log('newName', newName);
 		console.log(command.opts());
