@@ -2,11 +2,11 @@ import * as path from 'path';
 import Module from 'module';
 
 export function getProjectRootPath() {
-	//todo
+	// todo
 }
 
 export function getGlobalNodeModulesPath() {
-	//todo
+	// todo
 }
 
 export function getLocalNodeModulesPath() {
@@ -14,7 +14,7 @@ export function getLocalNodeModulesPath() {
 }
 
 export function getProjectConfig() {
-	//todo
+	// todo
 }
 
 export function getAllGlobalNodeModulesConfig() {
@@ -30,5 +30,5 @@ export function findAllConfigFilePaths(dirPath: string) {
 }
 
 export function getConfigFromFile(filePath: string) {
-	//todo
+	// todo
 }

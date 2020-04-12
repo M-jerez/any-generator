@@ -48,9 +48,7 @@
 		"format": "prettier --write .",
 		"format-s": "pretty-quick --staged",
 		"lint": "tslint -c tslint.json 'src/**'",
-		"lint-f": "tslint --fix -c tslint.json 'src/**'",
-		"anygen": "node ./dist/bin/anygen.js",
-		"pc": "pretty-quick --staged & npm run lint"
+		"lint-f": "tslint --fix -c tslint.json 'src/**'"
 	},
 	"husky": {
 		"hooks": {
