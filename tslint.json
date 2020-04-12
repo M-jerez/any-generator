@@ -1,15 +1,10 @@
 {
-  "extends": [
-    "tslint:latest",
-    "tslint-config-prettier"
-  ],
-  "linterOptions": {
-    "exclude": [
-        "node_modules/**"
-    ]
-  },
-  "rules": {
-	"no-console": true,
-	"ordered-imports": false
-  }
+	"extends": ["tslint:latest", "tslint-config-prettier"],
+	"linterOptions": {
+		"exclude": ["node_modules/**"]
+	},
+	"rules": {
+		"no-console": true,
+		"ordered-imports": false
+	}
 }
