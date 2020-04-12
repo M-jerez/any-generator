@@ -52,7 +52,6 @@
 		"anygen": "node ./dist/bin/anygen.js",
 		"pc": "pretty-quick --staged & npm run lint"
 	},
-	
 	"husky": {
 		"hooks": {
 			"pre-commit": "pretty-quick --staged & npm run lint"
