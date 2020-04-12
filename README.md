@@ -56,13 +56,13 @@ Anygen uses `anygen.json` file in the root of your project as **configuration fi
 
 Each entry in the config file represents a 'blueprint' to generate code. The name of the blueprint is used in the anygen command as follows: `anygen <blueprint_name> <new_name>`
 
-Having bellow config file, when the user runs the command `anygen createComponent myNewComponent`;
+Having bellow config file, when the user runs the command `anygen newComponent myNewComponent`;
 Anygen will generate a new component `app/components/myNewComponent` based on `app/components/myOriginalComponent`.
 
 ```ts
 //file: anygen.json
 {
-  "createComponent": { //createComponent Blueprint
+  "newComponent": { //newComponent Blueprint
     "src": "app/components/myOriginalComponent", //blueprint component root
     "dest": "app/components/",
     "files": ["*/**"],
@@ -103,7 +103,7 @@ If the parameter is not passed in the command, the user will be asked in the con
 ```ts
 //file: anygen.json
 {
-  "createComponent": { //createComponent Blueprint
+  "newComponent": { //newComponent Blueprint
     // other params ...
     "transforms": {
       "some_transformation" : { //name of the transformation
@@ -209,8 +209,7 @@ To do this we have to replace the version, author and name of the blueprint comp
 ```ts
 //file: anygen.json
 {
-  //createComponent Blueprint
-  "createComponent": {
+  "newComponent": { //newComponent Blueprint
     "src": "app/components/myOriginalComponent",
     "dest": "app/components/",
     "files": ["*/**"],
@@ -227,9 +226,7 @@ To do this we have to replace the version, author and name of the blueprint comp
       "author": ["Ma Jerez"] // match 'Ma Jerez' on all the files and all lines.
     }
   },
-
-  //createService Blueprint
-  "createService": {
+  "createService": { //createService Blueprint
     "src": "app/services/someService",
     "dest": "app/services/",
     "files": ["*/**"],
@@ -244,7 +241,7 @@ To do this we have to replace the version, author and name of the blueprint comp
 The version `v0.1` will by replaced by `v0.1.3` and the author `Ma jerez` will be replaced by `Joe Jones` in the generated component.
 
 ```shell
-anygen createComponent  myComponent --version='0.1.3' --author='Joe Jones'
+anygen newComponent  myComponent --version='0.1.3' --author='Joe Jones'
 ```
 
 **Generated files:**  
