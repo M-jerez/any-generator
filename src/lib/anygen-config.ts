@@ -14,7 +14,7 @@ export function getLocalNodeModulesPath() {
 }
 
 export function getProjectConfig() {
-	// todo
+	//todo
 }
 
 export function getAllGlobalNodeModulesConfig() {
