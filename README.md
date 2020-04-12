@@ -19,26 +19,20 @@
 <img src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square&maxAge=99999999" alt="npm"  style="max-width:100%;">
 </p>
 
-
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-
 ## Features
-
 
 Anygen is a CLI tool that generates new scaffolding code based on your own project files. It is build aiming for simplicity.
 
 -   Anygen does not require special blueprint files, although custom made blueprints can be used for advanced cases.
 -   You can write a first component and replicate it easily using Anygen.
--   Anygen bluePrints can be shared and reused using npm. 
--   Anygen automatically searches for other `anygen.json` files in your `node_modules`, so it can reuse blueprints from installed packages. 
-
+-   Anygen bluePrints can be shared and reused using npm.
+-   Anygen automatically searches for other `anygen.json` files in your `node_modules`, so it can reuse blueprints from installed packages.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-
 ## Install
-
 
 Install globally.
 
@@ -54,18 +48,15 @@ npm i -D anygen
 npx anygen <blueprint_name>  <new_name>
 ```
 
-
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-
 ## Cofig File
-
 
 Anygen uses `anygen.json` file in the root of your project as **configuration file**.
 
 Each entry in the config file represents a 'blueprint' to generate code. The name of the blueprint is used in the anygen command as follows: `anygen <blueprint_name> <new_name>`
 
-Having bellow config file,  when the user runs the command `anygen createComponent myNewComponent`; 
+Having bellow config file, when the user runs the command `anygen createComponent myNewComponent`;
 Anygen will generate a new component `app/components/myNewComponent` based on `app/components/myOriginalComponent`.
 
 ```ts
@@ -82,12 +73,9 @@ Anygen will generate a new component `app/components/myNewComponent` based on `a
 }
 ```
 
-
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-
 ## Config Parameters
-
 
 <!-- prettier-ignore-start -->
 *Parameter* | Description  | Tips  |
@@ -99,14 +87,11 @@ Anygen will generate a new component `app/components/myNewComponent` based on `a
 [*transforms.name*](#transformsname) | The minimum transformation required to replace `<blueprint_name>` by `<new_name>`.<br/>It can be a list of strings or regular expressions. It will be replaced in file paths and files content.| This can be used in a **shorthand way** for quick setup, is intended to replace file names, class names, etc.<br/>Or can be used in an **expanded way** for more advanced transformations.<br/>[Minimatch](https://www.npmjs.com/package/minimatch) is used for regular expressions.|
 <!-- prettier-ignore-end -->
 
-
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
 
 ## Transforms
 
-
-It is possible to declare a list of transformations to be executed when generating the new code. Each transformation is basically a regular expression to match and replace text in file's content or path names.  *In the future there might be other types of transformations other than regexp replacement.*
+It is possible to declare a list of transformations to be executed when generating the new code. Each transformation is basically a regular expression to match and replace text in file's content or path names. _In the future there might be other types of transformations other than regexp replacement._
 
 **[Minimatch](https://www.npmjs.com/package/minimatch) is used to generate the regular expressions.** Please read Minimatch docs for all differences with the standard javascript Regexp.
 
@@ -154,7 +139,7 @@ In the shorthand the transform is just an array of regular expressions that corr
 
 ### Transforms.name
 
-`transforms.name` is the minimum transformation required to replace the original blueprint name and is always required within the transforms object.   
+`transforms.name` is the minimum transformation required to replace the original blueprint name and is always required within the transforms object.  
 Bellow example shows the 'name' transformation in shorthand or expanded way. **Both files are equivalent:**
 
 <!-- prettier-ignore-start -->
@@ -187,6 +172,7 @@ Expanded way:
 
 
 ```
+
 </td>
 <td style='margin:0;padding:0'>
 
@@ -198,7 +184,7 @@ Expanded way:
     "transforms": {
       "name": {
         "replace": ["myBlueprintService"],
-        "files": "*/**", 
+        "files": "*/**",
         "in_files": true,
         "in_paths": true
       }
@@ -206,25 +192,25 @@ Expanded way:
   }
 }
 ```
+
 </td>
 </tr>
 </tbody>
 </table>
 <!-- prettier-ignore-end -->
 
-
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-
 ## Full example
-Lets say we want to create a new component, and there is a readme file within it. We want to customize the *Version Number* and *Author* only in the readme file.  
-To do this we have to replace the version, author and name of the blueprint component using bellow config file.  
+
+Lets say we want to create a new component, and there is a readme file within it. We want to customize the _Version Number_ and _Author_ only in the readme file.  
+To do this we have to replace the version, author and name of the blueprint component using bellow config file.
 
 ```ts
 //file: anygen.json
 {
   //createComponent Blueprint
-  "createComponent": { 
+  "createComponent": {
     "src": "app/components/myOriginalComponent",
     "dest": "app/components/",
     "files": ["*/**"],
@@ -241,9 +227,9 @@ To do this we have to replace the version, author and name of the blueprint comp
       "author": ["Ma Jerez"] // match 'Ma Jerez' on all the files and all lines.
     }
   },
-  
+
   //createService Blueprint
-  "createService": { 
+  "createService": {
     "src": "app/services/someService",
     "dest": "app/services/",
     "files": ["*/**"],
@@ -253,14 +239,18 @@ To do this we have to replace the version, author and name of the blueprint comp
   }
 }
 ```
+
 **Run anygen:**  
 The version `v0.1` will by replaced by `v0.1.3` and the author `Ma jerez` will be replaced by `Joe Jones` in the generated component.
+
 ```shell
 anygen createComponent  myComponent --version='0.1.3' --author='Joe Jones'
 ```
-**Generated files:**   
-All files within `app/components/myOriginalComponent` will be copied and transformed.   
-For this example we just display the transformation applied to `app/components/myOriginalComponent/readme.md` file. 
+
+**Generated files:**  
+All files within `app/components/myOriginalComponent` will be copied and transformed.  
+For this example we just display the transformation applied to `app/components/myOriginalComponent/readme.md` file.
+
 <!-- prettier-ignore-start -->
 <table>
 <tbody>
@@ -278,49 +268,45 @@ Generated file: &nbsp;&nbsp; <code>myComponent/readme.md</code>
 ```txt
 #Readme file for myOriginalComponent v0.1
 
-Lorem ipsum dolor sit amet...    
+Lorem ipsum dolor sit amet...
 elit, sed do eiusmod tempor, dolor ...
 
 @author: Ma Jerez
 ```
+
 </td>
 <td style='margin:0;padding:0'>
 
 ```txt
 #Readme file for myComponent v0.1.3
 
-Lorem ipsum dolor sit amet...    
+Lorem ipsum dolor sit amet...
 elit, sed do eiusmod tempor, dolor ...
 
 @author: Joe Jones
 ```
+
 </td>
 </tr>
 </tbody>
 </table>
 <!-- prettier-ignore-end -->
 
-
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
 
 ## Scaffolding Generation Process
 
-
 1. A file-tree is generated using only the files that match `src` + `files` pattern. The `src` directory is used as root of the file-tree.
 2. Applies all the possible transformations to file paths.
-3. Check the resulting file-tree with teh existing file-tree so there are no conflicts with existing files, if a file already exists the command is aborted.   
-Use the `-force` parameter in the command line to force overwrite existing files. 
+3. Check the resulting file-tree with teh existing file-tree so there are no conflicts with existing files, if a file already exists the command is aborted.  
+   Use the `-force` parameter in the command line to force overwrite existing files.
 4. Applies all the possible transformations to files content.
-6. All new files are moved to the `dest` directory.
-7. If there is an error during the execution, the process is aborted an no files get ever generated.
-
+5. All new files are moved to the `dest` directory.
+6. If there is an error during the execution, the process is aborted an no files get ever generated.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-
 ## License
-
 
 [MIT License](http://en.wikipedia.org/wiki/MIT_License)
 
