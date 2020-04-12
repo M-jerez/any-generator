@@ -22,32 +22,40 @@
 	},
 	"homepage": "https://github.com/M-jerez/gulp-cli-generator#readme",
 	"devDependencies": {
-		"@types/chai": "^4.2.11",
-		"@types/fs-extra": "^8.1.0",
-		"@types/mocha": "^5.2.7",
 		"@types/node": "^12.12.35",
-		"@types/rimraf": "^2.0.4",
 		"chai": "^4.2.0",
-		"mocha": "^6.2.3",
-		"prettier": "^1.19.1",
+		"husky": "^4.2.5",
+		"prettier": "^2.0.4",
+		"pretty-quick": "^2.0.1",
 		"rimraf": "^3.0.2",
-		"tslint": "^5.20.1",
+		"tslint": "^6.1.1",
 		"tslint-config-prettier": "^1.18.0",
-		"typedoc": "^0.15.8",
+		"typedoc": "^0.17.4",
 		"typescript": "^3.8.3"
+	},
+	"dependencies": {
+		"commander": "^5.0.0"
 	},
 	"bin": {
 		"anygen": "dist/bin/anygen.js"
 	},
 	"scripts": {
-		"test": "",
+		"test": "npm run lint",
 		"test_old": "node node_modules/mocha/bin/mocha dist/test/*.spec.js --reporter spec",
-		"precompile": "npm run clean && npm run docs",
+		"precompile": "npm run clean",
 		"clean": "rimraf dist/*",
-		"compile": "npm run compile:ts",
-		"compile:ts": "tsc",
-		"format": "prettier --write ./**/*.{md,ts,tsx}",
-		"lint": "tslint -c tslint.json 'src/**/*.ts'"
+		"dev": "tsc -w",
+		"format": "prettier --write .",
+		"format-s": "pretty-quick --staged",
+		"lint": "tslint -c tslint.json 'src/**'",
+		"lint-f": "tslint --fix -c tslint.json 'src/**'",
+		"anygen": "node ./dist/bin/anygen.js",
+		"pc": "pretty-quick --staged & npm run lint"
 	},
-	"dependencies": {}
+	
+	"husky": {
+		"hooks": {
+			"pre-commit": "pretty-quick --staged & npm run lint"
+		}
+	}
 }
