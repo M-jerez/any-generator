@@ -44,14 +44,11 @@
 	},
 	"scripts": {
 		"test": "npm run lint & jest",
-		"test_old": "node node_modules/mocha/bin/mocha dist/test/*.spec.js --reporter spec",
-		"precompile": "npm run clean",
 		"clean": "rimraf dist/*",
+		"predev": "npm run clean",
 		"dev": "tsc -w",
-		"format": "prettier --write .",
-		"format-s": "pretty-quick --staged",
-		"lint": "tslint -c tslint.json 'src/**'",
-		"lint-f": "tslint --fix -c tslint.json 'src/**'"
+		"fp": "prettier --write .",
+		"lint": "tslint 'src/**/*.ts'"
 	},
 	"husky": {
 		"hooks": {
