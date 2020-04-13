@@ -1,54 +1,58 @@
 {
 	"name": "anygen",
-	"version": "0.0.2",
-	"description": "!!!Automatic Scaffolding Generator For Any Project!!!",
+	"version": "0.4.0",
+	"description": "Simple scaffolding code generation for any project.",
 	"main": "dist/lib/Builder.js",
 	"repository": {
 		"type": "git",
 		"url": "git+https://M-jerez@github.com/M-jerez/gulp-cli-generator.git"
+	},
+	"engines": {
+		"node": ">=10 <=12"
 	},
 	"keywords": [
 		"generator",
 		"cli",
 		"scallfolding"
 	],
-	"author": "Ma-Jerez",
+	"author": "Ma Jerez (https://twitter.com/Ma_jrz)",
 	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/M-jerez/gulp-cli-generator/issues"
 	},
 	"homepage": "https://github.com/M-jerez/gulp-cli-generator#readme",
 	"devDependencies": {
-		"@types/chai": "^4.1.4",
-		"@types/fs-extra": "^7.0.0",
-		"@types/mocha": "^5.2.5",
-		"@types/node": "^12.0.4",
-		"@types/rimraf": "^2.0.2",
-		"@types/yargs": "^13.0.0",
-		"chai": "^4.1.2",
-		"mocha": "^6.1.4",
-		"prettier": "^1.14.2",
-		"rimraf": "^2.5.4",
-		"tslint": "^5.11.0",
-		"tslint-config-prettier": "^1.14.0",
-		"typedoc": "^0.14.2",
-		"typescript": "^3.0.1"
+		"@types/jest": "^25.2.1",
+		"@types/node": "^12.12.35",
+		"chai": "^4.2.0",
+		"husky": "^4.2.5",
+		"jest": "^25.3.0",
+		"prettier": "^2.0.4",
+		"pretty-quick": "^2.0.1",
+		"rimraf": "^3.0.2",
+		"ts-jest": "^25.3.1",
+		"tslint": "^6.1.1",
+		"tslint-config-prettier": "^1.18.0",
+		"typedoc": "^0.17.4",
+		"typescript": "^3.8.3"
+	},
+	"dependencies": {
+		"commander": "^5.0.0"
 	},
 	"bin": {
 		"anygen": "dist/bin/anygen.js"
 	},
 	"scripts": {
-		"test": "node node_modules/mocha/bin/mocha dist/test/*.spec.js --reporter spec",
-		"precompile": "npm run clean && npm run docs",
+		"test": "npm run lint & jest",
 		"clean": "rimraf dist/*",
-		"compile": "npm run compile:ts",
-		"compile:ts": "tsc",
-		"format" : "prettier --write ./**/*.{md,ts,tsx}",
-		"lint": "tslint -c tslint.json 'src/**/*.ts'"
+		"predev": "npm run clean",
+		"dev": "tsc -w",
+		"f": "prettier --write .",
+		"lint": "tslint 'src/**/*.ts'"
 	},
-	"dependencies": {
-		"fs-extra": "^8.0.1",
-		"yargonaut": "^1.1.2",
-		"yargs": "^13.2.4"
+	"husky": {
+		"hooks": {
+			"pre-commit": "pretty-quick --staged & npm run lint"
+		}
 	}
 }

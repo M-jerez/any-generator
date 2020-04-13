@@ -37,6 +37,7 @@ npm-debug.log
 .netbeans
 nbproject
 .idea
+.vscode
 
 
 ########################
@@ -49,3 +50,4 @@ config/local.js
 # generated files
 ########################
 test/temp
+dist/

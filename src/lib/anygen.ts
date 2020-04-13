@@ -1,24 +1,6 @@
 /**
- * Created by Ma jerez on 28/08/2016.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+ * @license MIT , License text available at https://opensource.org/licenses/MIT
+ * @copyright 2020  @author Ma Jerez
+ * @package Anygen.
  */
-
-import * as Bl from './Blueprint';
-import * as Bu from './Builder';
-import * as UT from './utils';
-
-/**
- * Blueprint interface declaration
- * @type {Blueprint}
- */
-export const Blueprint = Bl.Blueprint;
-
-/**
- * Builder object
- * @type {Builder}
- */
-export const Builder = Bu.Builder;
-
-/**
- * util functions
- */
-export const utils = UT;
