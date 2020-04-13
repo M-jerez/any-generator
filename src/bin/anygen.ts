@@ -1,5 +1,11 @@
 #!/usr/bin/env node
 
-import Anygen from '../lib/anygen-cli';
+import AnygenCLI from '../lib/cli';
 
-new Anygen().run(process.argv);
+new AnygenCLI()
+  .commandAnygen((blueprintName: string, newName: string, props: any) => null)
+  .commandList(() => null)
+  .run(process.argv);
+
+// tslint:disable-next-line
+console.log('anygen argv:', process.argv);

@@ -9,9 +9,23 @@ import {Command} from 'commander';
 // tslint:disable-next-line
 const pkg = require('../../package.json');
 
+type anygenCB = (blueprint: string, newName: any, props: {}) => any;
+type listCB = () => any;
+
 export default class AnygenCLI {
+  private onAnygen!: anygenCB;
+  private onList!: listCB;
+  private anygen = new Command();
+  commandAnygen(cb: anygenCB) {
+    this.onAnygen = cb;
+    return this;
+  }
+  commandList(cb: listCB) {
+    this.onList = cb;
+    return this;
+  }
   run(argv: string[]) {
-    const anygen = new Command()
+    this.anygen
       .version(pkg.version)
       .description(
         'Anygen is a CLI tool for simple scaffolding code generation.' +
@@ -27,20 +41,15 @@ export default class AnygenCLI {
       )
       .option('-tn, --transformName <string>', 'The name or regExp to be replaced in the "blueprint"')
       .option('-vb, --verbose', 'Provides additional details while executing the command')
-      .action((blueprintName: string, newName: string, command: Command) => {
-        /* tslint:disable:no-console*/
-        console.log('blueprintName', blueprintName);
-        console.log('newName', newName);
-        console.log(command.opts());
-      });
+      .action((blueprintName: string, newName: string, command: Command) =>
+        this.onAnygen(blueprintName, newName, command.opts()),
+      );
 
-    anygen
+    this.anygen
       .command('list')
       .description('list all available blueprints')
-      .action(() => {
-        console.log('list blueprints');
-      });
+      .action(() => this.onList());
 
-    anygen.parse(argv);
+    this.anygen.parse(argv);
   }
 }
