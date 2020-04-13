@@ -22,12 +22,15 @@
 	},
 	"homepage": "https://github.com/M-jerez/gulp-cli-generator#readme",
 	"devDependencies": {
+		"@types/jest": "^25.2.1",
 		"@types/node": "^12.12.35",
 		"chai": "^4.2.0",
 		"husky": "^4.2.5",
+		"jest": "^25.3.0",
 		"prettier": "^2.0.4",
 		"pretty-quick": "^2.0.1",
 		"rimraf": "^3.0.2",
+		"ts-jest": "^25.3.1",
 		"tslint": "^6.1.1",
 		"tslint-config-prettier": "^1.18.0",
 		"typedoc": "^0.17.4",
@@ -40,7 +43,7 @@
 		"anygen": "dist/bin/anygen.js"
 	},
 	"scripts": {
-		"test": "npm run lint",
+		"test": "npm run lint & jest",
 		"test_old": "node node_modules/mocha/bin/mocha dist/test/*.spec.js --reporter spec",
 		"precompile": "npm run clean",
 		"clean": "rimraf dist/*",
@@ -52,7 +55,7 @@
 	},
 	"husky": {
 		"hooks": {
-			"pre-commit": "pretty-quick --staged & npm run lint"
+			"pre-commit": "pretty-quick --staged & npm test"
 		}
 	}
 }
