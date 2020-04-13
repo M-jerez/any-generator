@@ -1,34 +1,40 @@
+/**
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+ * @license MIT , License text available at https://opensource.org/licenses/MIT
+ * @copyright 2020  @author Ma Jerez
+ * @package Anygen.
+ */
 import * as path from 'path';
 import Module from 'module';
 
 export function getProjectRootPath() {
-	// todo
+  // todo
 }
 
 export function getGlobalNodeModulesPath() {
-	// todo
+  // todo
 }
 
 export function getLocalNodeModulesPath() {
-	// todo
+  // todo
 }
 
 export function getProjectConfig() {
-	// todo
+  // todo
 }
 
 export function getAllGlobalNodeModulesConfig() {
-	// todo
+  // todo
 }
 
 export function getLocalGlobalNodeModulesConfig() {
-	// todo
+  // todo
 }
 
 export function findAllConfigFilePaths(dirPath: string) {
-	// todo
+  // todo
 }
 
 export function getConfigFromFile(filePath: string) {
-	// todo
+  // todo
 }
