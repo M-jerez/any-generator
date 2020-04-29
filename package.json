@@ -33,7 +33,7 @@
 		"ts-jest": "25.4.0",
 		"tslint": "6.1.2",
 		"tslint-config-prettier": "1.18.0",
-		"typedoc": "0.17.4",
+		"typedoc": "0.17.6",
 		"typescript": "3.8.3"
 	},
 	"dependencies": {
