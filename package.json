@@ -34,7 +34,7 @@
 		"tslint": "6.1.2",
 		"tslint-config-prettier": "1.18.0",
 		"typedoc": "0.17.6",
-		"typescript": "3.8.3"
+		"typescript": "3.9.3"
 	},
 	"dependencies": {
 		"commander": "^5.0.0"
